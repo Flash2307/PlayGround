@@ -23,13 +23,13 @@ HomeWindow::HomeWindow(QWidget *parent) :
 QWidget* HomeWindow::prepareProfilPages()
 {
     QWidget* pCentralWidget = new QWidget();
-    QGridLayout* pGrid = new QGridLayout( pCentralWidget );
+    QHBoxLayout* pHBox = new QHBoxLayout( pCentralWidget );
 
-    pGrid->addWidget( profilPages[ 0 ].getWidget(), 0, 0, 1 , 3 );
-    pGrid->addWidget( profilPages[ 1 ].getWidget(), 0, 1, 1 , 3 );
-    pGrid->addWidget( profilPages[ 2 ].getWidget(), 0, 2, 1 , 3 );
-    pGrid->addWidget( profilPages[ 3 ].getWidget(), 0, 3, 1 , 3 );
-    pCentralWidget->setLayout( pGrid );
+    pHBox->addWidget( profilPages[ 0 ].getWidget() );
+    pHBox->addWidget( profilPages[ 1 ].getWidget() );
+    pHBox->addWidget( profilPages[ 2 ].getWidget() );
+    pHBox->addWidget( profilPages[ 3 ].getWidget() );
+    pCentralWidget->setLayout( pHBox );
 
     return pCentralWidget;
 }

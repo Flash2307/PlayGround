@@ -10,4 +10,9 @@ inline size_t getGamepadIndex( GamePadMsgType message_ )
     return message_ & 0x3;
 }
 
+inline bool isGamepadShutdown( GamePadMsgType message_ )
+{
+    return message_ & ( 1 << 2 );
+}
+
 #endif // GAMEPADMSG_H

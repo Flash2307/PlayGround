@@ -1,6 +1,8 @@
 #ifndef USERPROFILPAGE_H
 #define USERPROFILPAGE_H
 
+#include <QString>
+
 #include <cstddef>
 
 #include "GamepadMsg.h"
@@ -19,6 +21,7 @@ public:
 private:
     QWidget* pPage;
     QLabel* pUserNameLabel;
+    QString unactivatedMessage;
     bool activated;
     bool ready;
 };

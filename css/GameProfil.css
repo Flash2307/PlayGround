@@ -1,0 +1,16 @@
+
+QMainWindow
+{
+	background-color: rgb( 255, 255, 255 );
+	background-position: top left;
+	background-repeat: repeat-xy;
+}
+
+QLabel
+{
+	color: rgb( 255, 255, 255 );
+	font-size: 32px;
+	text-align: center;
+}
+
+
