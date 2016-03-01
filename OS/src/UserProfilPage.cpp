@@ -53,7 +53,8 @@ void UserProfilPage::process( GamePadMsgType message_ )
     {
         if( isGamepadABtn( message_ ) )
         {
-            qDebug() << " a click\n";
+            qDebug() << "Db call to connextuser";
+            qDebug() << "Show user statistic?";
             pConnectToProfilBtn->animateClick();
         }
         else
