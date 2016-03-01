@@ -24,7 +24,10 @@ SOURCES += main.cpp \
     tests/GamepadMsgServerTest.cpp \
     tests/Fixtures/FakeGamepad.cpp \
     src/UserProfilPage.cpp \
-    src/GameSelection.cpp
+    src/GameSelection.cpp \
+    src/DatabaseFacade.cpp \
+    tests/UserProfilPageTest.cpp \
+    src/FileLoader.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -33,4 +36,7 @@ HEADERS  += HomeWindow.h \
     tests/GamepadMsgServerTest.h \
     tests/Fixtures/FakeGamepad.h \
     src/UserProfilPage.h \
-    src/GameSelection.h
+    src/GameSelection.h \
+    src/DatabaseFacade.h \
+    tests/UserProfilPageTest.h \
+    src/FileLoader.h

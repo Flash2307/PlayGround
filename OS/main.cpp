@@ -3,27 +3,13 @@
 #include "HomeWindow.h"
 
 #include "tests/GamepadMsgServerTest.h"
+#include "tests/UserProfilPageTest.h"
 
-QString readFiles( const QStringList& files )
-{
-    QString result;
-
-    foreach (QString file, files)
-    {
-        QFile f(file);
-        if (!f.open(QFile::ReadOnly | QFile::Text)) break;
-        QTextStream in(&f);
-        result.append( in.readAll() );
-    }
-qDebug() << result << '\n';
-    return result;
-}
-
+#define TEST_BUILD
 
 inline int runApp( int argc, char *argv[] )
 {
     QApplication app(argc, argv);
-    app.setStyleSheet( readFiles( QStringList() << "css/GameProfil.css" ) );
 
     HomeWindow w;
     w.showMaximized();
@@ -38,11 +24,17 @@ int runTests(int argc, char *argv[])
     GamepadMsgServerTest tc;
     QTest::qExec(&tc, argc, argv);
 
+    UserProfilPageTest userProfilPageTest;
+    QTest::qExec(&userProfilPageTest, argc, argv);
+
     return 0;
 }
 
 int main(int argc, char *argv[])
 {
-    // return runTests( argc, argv );
+#ifdef TEST_BUILD
+    return runTests( argc, argv );
+#else
     return runApp( argc, argv );
+#endif
 }

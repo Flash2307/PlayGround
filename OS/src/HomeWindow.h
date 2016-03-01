@@ -18,14 +18,18 @@ public:
 
     HomeWindow(QWidget *parent = 0);
     ~HomeWindow();
+
+    bool isOnProfilPage() const;
+    bool isOnGameSelectionPage() const;
 public slots:
     void newMessageArrive( GamePadMsgType );
+    void userReady();
 private:
     QWidget* prepareProfilPages();
 
     GamePadCom gamepadCom;
     GameSelection gameSelection;
-    UserProfilPage profilPages[ MaxUser ];
+    UserProfilPage* profilPages[ MaxUser ];
 
     QStackedLayout* views;
     int profilViewIndex;

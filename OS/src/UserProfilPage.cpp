@@ -5,6 +5,10 @@
 #include <QLabel>
 #include <QPixmap>
 #include <QPalette>
+#include <QPushButton>
+#include <QLineEdit>
+
+#include "FileLoader.h"
 
 void applyTexture( QWidget* pWidget, const QString& texturePath )
 {
@@ -16,20 +20,29 @@ void applyTexture( QWidget* pWidget, const QString& texturePath )
 }
 
 UserProfilPage::UserProfilPage( size_t gamepadIndex ) :
-    pPage( nullptr ),
     pUserNameLabel( nullptr ),
     unactivatedMessage( "Manette " + QString().setNum( gamepadIndex ) + " non activé"  ),
     activated( false ),
     ready( false )
 {
-    QVBoxLayout* pVBox = new QVBoxLayout();
-
-    pPage = new QWidget();
-    applyTexture( pPage, "./img/ProfilPage.jpg" );
     pUserNameLabel = new QLabel( unactivatedMessage );
+
+    pConnectToProfilBtn = new QPushButton( "Connexion" );
+    pConnectToProfilBtn->hide();
+    QObject::connect( pConnectToProfilBtn, SIGNAL( clicked() ), this, SLOT( userConnect() ) );
+
+    pUserNameEditor = new QLineEdit();
+    pUserNameEditor->hide();
+
+    QVBoxLayout* pVBox = new QVBoxLayout();
     pVBox->addWidget( pUserNameLabel );
+    pVBox->addWidget( pUserNameEditor );
+    pVBox->addWidget( pConnectToProfilBtn );
     pVBox->setAlignment( Qt::AlignTop );
-    pPage->setLayout( pVBox );
+
+    this->setLayout( pVBox );
+    this->setStyleSheet( readFiles( QStringList() << "css/GameProfil.css" ) );
+    applyTexture( this, "./img/ProfilPage.jpg" );
 }
 
 void UserProfilPage::process( GamePadMsgType message_ )
@@ -38,20 +51,40 @@ void UserProfilPage::process( GamePadMsgType message_ )
 
     if( activated )
     {
-
+        if( isGamepadABtn( message_ ) )
+        {
+            qDebug() << " a click\n";
+            pConnectToProfilBtn->animateClick();
+        }
+        else
+        {
+            pUserNameLabel->setText( "Entrer votre nom d'utilisateur:" );
+            pUserNameEditor->clear();
+            pUserNameEditor->show();
+            pConnectToProfilBtn->show();
+        }
     }
     else
     {
         pUserNameLabel->setText( unactivatedMessage );
+        pUserNameEditor->hide();
+        pConnectToProfilBtn->hide();
     }
+}
+
+void UserProfilPage::userConnect()
+{
+    this->ready = true;
+    emit readyToPlay();
 }
 
 bool UserProfilPage::isReady() const
 {
-    return this->ready || !this->activated;
+    return this->ready;
 }
 
-QWidget* UserProfilPage::getWidget()
+bool UserProfilPage::isActivated() const
 {
-    return this->pPage;
+    return this->activated;
 }
+

@@ -1,34 +1,25 @@
 #ifndef GAMESELECTION_H
 #define GAMESELECTION_H
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
+#include <QWidget>
 #include <QProcess>
 
-struct GameLaucher
-{
-    QString gamePath;
-    QString gamePicturePath;
-    QString gameDescription;
-};
-
-class GameSelection : public QObject
+class GameSelection : public QWidget
 {
     Q_OBJECT
 public:
     GameSelection();
-
-    QWidget* getView();
 public slots:
     void gameFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void readyReadStandardError();
     void readyReadStandardOutput();
     void started();
+    void detectAvaibleGame();
+
+    void startGameRequest();
 private:
-    QGraphicsScene scene;
-    QGraphicsView view;
     QProcess currentGame;
-    QVector< GameLaucher > avaibleGames;
+    QVector< QString > avaibleGames;    // Games base dir.
 };
 
 #endif // GAMESELECTION_H
