@@ -5,7 +5,7 @@
 #include "tests/GamepadMsgServerTest.h"
 #include "tests/UserProfilPageTest.h"
 
-#define TEST_BUILD
+//#define TEST_BUILD
 
 inline int runApp( int argc, char *argv[] )
 {

@@ -45,31 +45,102 @@ UserProfilPage::UserProfilPage( size_t gamepadIndex ) :
     applyTexture( this, "./img/ProfilPage.jpg" );
 }
 
-void UserProfilPage::process( GamePadMsgType message_ )
+void UserProfilPage::updateUsenameText( bool increment )
 {
-    activated = !isGamepadShutdown( message_ );
+    int cursoPosition = pUserNameEditor->cursorPosition();
+    QString text = pUserNameEditor->text();
 
-    if( activated )
+    if( text.size() == cursoPosition )
     {
-        if( isGamepadABtn( message_ ) )
+        text.append( 'a' );
+    }
+    else
+    {
+        char value = text[ cursoPosition ].toLatin1();
+
+        if( increment )
         {
-            qDebug() << "Db call to connextuser";
-            qDebug() << "Show user statistic?";
-            pConnectToProfilBtn->animateClick();
+            if( value + 1 > '9' && value < 'a' )
+            {
+                text[ cursoPosition ] = 'a';
+            }
+            else if( value + 1 > 'z' )
+            {
+               text[ cursoPosition ] = '0';
+            }
+            else
+            {
+                text[ cursoPosition ] = ++value;
+            }
         }
         else
+        {
+            if(value  - 1 < '0')
+            {
+                text[ cursoPosition ] = 'z';
+            }
+            else if( value - 1 <  'a' && value > '9' )
+            {
+               text[ cursoPosition ] = '9';
+            }
+            else
+            {
+                text[ cursoPosition ] = --value;
+            }
+        }
+    }
+
+    pUserNameEditor->setText( text );
+    pUserNameEditor->setCursorPosition( cursoPosition );
+}
+
+void UserProfilPage::process( GamePadMsgType message_ )
+{
+    bool newActivatedState = !isGamepadShutdown( message_ );
+
+    if( activated != newActivatedState)
+    {
+        activated = newActivatedState;
+
+        if( activated )
         {
             pUserNameLabel->setText( "Entrer votre nom d'utilisateur:" );
             pUserNameEditor->clear();
             pUserNameEditor->show();
             pConnectToProfilBtn->show();
         }
+        else
+        {
+            pUserNameLabel->setText( unactivatedMessage );
+            pUserNameEditor->hide();
+            pConnectToProfilBtn->hide();
+        }
     }
-    else
+    else if( isGamepadABtn( message_ ) )
     {
-        pUserNameLabel->setText( unactivatedMessage );
-        pUserNameEditor->hide();
-        pConnectToProfilBtn->hide();
+        qDebug() << "Db call to connextuser";
+        qDebug() << "Show user statistic?";
+        pConnectToProfilBtn->animateClick();
+    }
+    else if( isGamepadLeftArrow( message_ ) )
+    {
+        pUserNameEditor->cursorBackward( false );
+    }
+    else if( isGamepadRigthArrow( message_ ) )
+    {
+        pUserNameEditor->cursorForward( false );
+    }
+    else if( isGamepadUpArrow( message_ ) )
+    {
+        updateUsenameText( true );
+    }
+    else if( isGamepadDownArrow( message_ ) )
+    {
+        updateUsenameText( false );
+    }
+    else if( isGamepadBBtn( message_ ) )
+    {
+        pUserNameEditor->backspace();
     }
 }
 

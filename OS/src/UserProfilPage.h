@@ -27,6 +27,8 @@ public slots:
 signals:
     void readyToPlay();
 private:
+    void updateUsenameText( bool increment );
+
     QLabel* pUserNameLabel;
     QLineEdit* pUserNameEditor;
     QPushButton* pConnectToProfilBtn;

@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QStackedLayout>
 
+#include "CommandSimulator.h"
+
 HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent )
 {
@@ -25,6 +27,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     this->setCentralWidget( pCentralWidget );
 
     this->setWindowTitle( "Console de jeux" );
+    this->installEventFilter( new CommandSimulator() );
 }
 
 QWidget* HomeWindow::prepareProfilPages()
@@ -54,13 +57,16 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 
 void HomeWindow::userReady()
 {
+    bool atLeastOnePlayer = false;
+
     bool isEveryOneReady = std::all_of( profilPages, profilPages + MaxUser,
-    []( UserProfilPage* userProfile )
+    [ &atLeastOnePlayer ]( UserProfilPage* userProfile )
     {
+        atLeastOnePlayer = atLeastOnePlayer || userProfile->isActivated();
         return userProfile->isReady() || !userProfile->isActivated();
     });
 
-    if( isEveryOneReady )
+    if( isEveryOneReady && atLeastOnePlayer )
     {
         this->views->setCurrentIndex( this->gameSelectionViewIndex );
     }

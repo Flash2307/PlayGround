@@ -23,19 +23,25 @@ GameSelection::GameSelection()
     foreach( QString gameName, avaibleGames )
     {
         QLabel* pGameTitleLabel = new QLabel( gameName );
+        pGameTitleLabel->setFont( QFont( "Arial", 48, QFont::Bold ) );
+
         QLabel* pGamePixmap = new QLabel();
-        pGamePixmap->setPixmap( QPixmap( QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName ).arg( gamePictureFileName ) ) );
+        pGamePixmap->setPixmap( QPixmap( QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName ).arg( gamePictureFileName ) ).scaled( 400, 600 ) );
+        pGamePixmap->setMaximumSize( QSize( 500, 800 ) );
 
         QLabel* pGameDescriptionLabel = new QLabel( readFiles( QStringList() << QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName ).arg( gameDescriptionFileName ) ) );
+        pGameDescriptionLabel->setFont( QFont( "Arial", 34 ) );
 
         QPushButton* pStartGameBtn = new QPushButton( QString( "Débuter %1" ).arg( gameName )  );
         pStartGameBtn->setObjectName( gameName );
+        pStartGameBtn->setMaximumWidth( 400 );
         QObject::connect( pStartGameBtn, SIGNAL( clicked() ), this, SLOT( startGameRequest() ) );
 
         QVBoxLayout* gamePreview = new QVBoxLayout();
         gamePreview->addWidget( pGameTitleLabel );
         gamePreview->addWidget( pGamePixmap );
         gamePreview->addWidget( pGameDescriptionLabel );
+        gamePreview->addStretch();
         gamePreview->addWidget( pStartGameBtn );
 
         QWidget* gamePanel = new QWidget();
@@ -76,7 +82,7 @@ void GameSelection::startGameRequest()
     if( pObj != nullptr && pObj->objectName().isEmpty() == false )
     {
         QString gameAppPath("%1/%2/%3");
-        gameAppPath.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
+        gameAppPath = gameAppPath.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
 
         qDebug() << "Start game " << gameAppPath;
 
