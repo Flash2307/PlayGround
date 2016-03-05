@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     src/DatabaseFacade.cpp \
     tests/UserProfilPageTest.cpp \
     src/FileLoader.cpp \
-    src/CommandSimulator.cpp
+    src/CommandSimulator.cpp \
+    src/GameProcess.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -41,4 +42,5 @@ HEADERS  += HomeWindow.h \
     src/DatabaseFacade.h \
     tests/UserProfilPageTest.h \
     src/FileLoader.h \
-    src/CommandSimulator.h
+    src/CommandSimulator.h \
+    src/GameProcess.h

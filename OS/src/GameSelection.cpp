@@ -15,39 +15,6 @@ constexpr char gameDescriptionFileName[] = "description.txt";
 constexpr char gameAppFileName[] = "game";
 constexpr char selectedGameTagName[] = "elementWithFocus";
 
-GameProcess::GameProcess()
-{
-    QObject::connect( &currentGame, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( gameFinished(int, QProcess::ExitStatus) ) );
-    QObject::connect( &currentGame, SIGNAL( readyReadStandardError() ), this, SLOT( readyReadStandardError() ) );
-    QObject::connect( &currentGame, SIGNAL( readyReadStandardOutput() ), this, SLOT( readyReadStandardOutput() ) );
-    QObject::connect( &currentGame, SIGNAL( started() ), this, SLOT( started() ) );
-}
-
-void GameProcess::gameFinished(int exitCode, QProcess::ExitStatus exitStatus)
-{
-    // Show OS panel.
-}
-
-void GameProcess::readyReadStandardError()
-{
-    // Logging error.
-}
-
-void GameProcess::readyReadStandardOutput()
-{
-    // Command from the game arrive, answer on game stdin
-}
-
-void GameProcess::started()
-{
-    // Hide OS panel
-}
-
-void GameProcess::startGame( const QString& gameAppPath )
-{
-    currentGame.start( gameAppPath );
-}
-
 GameSelection::GameSelection() :
     selectedGameIndex( 0 )
 {
@@ -85,15 +52,43 @@ GameSelection::GameSelection() :
         this->gamePanels.append( gamePanel );
     }
 
-    QPushButton* backToProfileSelection = new QPushButton( "Back" );
+    this->prepareBackToSelectionProfileBtn();
+    this->prepareFailureMessageLabel();
 
     QVBoxLayout* pMainLayout = new QVBoxLayout();
+    pMainLayout->addWidget( this->pFailureMessageLabel );
     pMainLayout->addLayout( pGameList );
-    pMainLayout->addWidget( backToProfileSelection );
+    pMainLayout->addWidget( this->pBackToProfileSelection );
 
     this->setLayout( pMainLayout );
     this->setObjectName( "mainPane" );
     this->setStyleSheet( readFiles( QStringList() << "css/GameSelection.css" ) );
+}
+
+void GameSelection::prepareFailureMessageLabel()
+{
+    this->pFailureMessageLabel = new QLabel();
+    this->pFailureMessageLabel->hide();
+}
+
+void GameSelection::prepareBackToSelectionProfileBtn()
+{
+    this->pBackToProfileSelection = new QPushButton( "Back" );
+    QObject::connect( this->pBackToProfileSelection, SIGNAL( clicked() ), this, SIGNAL( returnToProfileSelection() ) );
+}
+
+void GameSelection::setFailureMessage( const QString& failueMessage_ )
+{
+    if( failueMessage_.isEmpty() )
+    {
+        this->pFailureMessageLabel->setText( QString() );
+        this->pFailureMessageLabel->hide();
+    }
+    else
+    {
+        this->pFailureMessageLabel->setText( failueMessage_ );
+        this->pFailureMessageLabel->show();
+    }
 }
 
 void GameSelection::detectAvaibleGame()
@@ -106,7 +101,7 @@ void GameSelection::detectAvaibleGame()
 
         if( it.fileInfo().isDir() && gameName != "." )
         {
-            qDebug() << " Game avaible: " << gameName;
+            qDebug() << "Game avaible: " << gameName;
             avaibleGames.append( gameName );
         }
 
@@ -130,6 +125,10 @@ void GameSelection::startGameRequest()
 
 void GameSelection::process( GamePadMsgType message_ )
 {
+    if( isGamepadBBtn( message_ ) )
+    {
+
+    }
     if( this->gamePanels.size() > 0 )
     {
 
