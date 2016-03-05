@@ -13,8 +13,43 @@ constexpr char gameBaseDir[] = "./games";
 constexpr char gamePictureFileName[] = "picture.jpg";
 constexpr char gameDescriptionFileName[] = "description.txt";
 constexpr char gameAppFileName[] = "game";
+constexpr char selectedGameTagName[] = "elementWithFocus";
 
-GameSelection::GameSelection()
+GameProcess::GameProcess()
+{
+    QObject::connect( &currentGame, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( gameFinished(int, QProcess::ExitStatus) ) );
+    QObject::connect( &currentGame, SIGNAL( readyReadStandardError() ), this, SLOT( readyReadStandardError() ) );
+    QObject::connect( &currentGame, SIGNAL( readyReadStandardOutput() ), this, SLOT( readyReadStandardOutput() ) );
+    QObject::connect( &currentGame, SIGNAL( started() ), this, SLOT( started() ) );
+}
+
+void GameProcess::gameFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    // Show OS panel.
+}
+
+void GameProcess::readyReadStandardError()
+{
+    // Logging error.
+}
+
+void GameProcess::readyReadStandardOutput()
+{
+    // Command from the game arrive, answer on game stdin
+}
+
+void GameProcess::started()
+{
+    // Hide OS panel
+}
+
+void GameProcess::startGame( const QString& gameAppPath )
+{
+    currentGame.start( gameAppPath );
+}
+
+GameSelection::GameSelection() :
+    selectedGameIndex( 0 )
 {
     detectAvaibleGame();
 
@@ -47,14 +82,18 @@ GameSelection::GameSelection()
         QWidget* gamePanel = new QWidget();
         gamePanel->setLayout( gamePreview );
         pGameList->addWidget( gamePanel );
+        this->gamePanels.append( gamePanel );
     }
 
-    this->setLayout( pGameList );
+    QPushButton* backToProfileSelection = new QPushButton( "Back" );
 
-    QObject::connect( &currentGame, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( gameFinished(int, QProcess::ExitStatus) ) );
-    QObject::connect( &currentGame, SIGNAL( readyReadStandardError() ), this, SLOT( readyReadStandardError() ) );
-    QObject::connect( &currentGame, SIGNAL( readyReadStandardOutput() ), this, SLOT( readyReadStandardOutput() ) );
-    QObject::connect( &currentGame, SIGNAL( started() ), this, SLOT( started() ) );
+    QVBoxLayout* pMainLayout = new QVBoxLayout();
+    pMainLayout->addLayout( pGameList );
+    pMainLayout->addWidget( backToProfileSelection );
+
+    this->setLayout( pMainLayout );
+    this->setObjectName( "mainPane" );
+    this->setStyleSheet( readFiles( QStringList() << "css/GameSelection.css" ) );
 }
 
 void GameSelection::detectAvaibleGame()
@@ -85,28 +124,15 @@ void GameSelection::startGameRequest()
         gameAppPath = gameAppPath.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
 
         qDebug() << "Start game " << gameAppPath;
-
-        currentGame.start( gameAppPath );
+        emit startGame( gameAppPath );
     }
 }
 
-void GameSelection::gameFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void GameSelection::process( GamePadMsgType message_ )
 {
-    // Show OS panel.
-}
+    if( this->gamePanels.size() > 0 )
+    {
 
-void GameSelection::readyReadStandardError()
-{
-    // Logging error.
-}
-
-void GameSelection::readyReadStandardOutput()
-{
-    // Command from the game arrive, answer on game stdin
-}
-
-void GameSelection::started()
-{
-    // Hide OS panel
+    }
 }
 

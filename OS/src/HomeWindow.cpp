@@ -51,8 +51,15 @@ HomeWindow::~HomeWindow()
 
 void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 {
-    size_t gamepadIndex = getGamepadIndex( message_ );
-    profilPages[ gamepadIndex ]->process( message_ );
+    if( profilViewIndex == views->currentIndex() )
+    {
+        size_t gamepadIndex = getGamepadIndex( message_ );
+        profilPages[ gamepadIndex ]->process( message_ );
+    }
+    else
+    {
+        gameSelection.process( message_ );
+    }
 }
 
 void HomeWindow::userReady()
