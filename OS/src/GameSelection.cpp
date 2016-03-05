@@ -14,6 +14,32 @@ constexpr char gamePictureFileName[] = "picture.jpg";
 constexpr char gameDescriptionFileName[] = "description.txt";
 constexpr char gameAppFileName[] = "game";
 constexpr char selectedGameTagName[] = "elementWithFocus";
+constexpr char defaultGameImg[] = "./img/NoImage.jpg";
+constexpr char noDescriptionAvaibleText[] = "Aucune description du jeu disponible.";
+
+static QString fetchGameImage( const QString& gameName_ )
+{
+    QString defaultPath = QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName_ ).arg( gamePictureFileName );
+
+    if( QFile::exists( defaultPath ) )
+    {
+        return defaultPath;
+    }
+
+    return QString( defaultGameImg );
+}
+
+static QString fetchGameDescription( const QString& gameName_ )
+{
+    QString defaultFilePath = QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName_ ).arg( gameDescriptionFileName );
+
+    if( QFile::exists( defaultFilePath ) )
+    {
+        return readFiles( QStringList() << defaultFilePath );
+    }
+
+    return QString( noDescriptionAvaibleText );
+}
 
 GameSelection::GameSelection() :
     selectedGameIndex( 0 )
@@ -25,13 +51,15 @@ GameSelection::GameSelection() :
     foreach( QString gameName, avaibleGames )
     {
         QLabel* pGameTitleLabel = new QLabel( gameName );
+        pGameTitleLabel->setWordWrap( true );
         pGameTitleLabel->setFont( QFont( "Arial", 48, QFont::Bold ) );
 
         QLabel* pGamePixmap = new QLabel();
-        pGamePixmap->setPixmap( QPixmap( QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName ).arg( gamePictureFileName ) ).scaled( 400, 600 ) );
+        pGamePixmap->setPixmap( QPixmap( fetchGameImage( gameName ) ).scaled( 400, 600 ) );
         pGamePixmap->setMaximumSize( QSize( 500, 800 ) );
 
-        QLabel* pGameDescriptionLabel = new QLabel( readFiles( QStringList() << QString("%1/%2/%3").arg( gameBaseDir ).arg( gameName ).arg( gameDescriptionFileName ) ) );
+        QLabel* pGameDescriptionLabel = new QLabel( fetchGameDescription( gameName ) );
+        pGameDescriptionLabel->setWordWrap( true );
         pGameDescriptionLabel->setFont( QFont( "Arial", 34 ) );
 
         QPushButton* pStartGameBtn = new QPushButton( QString( "Débuter %1" ).arg( gameName )  );
@@ -47,6 +75,7 @@ GameSelection::GameSelection() :
         gamePreview->addWidget( pStartGameBtn );
 
         QWidget* gamePanel = new QWidget();
+        gamePanel->setMaximumWidth( 410 );
         gamePanel->setLayout( gamePreview );
         pGameList->addWidget( gamePanel );
         this->gamePanels.append( gamePanel );
@@ -127,9 +156,9 @@ void GameSelection::process( GamePadMsgType message_ )
 {
     if( isGamepadBBtn( message_ ) )
     {
-
+        this->pBackToProfileSelection->animateClick();
     }
-    if( this->gamePanels.size() > 0 )
+    else if( this->gamePanels.size() > 0 )
     {
 
     }
