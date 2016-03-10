@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1457638373 source:/home/gabriel/Prod/Programmation/PlayGround/Snakeus/Game.cpp
+	"Game.h"
+	<iostream>
+	<memory>
+	<cmath>
+
+1457637912 /home/gabriel/Prod/Programmation/PlayGround/Snakeus/Game.h
+	<memory>
+	<SFML/Graphics.hpp>
+	"CollisionGrid.h"
+	"Line.h"
+
+1457640958 /home/gabriel/Prod/Programmation/PlayGround/Snakeus/Line.h
+	<SFML/Graphics.hpp>
+	"CollisionGrid.h"
+
+1457641744 source:/home/gabriel/Prod/Programmation/PlayGround/Snakeus/Line.cpp
+	"Line.h"
+	<iostream>
+	<cmath>
+	<cassert>
+	<SFML/Graphics.hpp>
+	<SFML/Window.hpp>
+
+1457641205 source:/home/gabriel/Prod/Programmation/PlayGround/Snakeus/main.cpp
+	<SFML/Graphics.hpp>
+	"Game.h"
+
+1457635180 /home/gabriel/Prod/Programmation/PlayGround/Snakeus/ShapeManager.h
+	<memory>
+	<SFML/Graphics.hpp>
+
+1457635197 source:/home/gabriel/Prod/Programmation/PlayGround/Snakeus/ShapeManager.cpp
+	"ShapeManager.h"
+
+1457641645 /home/gabriel/Prod/Programmation/PlayGround/Snakeus/CollisionGrid.h
+	<memory>
+	<vector>
+
+1457641614 source:/home/gabriel/Prod/Programmation/PlayGround/Snakeus/CollisionGrid.cpp
+	"CollisionGrid.h"
+	<algorithm>
+	<iostream>
+	<cassert>
+
