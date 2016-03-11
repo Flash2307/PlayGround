@@ -3,11 +3,12 @@
 #include <SFML/Graphics.hpp>
 
 #include "CollisionGrid.h"
+#include "SystemInput.h"
 
 class Line
 {
 public:
-	Line(int x,int y, sf::Color playerColor_, const SharedCollisionGridType& pCollisionGrid_ );
+	Line(int x,int y, const Player& player_, const SharedCollisionGridType& pCollisionGrid_ );
 
 	void update();
 	void draw( sf::RenderWindow* window );
@@ -15,9 +16,12 @@ public:
 	double getX() const;
 	double getY() const;
 	double getAngle() const;
+	size_t getPointCount() const;
 
 	sf::Color getPlayerColor() const;
+	const Player& getPlayer() const;
 
+	bool isAlive() const;
 	bool isInHole();
 	void kill();
 private:
@@ -25,6 +29,7 @@ private:
 
 	SharedCollisionGridType pCollisionGrid;
 	CirclePtrType pNextPoint;
+	Player player;
 
 	int holeCounter;
 	double angle;

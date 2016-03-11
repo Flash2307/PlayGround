@@ -14,12 +14,34 @@
 #define HOLE_LENGTH 10
 #define CIRCLE_RAY 3
 
-Line::Line(int x, int y, sf::Color playerColor_, const SharedCollisionGridType& pCollisionGrid_ ) :
+static sf::Color getUserColor( size_t index_ )
+{
+	switch( index_ )
+	{
+	case 0:
+		return sf::Color::Red;
+		break;
+	case 1:
+		return sf::Color::Blue;
+		break;
+	case 2:
+		return sf::Color::Green;
+		break;
+	case 3:
+		return sf::Color::Cyan;
+		break;
+	}
+
+	return sf::Color::Red;
+}
+
+Line::Line(int x, int y, const Player& player_, const SharedCollisionGridType& pCollisionGrid_ ) :
 	pCollisionGrid( pCollisionGrid_ ),
 	pNextPoint( std::make_unique< Circle >( x, y, CIRCLE_RAY ) ),
+	player( player_ ),
 	holeCounter( 0 ),
 	angle( 0 ),
-	playerColor( playerColor_ ),
+	playerColor( getUserColor( player_.index ) ),
 	inHole( false ),
 	alive( true )
 {
@@ -136,9 +158,33 @@ double Line::getAngle() const
 	return angle;
 }
 
+size_t Line::getPointCount() const
+{
+	Circle* pNext = pNextPoint->pNext;
+	size_t pointCount = 1;
+
+	while( pNext != nullptr )
+	{
+		++pointCount;
+		pNext = pNext->pNext;
+	}
+
+	return pointCount;
+}
+
 sf::Color Line::getPlayerColor() const
 {
 	return playerColor;
+}
+
+const Player& Line::getPlayer() const
+{
+	return this->player;
+}
+
+bool Line::isAlive() const
+{
+	return this->alive;
 }
 
 bool Line::isInHole()

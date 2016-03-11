@@ -43,6 +43,8 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Line.cpp" />
 		<Unit filename="Line.h" />
+		<Unit filename="SystemInput.cpp" />
+		<Unit filename="SystemInput.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<envvars />
