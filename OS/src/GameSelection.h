@@ -5,6 +5,7 @@
 #include <QProcess>
 
 #include "GamepadMsg.h"
+#include "GameProcess.h"
 
 class QLabel;
 class QPushButton;
@@ -20,7 +21,7 @@ public slots:
     void startGameRequest();
     void process( GamePadMsgType message_ );
 signals:
-    void startGame( const QString& path_ );
+    void startGame( GameConfig gameConfig_ );
     void returnToProfileSelection();
 private:
     void prepareFailureMessageLabel();

@@ -21,11 +21,12 @@ static void renderStatBoard( sf::RenderWindow* pWindow_ )
 	pWindow_->draw( rectangle );
 }
 
-Game::Game() :
+Game::Game( int argc_, char** argv_ ) :
+	systemCom( argc_, argv_ ),
 	pCollisionGrid( std::make_shared< CollisionGrid >( WORLD_WIDTH, SCREEN_HEIGHT, 100 ) ),
 	hasPlayerAlive( false )
 {
-	if (!font.loadFromFile("Alef-Regular.ttf"))
+	if (!font.loadFromFile("font/Alef-Regular.ttf"))
 	{
 		std::cerr << "Impossible de chargé les polices de caractères...\n";
 		abort();
@@ -44,6 +45,8 @@ Game::Game() :
 void Game::update()
 {
 	this->hasPlayerAlive = false;
+
+	systemCom.update();
 
 	std::for_each( lines.begin(), lines.end(),
 	[ this ]( LinePtrType& pLine_ )

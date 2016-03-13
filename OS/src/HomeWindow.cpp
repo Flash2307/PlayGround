@@ -1,11 +1,14 @@
 #include "HomeWindow.h"
 
+#include <cassert>
+
 #include <QWidget>
 #include <QGridLayout>
 #include <QLabel>
 #include <QStackedLayout>
 
 #include "CommandSimulator.h"
+#include "GameProcess.h"
 
 HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent )
@@ -17,7 +20,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     }
 
     QObject::connect( &gamepadCom, SIGNAL( newMessageArrive( GamePadMsgType ) ), this, SLOT( newMessageArrive( GamePadMsgType ) ) );
-    QObject::connect( &gameSelection, SIGNAL( startGame( const QString& ) ), this, SLOT( lauchGame( const QString& ) ) );
+    QObject::connect( &gameSelection, SIGNAL( startGame( GameConfig ) ), this, SLOT( lauchGame( GameConfig ) ) );
     QObject::connect( &gameSelection, SIGNAL( returnToProfileSelection() ), this, SLOT( showProfilSelectionView() ) );
     QObject::connect( &gameProcess, SIGNAL( gameStop( const QString& ) ), this, SLOT( gameStop( const QString& ) ) );
 
@@ -114,9 +117,15 @@ bool HomeWindow::isOnGameSelectionPage() const
     return this->views->currentIndex() == gameSelectionViewIndex;
 }
 
-void HomeWindow::lauchGame( const QString& gamePath_ )
+void HomeWindow::lauchGame( GameConfig gameConfig_ )
 {
-    gameProcess.startGame( gamePath_ );
+    for( size_t index = 0; index < MaxUser; ++index )
+    {
+        assert( profilPages[ index ] != nullptr );
+        gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
+    }
+
+    gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
 }
 

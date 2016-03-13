@@ -7,30 +7,39 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/Snakeus" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="../bin/Snakeus/Debug/Snakeus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../games/Snakeus" />
+				<Option object_output="../bin/Snakeus/obj/Debug" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters='&quot;test 0&quot;' />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/Snakeus" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="../bin/Snakeus/Release/Snakeus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="../bin/Snakeus/obj/Release" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters='&quot;test 0&quot; &quot;test 1&quot;' />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
 				</Linker>
+				<ExtraCommands>
+					<Add after="cp $(TARGET_OUTPUT_FILE) $(PROJECT_DIR)../games/Snakeus/game" />
+					<Mode after="always" />
+				</ExtraCommands>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=gnu++14" />
+			<Add directory="../OS/src" />
 		</Compiler>
 		<Linker>
 			<Add library="sfml-graphics" />
@@ -43,6 +52,8 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Line.cpp" />
 		<Unit filename="Line.h" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Player.h" />
 		<Unit filename="SystemInput.cpp" />
 		<Unit filename="SystemInput.h" />
 		<Unit filename="main.cpp" />

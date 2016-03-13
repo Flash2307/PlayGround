@@ -1,9 +1,11 @@
 #ifndef GAMEPADMSG_H
 #define GAMEPADMSG_H
 
-#include <QtCore>
+#include <cstdint>
 
-typedef quint16 GamePadMsgType;
+constexpr static size_t MaxUser = 4;
+
+typedef uint16_t GamePadMsgType;
 
 inline size_t getGamepadIndex( GamePadMsgType message_ )
 {

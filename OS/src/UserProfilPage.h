@@ -12,6 +12,7 @@ class QWidget;
 class QLabel;
 class QPushButton;
 class QLineEdit;
+class QString;
 
 class UserProfilPage : public QWidget
 {
@@ -22,6 +23,7 @@ public:
     void process( GamePadMsgType message_ );
     bool isReady() const;
     bool isActivated() const;
+    QString getUsername() const;
 public slots:
     void userConnect();
 signals:

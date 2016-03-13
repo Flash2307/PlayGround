@@ -52,11 +52,11 @@ void Line::update()
 {
 	if( this->alive )
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+		if( this->player.isRightKeyPress() )
 		{
 			angle += TURN_SPEED;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+		else if( this->player.isLeftKeyPress() )
 		{
 			angle -= TURN_SPEED;
 		}

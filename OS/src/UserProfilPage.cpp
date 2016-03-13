@@ -1,5 +1,6 @@
 #include "UserProfilPage.h"
 
+#include <QtCore>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QLabel>
@@ -113,7 +114,9 @@ void UserProfilPage::process( GamePadMsgType message_ )
         {
             pUserNameLabel->setText( unactivatedMessage );
             pUserNameEditor->hide();
+            pUserNameEditor->clear();
             pConnectToProfilBtn->hide();
+            ready = false;
         }
     }
     else if( isGamepadABtn( message_ ) )
@@ -158,5 +161,10 @@ bool UserProfilPage::isReady() const
 bool UserProfilPage::isActivated() const
 {
     return this->activated;
+}
+
+QString UserProfilPage::getUsername() const
+{
+    return this->pUserNameEditor->text();
 }
 

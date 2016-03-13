@@ -19,7 +19,7 @@ class Game
 public:
 	typedef std::unique_ptr< Line > LinePtrType;
 
-	Game();
+	Game( int argc_, char** argv_ );
 
 	void update();
 	void draw( sf::RenderWindow* window );

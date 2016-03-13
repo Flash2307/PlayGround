@@ -1,5 +1,9 @@
 #include "GameProcess.h"
 
+#include <QDebug>
+
+constexpr char logFilePath[] = "./games/log.txt";
+
 GameProcess::GameProcess() :
     processStdin( &currentGame ),
     lastState( QProcess::NotRunning )
@@ -8,6 +12,11 @@ GameProcess::GameProcess() :
     QObject::connect( &currentGame, SIGNAL( readyReadStandardError() ), this, SLOT( readyReadStandardError() ) );
     QObject::connect( &currentGame, SIGNAL( readyReadStandardOutput() ), this, SLOT( readyReadStandardOutput() ) );
     QObject::connect( &currentGame, SIGNAL( stateChanged(QProcess::ProcessState) ), this, SLOT( stateChanged(QProcess::ProcessState) ) );
+}
+
+GameProcess::~GameProcess()
+{
+    this->currentGame.terminate();
 }
 
 void GameProcess::newMessageArrive( GamePadMsgType message_ )
@@ -52,8 +61,24 @@ void GameProcess::readyReadStandardOutput()
     // Command from the game arrive, answer on game stdin
 }
 
-void GameProcess::startGame( const QString& gameAppPath )
+void GameProcess::startGame( GameConfig gameConfig_ )
 {
-    currentGame.start(gameAppPath );
+    gameConfig = gameConfig_;
+
+    QStringList arguments;
+
+    for( size_t index = 0; index < MaxUser; ++index )
+    {
+        QString playerName = gameConfig.playerNames[ index ];
+
+        if( !playerName.isEmpty() )
+        {
+            qDebug() << playerName << " #" << index;
+            arguments.push_back( QString("%1 %2").arg( playerName ).arg( index ) );
+        }
+    }
+
+    //currentGame.setWorkingDirectory( gameConfig_.workingDir );
+    currentGame.start( gameConfig_.cmd, arguments );
     processStdin.setDevice( &currentGame );
 }

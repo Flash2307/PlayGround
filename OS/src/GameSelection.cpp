@@ -144,11 +144,16 @@ void GameSelection::startGameRequest()
 
     if( pObj != nullptr && pObj->objectName().isEmpty() == false )
     {
-        QString gameAppPath("%1/%2/%3");
-        gameAppPath = gameAppPath.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
+        QString gameCmd( "%1/%2/%3" );
+        gameCmd = gameCmd.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
 
-        qDebug() << "Start game " << gameAppPath;
-        emit startGame( gameAppPath );
+        qDebug() << "Start game " << gameCmd;
+
+        GameConfig gameConfig;
+        gameConfig.cmd = gameCmd;
+        gameConfig.workingDir = ".";
+
+        emit startGame( gameConfig );
     }
 }
 

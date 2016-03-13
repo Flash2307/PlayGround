@@ -1,13 +1,15 @@
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 
 #include "Game.h"
 
-int main()
+int main( int argc, char** argv )
 {
 	sf::RenderWindow window(sf::VideoMode( SCREEN_WIDTH, SCREEN_HEIGHT ), "ZATAKA!");
 	window.setFramerateLimit(30);
 
-	Game game;
+	Game game( argc, argv );
 
 	while (window.isOpen())
 	{

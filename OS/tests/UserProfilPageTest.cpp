@@ -1,6 +1,7 @@
 #include "UserProfilPageTest.h"
 
 #include <QTest>
+#include <QTimer>
 
 #include "HomeWindow.h"
 

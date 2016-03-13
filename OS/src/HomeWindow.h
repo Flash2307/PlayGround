@@ -15,15 +15,13 @@ class HomeWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    constexpr static size_t MaxUser = 4;
-
     HomeWindow(QWidget *parent = 0);
     ~HomeWindow();
 
     bool isOnProfilPage() const;
     bool isOnGameSelectionPage() const;
 public slots:
-    void lauchGame( const QString& gamePath );
+    void lauchGame( GameConfig gameConfig_ );
     void gameStop( const QString& failueMessage_ );
     void newMessageArrive( GamePadMsgType );
     void userReady();
