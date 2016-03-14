@@ -27,7 +27,16 @@ public:
 	void update();
 	void draw( sf::RenderWindow* window );
 private:
+	void initRessources();
+	void initPlayers();
+
+	void updateLinesPosition();
+	void checkEndgameAction();
+	void resetAllLines();
+
 	void renderLineStat( sf::RenderWindow* pWindow_, Line& line_ );
+	void renderEndGameMessages( sf::RenderWindow* pWindow_ );
+	void renderLines( sf::RenderWindow* pWindow_ );
 
 	SystemInput systemCom;
 	std::array< LinePtrType, PLAYER_COUNT > lines;
