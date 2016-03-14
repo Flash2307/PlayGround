@@ -23,8 +23,9 @@ struct KeyMap
 	bool bPressed;
 };
 
-struct Player
+class Player
 {
+public:
 	Player();
 	Player( const std::string& name_, size_t index_, const sf::Vector2i& spawnPos_ = sf::Vector2i() );
 
@@ -46,9 +47,16 @@ struct Player
 	int spawnX() const;
 	int spawnY() const;
 
+	const std::string& getName() const;
+	size_t getIndex() const;
+
+	size_t getScore() const;
+	void setScore( size_t score_ );
+private:
 	std::shared_ptr< KeyMap > pKeys;
 	std::string name;
 	size_t index;
+	size_t score;
 	sf::Vector2i spawnPos;
 
 };

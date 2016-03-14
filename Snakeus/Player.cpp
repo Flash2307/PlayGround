@@ -11,6 +11,7 @@ Player::Player( const std::string& name_, size_t index_, const sf::Vector2i& spa
 	pKeys( std::make_shared< KeyMap >() ),
 	name( name_ ),
 	index( index_ ),
+	score( 0 ),
 	spawnPos( spawnPos_ )
 {
 
@@ -76,3 +77,22 @@ int Player::spawnY() const
 	return this->spawnPos.y;
 }
 
+const std::string& Player::getName() const
+{
+	return this->name;
+}
+
+size_t Player::getIndex() const
+{
+	return this->index;
+}
+
+size_t Player::getScore() const
+{
+	return this->score;
+}
+
+void Player::setScore( size_t score_ )
+{
+	this->score = score_;
+}

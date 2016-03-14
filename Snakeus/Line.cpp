@@ -41,7 +41,7 @@ Line::Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid
 	player( player_ ),
 	holeCounter( 0 ),
 	angle( 0 ),
-	playerColor( getUserColor( player_.index ) ),
+	playerColor( getUserColor( player_.getIndex() ) ),
 	inHole( false ),
 	alive( true )
 {
@@ -99,6 +99,7 @@ void Line::update()
 		}
 
 		holeCounter++;
+		this->player.setScore( this->getPointCount() );
 	}
 }
 

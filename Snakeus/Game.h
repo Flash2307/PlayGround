@@ -26,6 +26,7 @@ public:
 
 	void update();
 	void draw( sf::RenderWindow* window );
+	void reset();
 private:
 	void initRessources();
 	void initPlayers();
@@ -38,10 +39,13 @@ private:
 	void renderEndGameMessages( sf::RenderWindow* pWindow_ );
 	void renderLines( sf::RenderWindow* pWindow_ );
 
+	void sendStatictics();
+
 	SystemInput systemCom;
 	std::array< LinePtrType, PLAYER_COUNT > lines;
 	SharedCollisionGridType pCollisionGrid;
 	sf::Font font;
 	bool hasPlayerAlive;
 	bool quit;
+	bool scoreSended;
 };

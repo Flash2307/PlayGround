@@ -28,7 +28,8 @@ Game::Game( int argc_, char** argv_ ) :
 	systemCom( argc_, argv_ ),
 	pCollisionGrid( std::make_shared< CollisionGrid >( WORLD_WIDTH, SCREEN_HEIGHT, 100 ) ),
 	hasPlayerAlive( true ),
-	quit( false )
+	quit( false ),
+	scoreSended( false )
 {
 
 	this->initRessources();
@@ -37,7 +38,7 @@ Game::Game( int argc_, char** argv_ ) :
 
 void Game::initRessources()
 {
-	if (!font.loadFromFile("font/Alef-Regular.ttf"))
+	if( !font.loadFromFile( "font/Alef-Regular.ttf" ) )
 	{
 		std::cerr << "Impossible de chargé les polices de caractères...\n";
 		abort();
@@ -53,8 +54,9 @@ void Game::initPlayers()
 	{
 		if( player_.isValid() )
 		{
-			player_.setSpawnPos( sf::Vector2i( player_.index * 100 + 10, player_.index * 100 + 10 ) );
-			this->lines[ player_.index ] = std::make_unique< Line >( player_, this->pCollisionGrid );
+			size_t index = player_.getIndex();
+			player_.setSpawnPos( sf::Vector2i( index * 100 + 10, index * 100 + 10 ) );
+			this->lines[ index ] = std::make_unique< Line >( player_, this->pCollisionGrid );
 		}
 	});
 }
@@ -97,13 +99,13 @@ void Game::checkEndgameAction()
 		{
 			if( pLine_->getPlayer().isAKeyPressed() )
 			{
-				this->hasPlayerAlive = true;
-				this->pCollisionGrid->clear();
-				this->resetAllLines();
+				sendStatictics();
+				this->reset();
 			}
 			else if( pLine_->getPlayer().isBKeyPressed() )
 			{
 				this->quit = true;
+				sendStatictics();
 			}
 		}
 	});
@@ -119,6 +121,32 @@ void Game::resetAllLines()
 			pLine_->reset();
 		}
 	});
+}
+
+void Game::reset()
+{
+	this->scoreSended = false;
+	this->hasPlayerAlive = true;
+	this->pCollisionGrid->clear();
+	this->resetAllLines();
+}
+
+void Game::sendStatictics()
+{
+	if( !this->scoreSended )
+	{
+		this->scoreSended = true;
+
+		std::for_each( lines.begin(), lines.end(),
+		[]( LinePtrType& pLine_ )
+		{
+			if( pLine_ != nullptr )
+			{
+				const Player& player = pLine_->getPlayer();
+				std::cout << "Score " << player.getIndex() << " " << player.getScore() << ' ';
+			}
+		});
+	}
 }
 
 void Game::draw(sf::RenderWindow* pWindow_)
@@ -180,6 +208,7 @@ void Game::renderEndGameMessages( sf::RenderWindow* pWindow_ )
 void Game::renderLineStat( sf::RenderWindow* pWindow_, Line& line_ )
 {
 	const Player& player = line_.getPlayer();
+	size_t playerIndex = player.getIndex();
 	std::stringstream strStream;
 
 	sf::Text text;
@@ -187,18 +216,18 @@ void Game::renderLineStat( sf::RenderWindow* pWindow_, Line& line_ )
 	text.setColor(sf::Color::Red);
 
 	strStream.str( std::string() );
-	strStream << "Player " << player.index << ( line_.isAlive() ? " alive" : " dead" );
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * player.index ));
+	strStream << "Player " << playerIndex << ( line_.isAlive() ? " alive" : " dead" );
+	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex ));
 	text.setString( strStream.str() );
 	pWindow_->draw(text);
 
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * player.index + PADDING_SIZE + FONT_SIZE ));
-	text.setString( player.name );
+	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex + PADDING_SIZE + FONT_SIZE ));
+	text.setString( player.getName() );
 	pWindow_->draw(text);
 
 	strStream.str( std::string() );
-	strStream << "Score: " << line_.getPointCount();
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * player.index + 2 * (PADDING_SIZE + FONT_SIZE) ));
+	strStream << "Score: " << line_.getPlayer().getScore();
+	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex + 2 * (PADDING_SIZE + FONT_SIZE) ));
 	text.setString( strStream.str() );
 	pWindow_->draw(text);
 }
