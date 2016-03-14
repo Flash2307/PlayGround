@@ -33,6 +33,28 @@ size_t CollisionGrid::columnIndex( const Circle& circle_ ) const
 	return (size_t)( circle_.posX / ( width / edgeSize ) );
 }
 
+bool CollisionGrid::isOutOfGrid( const Circle& circle_ ) const
+{
+	size_t row = rowIndex( circle_ );
+	size_t column = columnIndex( circle_ );
+
+	return row >= edgeSize || column >= edgeSize;
+}
+
+
+void CollisionGrid::clear()
+{
+	std::for_each( grid.begin(), grid.end(),
+	[]( GridRowArrayType& row_ )
+	{
+		std::for_each( row_.begin(), row_.end(),
+		[]( CircleArrayType& circles_ )
+		{
+			circles_.clear();
+		});
+	});
+}
+
 void CollisionGrid::collide( const Circle& circle_, std::vector< const Circle* >& collisions_ ) const
 {
 	size_t row = rowIndex( circle_ );
@@ -49,14 +71,6 @@ void CollisionGrid::collide( const Circle& circle_, std::vector< const Circle* >
 			collisions_.push_back( pCircle_.get() );
 		}
 	});
-}
-
-bool CollisionGrid::isOutOfGrid( const Circle& circle_ ) const
-{
-	size_t row = rowIndex( circle_ );
-	size_t column = columnIndex( circle_ );
-
-	return row >= edgeSize || column >= edgeSize;
 }
 
 CirclePtrType CollisionGrid::append( CirclePtrType&& pCircle_ )

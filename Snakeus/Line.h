@@ -8,7 +8,7 @@
 class Line
 {
 public:
-	Line(int x,int y, const Player& player_, const SharedCollisionGridType& pCollisionGrid_ );
+	Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid_ );
 
 	void update();
 	void draw( sf::RenderWindow* window );
@@ -24,6 +24,7 @@ public:
 	bool isAlive() const;
 	bool isInHole();
 	void kill();
+	void reset();
 private:
 	void detectCollision();
 

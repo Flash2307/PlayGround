@@ -35,9 +35,9 @@ static sf::Color getUserColor( size_t index_ )
 	return sf::Color::Red;
 }
 
-Line::Line(int x, int y, const Player& player_, const SharedCollisionGridType& pCollisionGrid_ ) :
+Line::Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid_ ) :
 	pCollisionGrid( pCollisionGrid_ ),
-	pNextPoint( std::make_unique< Circle >( x, y, CIRCLE_RAY ) ),
+	pNextPoint( std::make_unique< Circle >( player_.spawnX(), player_.spawnY(), CIRCLE_RAY ) ),
 	player( player_ ),
 	holeCounter( 0 ),
 	angle( 0 ),
@@ -46,6 +46,15 @@ Line::Line(int x, int y, const Player& player_, const SharedCollisionGridType& p
 	alive( true )
 {
 
+}
+
+void Line::reset()
+{
+	this->pNextPoint = std::make_unique< Circle >( player.spawnX(), player.spawnY(), CIRCLE_RAY );
+	this->holeCounter = 0;
+	this->angle = 0;
+	this->inHole = false;
+	this->alive = true;
 }
 
 void Line::update()

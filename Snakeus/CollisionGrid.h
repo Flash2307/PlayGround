@@ -40,17 +40,19 @@ typedef std::vector< const Circle* > CirclePtrArrayType;
 class CollisionGrid
 {
 public:
+	typedef std::vector< CirclePtrType > CircleArrayType;
+	typedef std::vector< CircleArrayType > GridRowArrayType;
+
 	CollisionGrid( size_t width_, size_t height, size_t edgeSize );
 
 	size_t rowIndex( const Circle& circle_ ) const;
 	size_t columnIndex( const Circle& circle_ ) const;
 	bool isOutOfGrid( const Circle& circle_ ) const;
+	void clear();
 
 	void collide( const Circle& circle_, CirclePtrArrayType& collisions_ ) const;
 	CirclePtrType append( CirclePtrType&& circle_ );
 private:
-	typedef std::vector< std::vector< CirclePtrType > > GridRowArrayType;
-
 	std::vector< GridRowArrayType > grid;
 	size_t width;
 	size_t height;

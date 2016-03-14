@@ -11,7 +11,7 @@ int main( int argc, char** argv )
 
 	Game game( argc, argv );
 
-	while (window.isOpen())
+	while( window.isOpen() )
 	{
 		sf::Event event;
 

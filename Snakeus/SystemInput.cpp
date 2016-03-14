@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <sys/select.h>
 
-bool inputAvailable()
+static bool inputAvailable()
 {
   struct timeval tv;
   fd_set fds;
@@ -22,6 +22,7 @@ bool inputAvailable()
   FD_ZERO(&fds);
   FD_SET(STDIN_FILENO, &fds);
   select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
+
   return (FD_ISSET(0, &fds));
 }
 
@@ -65,18 +66,23 @@ void SystemInput::update()
 		{
 			player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
 			player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
+			player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
+			player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
 		}
 	});
 
-	uint16_t command;
+	uint16_t command = 0;
+	size_t index = 0;
 
 	while( inputAvailable() )
 	{
 		std::cin >> command;
 
-		size_t index = getGamepadIndex( command );
+		index = getGamepadIndex( command );
 		assert( index < PLAYER_COUNT );
 
+		players[ index ].setAKeyPressed( isGamepadABtn( command ) );
+		players[ index ].setBKeyPressed( isGamepadBBtn( command ) );
 		players[ index ].setLeftKeyPressed( isGamepadLeftArrow( command ) );
 		players[ index ].setRightKeyPressed( isGamepadRigthArrow( command ) );
 	}
