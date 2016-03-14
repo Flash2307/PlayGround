@@ -9,6 +9,7 @@
 
 class QLabel;
 class QPushButton;
+class SelectableWidget;
 
 class GameSelection : public QWidget
 {
@@ -20,6 +21,7 @@ public slots:
     void detectAvaibleGame();
     void startGameRequest();
     void process( GamePadMsgType message_ );
+    void setWidgetSelected( bool selected_ );
 signals:
     void startGame( GameConfig gameConfig_ );
     void returnToProfileSelection();
@@ -31,7 +33,7 @@ private:
     QPushButton* pBackToProfileSelection;
 
     QVector< QString > avaibleGames;    // Games base dir.
-    QVector< QWidget* > gamePanels;
+    QVector< SelectableWidget* > gamePanels;
     size_t selectedGameIndex;
 };
 

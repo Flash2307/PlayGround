@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     tests/UserProfilPageTest.cpp \
     src/FileLoader.cpp \
     src/CommandSimulator.cpp \
-    src/GameProcess.cpp
+    src/GameProcess.cpp \
+    src/SelectableWidget.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -43,4 +44,5 @@ HEADERS  += HomeWindow.h \
     tests/UserProfilPageTest.h \
     src/FileLoader.h \
     src/CommandSimulator.h \
-    src/GameProcess.h
+    src/GameProcess.h \
+    src/SelectableWidget.h

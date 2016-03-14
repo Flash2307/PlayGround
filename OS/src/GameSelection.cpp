@@ -8,6 +8,7 @@
 #include <QDebug>
 
 #include "FileLoader.h"
+#include "SelectableWidget.h"
 
 constexpr char gameBaseDir[] = "./games";
 constexpr char gamePictureFileName[] = "picture.jpg";
@@ -74,7 +75,7 @@ GameSelection::GameSelection() :
         gamePreview->addStretch();
         gamePreview->addWidget( pStartGameBtn );
 
-        QWidget* gamePanel = new QWidget();
+        SelectableWidget* gamePanel = new SelectableWidget();
         gamePanel->setMaximumWidth( 410 );
         gamePanel->setLayout( gamePreview );
         pGameList->addWidget( gamePanel );
@@ -90,8 +91,16 @@ GameSelection::GameSelection() :
     pMainLayout->addWidget( this->pBackToProfileSelection );
 
     this->setLayout( pMainLayout );
-    this->setObjectName( "mainPane" );
-    this->setStyleSheet( readFiles( QStringList() << "css/GameSelection.css" ) );
+    this->setWidgetSelected( true );
+}
+
+void GameSelection::setWidgetSelected( bool selected_ )
+{
+    if( selectedGameIndex < (size_t)this->gamePanels.size() )
+    {
+        this->gamePanels[ selectedGameIndex ]->setSelected( selected_ );
+        this->gamePanels[ selectedGameIndex ]->update();
+    }
 }
 
 void GameSelection::prepareFailureMessageLabel()
@@ -163,9 +172,25 @@ void GameSelection::process( GamePadMsgType message_ )
     {
         this->pBackToProfileSelection->animateClick();
     }
+    else if( isGamepadABtn( message_ ) )
+    {
+        QPushButton* pButton = this->gamePanels[ selectedGameIndex ]->findChild< QPushButton* >( avaibleGames[ selectedGameIndex ] );
+         pButton->animateClick();
+    }
     else if( this->gamePanels.size() > 0 )
     {
-
+        if( isGamepadLeftArrow( message_ ) &&  selectedGameIndex > 0 )
+        {
+            setWidgetSelected( false );
+            --selectedGameIndex;
+            setWidgetSelected( true );
+        }
+        else if( isGamepadRigthArrow( message_ ) && selectedGameIndex + 1 < (size_t)this->gamePanels.size() )
+        {
+            setWidgetSelected( false );
+            ++selectedGameIndex;
+            setWidgetSelected( true );
+        }
     }
 }
 

@@ -73,12 +73,11 @@ void GameProcess::startGame( GameConfig gameConfig_ )
 
         if( !playerName.isEmpty() )
         {
-            qDebug() << playerName << " #" << index;
             arguments.push_back( QString("%1 %2").arg( playerName ).arg( index ) );
         }
     }
 
-    //currentGame.setWorkingDirectory( gameConfig_.workingDir );
+    currentGame.setWorkingDirectory( gameConfig_.workingDir );
     currentGame.start( gameConfig_.cmd, arguments );
     processStdin.setDevice( &currentGame );
 }
