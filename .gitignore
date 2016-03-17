@@ -1,4 +1,5 @@
 bin/
-games/
 Snakeus/bin
 Snakeus/obj
+games/Snakeus/Snakeus/.nuget/
+games/DameUs/DameUs/DameUs/Debug/
