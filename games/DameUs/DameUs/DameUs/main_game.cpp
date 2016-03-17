@@ -3,10 +3,11 @@
 
 void main_game::Initialize(sf::RenderWindow* window)
 {
+	this->gameControls = GameControls::getInstance();
 }
 void main_game::Update(sf::RenderWindow* window)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+	if (this->gameControls->player1Controls->escapeKey())
 	{
 		coreState.SetState(new main_menu());
 	}

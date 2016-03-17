@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game_state.h"
+#include "GameControls.h"
 
 class main_menu : public tiny_state
 {
@@ -15,6 +16,7 @@ private:
 	sf::Text* play;
 	sf::Text* quit;
 
+	GameControls* gameControls;
 	int selected;
 
 	bool upKey, downKey;

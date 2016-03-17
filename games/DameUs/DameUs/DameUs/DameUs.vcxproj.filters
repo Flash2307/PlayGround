@@ -22,6 +22,12 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{23bcc081-4a0b-4a08-9455-a8337d5601eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Controls">
+      <UniqueIdentifier>{50cbf2fb-222a-48ea-9b14-8be1e77936a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controls">
+      <UniqueIdentifier>{8c55de0c-42ee-48e2-af36-3c0f3c613bac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,6 +39,12 @@
     <ClCompile Include="main_menu.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
+    <ClCompile Include="GameControls.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardControlsPlayer1.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_state.h">
@@ -43,6 +55,15 @@
     </ClInclude>
     <ClInclude Include="main_game.h">
       <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardControlsPlayer1.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GameControls.h">
+      <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

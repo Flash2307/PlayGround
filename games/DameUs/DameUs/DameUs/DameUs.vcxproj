@@ -69,12 +69,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameControls.cpp" />
+    <ClCompile Include="KeyboardControlsPlayer1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="main_menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameControls.h" />
     <ClInclude Include="game_state.h" />
+    <ClInclude Include="Controls.h" />
+    <ClInclude Include="KeyboardControlsPlayer1.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="main_menu.h" />
   </ItemGroup>

@@ -4,6 +4,7 @@
 
 void main_menu::Initialize(sf::RenderWindow* window)
 {
+	this->gameControls = GameControls::getInstance();
 	this->selected = 0;
 
 	this->font = new sf::Font();
@@ -23,11 +24,11 @@ void main_menu::Initialize(sf::RenderWindow* window)
 }
 void main_menu::Update(sf::RenderWindow* window)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && !this->upKey)
+	if (this->gameControls->player1Controls->upKey() && !this->upKey)
 	{
 		this->selected -= 1;
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) && !this->downKey)
+	if (this->gameControls->player1Controls->downKey() && !this->downKey)
 	{
 		this->selected += 1;
 	}
@@ -40,7 +41,7 @@ void main_menu::Update(sf::RenderWindow* window)
 		this->selected = 1;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return))
+	if (this->gameControls->player1Controls->enterKey())
 	{
 		switch (this->selected)
 		{
@@ -52,8 +53,8 @@ void main_menu::Update(sf::RenderWindow* window)
 			break;
 		}
 	}
-	this->upKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
-	this->downKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
+	this->upKey = this->gameControls->player1Controls->upKey();
+	this->downKey = this->gameControls->player1Controls->downKey();
 }
 void main_menu::Render(sf::RenderWindow* window)
 {
