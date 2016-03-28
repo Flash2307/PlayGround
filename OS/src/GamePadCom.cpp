@@ -1,23 +1,65 @@
 #include "GamePadCom.h"
 
-GamePadCom::GamePadCom()
-{
-    QObject::connect( &server, SIGNAL( newConnection() ), this, SLOT( newConnection()) );
+#include <QtEndian>
 
-    if( !server.listen( QHostAddress::Any, Port ) )
+static void printBytes( const QByteArray& bytes_ )
+{
+    for( int index = 0; index < bytes_.size(); ++index )
     {
-        qDebug() << "Fail to init server on port " << Port << '\n';
+        char c = bytes_[ index ];
+        unsigned char uc = c;
+        unsigned int i = uc;
+
+        qDebug() << "byte: " << QString("%1").arg(i , 0, 16);
+    }
+}
+
+GamePadCom::GamePadCom( const QString& serialPortName_ ) :
+    server( NULL ),
+    mbedBrige( NULL ),
+    mbedSerialBridge( NULL )
+{
+    if( serialPortName_.isEmpty() )
+    {
+        server = new QTcpServer( this );
+        QObject::connect( server, SIGNAL( newConnection() ), this, SLOT( newConnection()) );
+
+        if( !server->listen( QHostAddress::Any, Port ) )
+        {
+            qDebug() << "Fail to init server on port " << Port << '\n';
+        }
+    }
+    else
+    {
+        mbedSerialBridge = new QSerialPort( this );
+        mbedSerialBridge->setPortName( serialPortName_ );
+
+        if( !mbedSerialBridge->open( QIODevice::ReadWrite ) )
+        {
+            qDebug() << "Fail to init serial port.";
+        }
+        else
+        {
+            mbedSerialBridge->setBaudRate( QSerialPort::Baud9600 );
+            mbedSerialBridge->setDataBits( QSerialPort::Data8 );
+            mbedSerialBridge->setParity( QSerialPort::NoParity );
+            mbedSerialBridge->setStopBits( QSerialPort::OneStop );
+            mbedSerialBridge->setFlowControl( QSerialPort::NoFlowControl );
+        }
+
+        connect( this->mbedSerialBridge, &QSerialPort::readyRead, this, &GamePadCom::dataArrive );
     }
 }
 
 void GamePadCom::stop()
 {
-    this->server.close();
+    if( this->server != NULL ) this->server->close();
+    if( this->mbedSerialBridge != NULL ) this->mbedSerialBridge->close();
 }
 
 void GamePadCom::newConnection()
 {
-    this->mbedBrige = this->server.nextPendingConnection();
+    this->mbedBrige = this->server->nextPendingConnection();
 
     if( this->mbedBrige != nullptr )
     {
@@ -27,13 +69,30 @@ void GamePadCom::newConnection()
 
 void GamePadCom::dataArrive()
 {
-    if( this->mbedBrige != nullptr && this->mbedBrige->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
+    QIODevice* pDevice = NULL;
+
+    if( mbedSerialBridge == NULL )
     {
-        static_assert( sizeof( GamePadMsgType ) == 2, "Size mismatch." );
-
-        QByteArray gamepadMsg = this->mbedBrige->read( sizeof( GamePadMsgType ) );
-        GamePadMsgType msg = ( ( (GamePadMsgType)gamepadMsg[ 1 ] << 8 ) | gamepadMsg[ 0 ] );
-
-        emit newMessageArrive( msg );
+        pDevice = mbedBrige;
     }
+    else
+    {
+        pDevice = mbedSerialBridge;
+    }
+
+    if( pDevice != nullptr && pDevice->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
+    {
+        QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
+        GamePadMsgType msg = 0;
+
+        memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
+        printBytes( gamepadMsg );
+
+        CommandFrame commandFrame;
+        commandFrame.cmd = msg;
+
+
+        emit newMessageArrive( commandFrame.cmd );
+    }
+
 }

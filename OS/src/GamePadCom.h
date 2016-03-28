@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QtSerialPort/QSerialPort>
 
 #include "GamepadMsg.h"
 
@@ -13,7 +14,7 @@ class GamePadCom : public QObject
 public:
     enum { Port = 5000 };
 
-    GamePadCom();
+    GamePadCom( const QString& serialPortName_ = QString() );
     void stop();
 public slots:
     void newConnection();
@@ -21,8 +22,9 @@ public slots:
 signals:
     void newMessageArrive( GamePadMsgType );
 private:
-    QTcpServer server;
+    QTcpServer* server;
     QTcpSocket* mbedBrige;
+    QSerialPort* mbedSerialBridge;
 };
 
 #endif // GAMEPADCOM_H

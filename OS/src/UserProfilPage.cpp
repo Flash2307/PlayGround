@@ -121,9 +121,10 @@ void UserProfilPage::process( GamePadMsgType message_ )
     }
     else if( isGamepadABtn( message_ ) )
     {
-        qDebug() << "Db call to connextuser";
-        qDebug() << "Show user statistic?";
-        pConnectToProfilBtn->animateClick();
+        if( connectUser() )
+        {
+            pConnectToProfilBtn->animateClick();
+        }
     }
     else if( isGamepadLeftArrow( message_ ) )
     {
@@ -145,6 +146,18 @@ void UserProfilPage::process( GamePadMsgType message_ )
     {
         pUserNameEditor->backspace();
     }
+}
+
+bool UserProfilPage::connectUser()
+{
+    qDebug() << "Db call to connextuser";
+    qDebug() << "Show user statistic?";
+    return true;
+}
+
+void UserProfilPage::sendGameStatistic( const GameStatistic& statistic_ )
+{
+    qDebug() << "Send statistic for game " << statistic_.gameName;
 }
 
 void UserProfilPage::userConnect()

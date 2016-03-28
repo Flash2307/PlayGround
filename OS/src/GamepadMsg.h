@@ -5,7 +5,20 @@
 
 constexpr static size_t MaxUser = 4;
 
-typedef uint16_t GamePadMsgType;
+typedef uint64_t GamePadMsgType;
+
+union CommandFrame
+{
+    struct
+    {
+        int16_t x;
+        int16_t y;
+        int16_t z;
+        int16_t other;
+    } acc;
+
+    GamePadMsgType cmd;
+};
 
 inline size_t getGamepadIndex( GamePadMsgType message_ )
 {

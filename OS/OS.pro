@@ -7,6 +7,7 @@
 QT       += core gui
 QT       += network
 QT       += testlib
+QT       += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +31,8 @@ SOURCES += main.cpp \
     src/FileLoader.cpp \
     src/CommandSimulator.cpp \
     src/GameProcess.cpp \
-    src/SelectableWidget.cpp
+    src/SelectableWidget.cpp \
+    tests/GamepadMsgSerialTest.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -45,4 +47,5 @@ HEADERS  += HomeWindow.h \
     src/FileLoader.h \
     src/CommandSimulator.h \
     src/GameProcess.h \
-    src/SelectableWidget.h
+    src/SelectableWidget.h \
+    tests/GamepadMsgSerialTest.h

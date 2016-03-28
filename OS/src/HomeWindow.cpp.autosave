@@ -70,7 +70,6 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 
     commandFrame.cmd = message_;
 
-    qDebug() << "newMessage: " << message_;
     qDebug() << "acc.x: " << commandFrame.acc.x;
     qDebug() << "acc.y: " << commandFrame.acc.y;
     qDebug() << "acc.z: " << commandFrame.acc.z;

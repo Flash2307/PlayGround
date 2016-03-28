@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QtSerialPort/QSerialPort>
 
 #include "GamepadMsg.h"
 
@@ -10,7 +11,7 @@ class FakeGamepad : public QObject
 {
     Q_OBJECT
 public:
-    explicit FakeGamepad(QObject *parent = 0);
+    FakeGamepad( const QString& serialPortName_ = QString(), QObject *parent = 0);
     void connect();
     void send( GamePadMsgType message_ );
     GamePadMsgType getLoopbackMsg() const;
@@ -19,8 +20,10 @@ signals:
 public slots:
     void sendedMessageLoopback( GamePadMsgType );
 private:
-    QTcpSocket client;
+    QTcpSocket* pClient;
+    QSerialPort* mbedSerialBridge;
     GamePadMsgType loopbackMsg;
+    QString serialPortName;
 };
 
 #endif // FAKEGAMEPAD_H

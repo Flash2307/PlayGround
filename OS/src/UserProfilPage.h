@@ -14,6 +14,12 @@ class QPushButton;
 class QLineEdit;
 class QString;
 
+struct GameStatistic
+{
+    size_t score;
+    QString gameName;
+};
+
 class UserProfilPage : public QWidget
 {
     Q_OBJECT
@@ -24,11 +30,14 @@ public:
     bool isReady() const;
     bool isActivated() const;
     QString getUsername() const;
+
+    void sendGameStatistic( const GameStatistic& statistic_ );
 public slots:
     void userConnect();
 signals:
     void readyToPlay();
 private:
+    bool connectUser();
     void updateUsenameText( bool increment );
 
     QLabel* pUserNameLabel;

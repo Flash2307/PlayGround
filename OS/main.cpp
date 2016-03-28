@@ -4,6 +4,7 @@
 
 #include "tests/GamepadMsgServerTest.h"
 #include "tests/UserProfilPageTest.h"
+#include "tests/GamepadMsgSerialTest.h"
 
 //#define TEST_BUILD
 
@@ -19,13 +20,16 @@ inline int runApp( int argc, char *argv[] )
 
 int runTests(int argc, char *argv[])
 {
-    QApplication app( argc, argv ); app;
+    QApplication app( argc, argv );
 
     GamepadMsgServerTest tc;
     QTest::qExec(&tc, argc, argv);
 
     UserProfilPageTest userProfilPageTest;
     QTest::qExec(&userProfilPageTest, argc, argv);
+
+    GamepadMsgSerialTest gamepadMsgSerialTest;
+    QTest::qExec(&gamepadMsgSerialTest, argc, argv);
 
     return 0;
 }
