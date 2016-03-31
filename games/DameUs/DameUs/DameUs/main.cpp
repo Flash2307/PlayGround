@@ -6,7 +6,7 @@ bool quitGame = false;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Ping");
+	sf::RenderWindow window(sf::VideoMode(800, 800), "DameUs");
 
 	coreState.SetWindow(&window);
 	coreState.SetState(new main_menu());

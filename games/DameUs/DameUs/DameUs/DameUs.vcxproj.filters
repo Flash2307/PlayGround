@@ -28,6 +28,18 @@
     <Filter Include="Source Files\Controls">
       <UniqueIdentifier>{8c55de0c-42ee-48e2-af36-3c0f3c613bac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{9a810ee2-e871-4f15-9655-564081e837af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Chips">
+      <UniqueIdentifier>{bfb2e975-b896-44d2-af5e-e1a60d518247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{1f76ce3c-eafd-4042-9786-8693db695f8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Chips">
+      <UniqueIdentifier>{33190f22-bc7c-4440-9670-60b44a21544b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,6 +56,21 @@
     </ClCompile>
     <ClCompile Include="KeyboardControlsPlayer1.cpp">
       <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="RedChip.cpp">
+      <Filter>Source Files\Objects\Chips</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackChip.cpp">
+      <Filter>Source Files\Objects\Chips</Filter>
+    </ClCompile>
+    <ClCompile Include="RedChipKing.cpp">
+      <Filter>Source Files\Objects\Chips</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackChipKing.cpp">
+      <Filter>Source Files\Objects\Chips</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +91,27 @@
     </ClInclude>
     <ClInclude Include="GameControls.h">
       <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Chip.h">
+      <Filter>Header Files\Objects\Chips</Filter>
+    </ClInclude>
+    <ClInclude Include="RedChip.h">
+      <Filter>Header Files\Objects\Chips</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackChip.h">
+      <Filter>Header Files\Objects\Chips</Filter>
+    </ClInclude>
+    <ClInclude Include="RedChipKing.h">
+      <Filter>Header Files\Objects\Chips</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackChipKing.h">
+      <Filter>Header Files\Objects\Chips</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

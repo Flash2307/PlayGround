@@ -69,19 +69,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlackChip.cpp" />
+    <ClCompile Include="BlackChipKing.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="GameControls.cpp" />
     <ClCompile Include="KeyboardControlsPlayer1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="RedChip.cpp" />
+    <ClCompile Include="RedChipKing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlackChip.h" />
+    <ClInclude Include="BlackChipKing.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Chip.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="GameControls.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="KeyboardControlsPlayer1.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="main_menu.h" />
+    <ClInclude Include="RedChip.h" />
+    <ClInclude Include="RedChipKing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

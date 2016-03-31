@@ -2,6 +2,7 @@
 
 #include "game_state.h"
 #include "GameControls.h"
+#include "Board.h"
 
 
 class main_game : public tiny_state
@@ -13,4 +14,5 @@ public:
 	void Destroy(sf::RenderWindow* window);
 private:
 	GameControls* gameControls;
+	Board* board;
 };
