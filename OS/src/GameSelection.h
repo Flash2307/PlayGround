@@ -19,7 +19,7 @@ public:
     void setFailureMessage( const QString& failueMessage_ );
 public slots:
     void detectAvaibleGame();
-    void startGameRequest();
+    void lauchGameCommand();
     void process( GamePadMsgType message_ );
     void setWidgetSelected( bool selected_ );
 signals:

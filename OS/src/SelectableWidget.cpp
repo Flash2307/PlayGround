@@ -1,11 +1,18 @@
 #include "SelectableWidget.h"
 
-#include <QPainter>
+#include <cassert>
 
-SelectableWidget::SelectableWidget() :
+#include <QPainter>
+#include <QPushButton>
+
+SelectableWidget::SelectableWidget( const QString& gameName_, GameCommand command_, QPushButton* pCommandBtn_ ) :
+    gameName( gameName_ ),
+    command( command_ ),
+    pCommandBtn( pCommandBtn_ ),
     selected( false )
 {
-
+    assert( this->pCommandBtn != nullptr );
+    this->setGameCommand( command_ );
 }
 
 void SelectableWidget::setSelected( bool isSelected_ )
@@ -16,6 +23,61 @@ void SelectableWidget::setSelected( bool isSelected_ )
 bool SelectableWidget::isSelected() const
 {
     return this->selected;
+}
+
+void SelectableWidget::setGameCommand( GameCommand command_ )
+{
+    this->command = command_;
+
+    switch( this->command )
+    {
+    case GameCommand::Lauch:
+        this->pCommandBtn->setText( QString( "Débuter %1" ).arg( this->gameName ) );
+        break;
+    case GameCommand::LoadSavedGame:
+        this->pCommandBtn->setText( QString( "Charger une partie de %1" ).arg( this->gameName ) );
+        break;
+    case GameCommand::ShowStat:
+        this->pCommandBtn->setText( QString( "Voir les statistiques de %1" ).arg( this->gameName ) );
+        break;
+    }
+}
+
+GameCommand SelectableWidget::getCommand() const
+{
+    return this->command;
+}
+
+void SelectableWidget::nextCommand()
+{
+    switch( this->command )
+    {
+    case GameCommand::Lauch:
+        this->setGameCommand( GameCommand::LoadSavedGame );
+        break;
+    case GameCommand::LoadSavedGame:
+        this->setGameCommand( GameCommand::ShowStat );
+        break;
+    case GameCommand::ShowStat:
+        this->setGameCommand( GameCommand::Lauch );
+        break;
+    }
+}
+
+void SelectableWidget::previousCommand()
+{
+    switch( this->command )
+    {
+    case GameCommand::Lauch:
+        this->setGameCommand( GameCommand::ShowStat );
+        break;
+    case GameCommand::LoadSavedGame:
+        this->setGameCommand( GameCommand::Lauch );
+        break;
+    case GameCommand::ShowStat:
+        this->setGameCommand( GameCommand::LoadSavedGame );
+        break;
+    }
 }
 
 void SelectableWidget::paintEvent( QPaintEvent* pPaintEvent_ )

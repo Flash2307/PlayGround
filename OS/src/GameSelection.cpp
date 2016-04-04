@@ -63,10 +63,10 @@ GameSelection::GameSelection() :
         pGameDescriptionLabel->setWordWrap( true );
         pGameDescriptionLabel->setFont( QFont( "Arial", 34 ) );
 
-        QPushButton* pStartGameBtn = new QPushButton( QString( "Débuter %1" ).arg( gameName )  );
+        QPushButton* pStartGameBtn = new QPushButton();
         pStartGameBtn->setObjectName( gameName );
         pStartGameBtn->setMaximumWidth( 400 );
-        QObject::connect( pStartGameBtn, SIGNAL( clicked() ), this, SLOT( startGameRequest() ) );
+        QObject::connect( pStartGameBtn, SIGNAL( clicked() ), this, SLOT( lauchGameCommand() ) );
 
         QVBoxLayout* gamePreview = new QVBoxLayout();
         gamePreview->addWidget( pGameTitleLabel );
@@ -75,7 +75,7 @@ GameSelection::GameSelection() :
         gamePreview->addStretch();
         gamePreview->addWidget( pStartGameBtn );
 
-        SelectableWidget* gamePanel = new SelectableWidget();
+        SelectableWidget* gamePanel = new SelectableWidget( gameName, GameCommand::Lauch, pStartGameBtn );
         gamePanel->setMaximumWidth( 410 );
         gamePanel->setLayout( gamePreview );
         pGameList->addWidget( gamePanel );
@@ -147,7 +147,7 @@ void GameSelection::detectAvaibleGame()
     }
 }
 
-void GameSelection::startGameRequest()
+void GameSelection::lauchGameCommand()
 {
     QObject* pObj = sender();
 
@@ -190,6 +190,14 @@ void GameSelection::process( GamePadMsgType message_ )
             setWidgetSelected( false );
             ++selectedGameIndex;
             setWidgetSelected( true );
+        }
+        else if( isGamepadUpArrow( message_ ) )
+        {
+            this->gamePanels[ selectedGameIndex ]->nextCommand();
+        }
+        else if( isGamepadDownArrow( message_ ) )
+        {
+            this->gamePanels[ selectedGameIndex ]->previousCommand();
         }
     }
 }
