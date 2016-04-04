@@ -83,16 +83,11 @@ void GamePadCom::dataArrive()
     if( pDevice != nullptr && pDevice->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
     {
         QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
-        GamePadMsgType msg = 0;
+        GamePadMsgType msg;
 
         memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
-        printBytes( gamepadMsg );
 
-        CommandFrame commandFrame;
-        commandFrame.cmd = msg;
-
-
-        emit newMessageArrive( commandFrame.cmd );
+        emit newMessageArrive( msg );
     }
 
 }

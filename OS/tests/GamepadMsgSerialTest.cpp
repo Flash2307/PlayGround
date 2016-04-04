@@ -15,10 +15,10 @@ void GamepadMsgSerialTest::testSendMessage()
     QObject::connect( &com, SIGNAL( newMessageArrive( GamePadMsgType ) ), &fakeGamepad, SLOT( sendedMessageLoopback( GamePadMsgType ) ) );
 
     fakeGamepad.connect();
-    fakeGamepad.send( std::numeric_limits< GamePadMsgType >::max() );
+    fakeGamepad.send( GamePadMsgType( std::numeric_limits< uint64_t >::max() ) );
 
     QTimer::singleShot( 1000, qApp, SLOT( quit() ) );
     qApp->exec();
 
-    QVERIFY( fakeGamepad.getLoopbackMsg() == std::numeric_limits< GamePadMsgType >::max() );
+    QVERIFY( fakeGamepad.getLoopbackMsg().cmd == std::numeric_limits< uint64_t >::max() );
 }

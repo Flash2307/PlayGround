@@ -48,4 +48,5 @@ HEADERS  += HomeWindow.h \
     src/CommandSimulator.h \
     src/GameProcess.h \
     src/SelectableWidget.h \
-    tests/GamepadMsgSerialTest.h
+    tests/GamepadMsgSerialTest.h \
+    src/Config.h
