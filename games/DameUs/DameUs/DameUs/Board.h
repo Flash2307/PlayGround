@@ -10,12 +10,15 @@ class Board
 public:
 	Board();
 	~Board();
-	void initializeBoard();
+	void initializeBoard(sf::RenderWindow* window);
 	void load();
 	Entity* getTexture();
+	void renderBoard(sf::RenderWindow* window);
+
 
 private:
 	Entity* texture;
-	Chip* chips[8][8];
+	Chip* redChips[8][8];
+	Chip* blackChips[8][8];
 };
 

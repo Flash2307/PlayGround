@@ -5,6 +5,7 @@ void main_game::Initialize(sf::RenderWindow* window)
 {
 	this->gameControls = GameControls::getInstance();
 	this->board = new Board();
+	this->board->initializeBoard(window);
 	this->board->getTexture()->setOrigin(this->board->getTexture()->getGlobalBounds().width / 2, this->board->getTexture()->getGlobalBounds().height / 2);
 	this->board->getTexture()->setPosition(window->getSize().x / 2, window->getSize().y / 2);
 
@@ -19,6 +20,7 @@ void main_game::Update(sf::RenderWindow* window)
 void main_game::Render(sf::RenderWindow* window)
 {
 	window->draw(*this->board->getTexture());
+	this->board->renderBoard(window);
 }
 void main_game::Destroy(sf::RenderWindow* window)
 {

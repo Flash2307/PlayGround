@@ -85,6 +85,7 @@
     <ClInclude Include="BlackChipKing.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Chip.h" />
+    <ClInclude Include="Coordinates.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameControls.h" />
     <ClInclude Include="game_state.h" />
