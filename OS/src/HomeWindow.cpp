@@ -82,11 +82,11 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
         setRigthArrow( message_, true );
     }
 
-    if( message_.acc.x < -400 )
+    if( message_.acc.x  > 400 )
     {
         setUpArrow( message_, true );
     }
-    else if( message_.acc.x > 400 )
+    else if( message_.acc.x < -400 )
     {
         setDownArrow( message_, true );
     }

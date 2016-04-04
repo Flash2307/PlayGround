@@ -40,7 +40,7 @@ GamePadCom::GamePadCom( const QString& serialPortName_ ) :
         }
         else
         {
-            mbedSerialBridge->setBaudRate( QSerialPort::Baud9600 );
+            mbedSerialBridge->setBaudRate( SERIAL_BAUD_RATE );
             mbedSerialBridge->setDataBits( QSerialPort::Data8 );
             mbedSerialBridge->setParity( QSerialPort::NoParity );
             mbedSerialBridge->setStopBits( QSerialPort::OneStop );
