@@ -73,6 +73,8 @@
     <ClCompile Include="BlackChipKing.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="GameControls.cpp" />
+    <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="Highlight.cpp" />
     <ClCompile Include="KeyboardControlsPlayer1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_game.cpp" />
@@ -88,8 +90,10 @@
     <ClInclude Include="Coordinates.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameControls.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="Controls.h" />
+    <ClInclude Include="Highlight.h" />
     <ClInclude Include="KeyboardControlsPlayer1.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="main_menu.h" />

@@ -2,6 +2,14 @@
 
 KeyboardControlsPlayer1::KeyboardControlsPlayer1()
 {
+	lastUpKey = false;
+	lastLeftKey = false;
+	lastRightKey = false;
+	lastDownKey = false;
+	lastAKey = false;
+	lastBKey = false;
+	lastEnterKey = false;
+	lastEscapeKey = false;
 }
 
 KeyboardControlsPlayer1::~KeyboardControlsPlayer1()
@@ -10,40 +18,56 @@ KeyboardControlsPlayer1::~KeyboardControlsPlayer1()
 
 bool KeyboardControlsPlayer1::upKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+	bool result = !this->lastUpKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+	this->lastUpKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::leftKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
+	bool result = !this->lastLeftKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
+	this->lastLeftKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::rightKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
+	bool result = !this->lastRightKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
+	this->lastRightKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::downKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
+	bool result = !this->lastDownKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
+	this->lastDownKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::aKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma);
+	bool result = !this->lastAKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma);
+	this->lastAKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::bKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period);
+	bool result = !this->lastBKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period);
+	this->lastBKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::enterKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return);
+	bool result = !this->lastEnterKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return);
+	this->lastEnterKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return);
+	return result;
 }
 
 bool KeyboardControlsPlayer1::escapeKey()
 {
-	return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
+	bool result = !this->lastEscapeKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
+	this->lastEscapeKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
+	return result;
 }

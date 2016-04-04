@@ -1,5 +1,4 @@
 #include "Board.h"
-#include <iostream>
 
 Board::Board()
 {
@@ -18,6 +17,7 @@ void Board::initializeBoard(sf::RenderWindow* window)
 	{
 		for (int i = 0; i < 8; i++)
 		{
+			this->highlights[j][i] = NULL;
 			if ((j + i) % 2 == 1)
 			{
 				if (j < 3)
@@ -38,6 +38,21 @@ void Board::initializeBoard(sf::RenderWindow* window)
 				}
 			}
 		}
+	}
+}
+
+void Board::initializeHighlight(Turn turn)
+{
+	switch (turn)
+	{
+	case Red:
+		highlights[0][1] = new Highlight();
+		break;
+	case Black:
+		highlights[7][0] = new Highlight();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -71,6 +86,12 @@ void Board::renderBoard(sf::RenderWindow* window)
 				{
 					this->blackChips[j][i]->setCoordinates(i, j, window);
 					window->draw(*this->blackChips[j][i]->getTexture());
+				}
+
+				if (this->highlights[j][i] != NULL)
+				{
+					this->highlights[j][i]->setCoordinates(i, j, window);
+					window->draw(*this->highlights[j][i]->getTexture());
 				}
 			}
 		}
