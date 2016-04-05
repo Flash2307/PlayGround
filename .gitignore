@@ -1,5 +1,6 @@
 .codelite/
 .clang/
+Makefile
 bin/
 Snakeus/Debug/
 OS/OS.pro.user
