@@ -98,7 +98,7 @@ void UserProfilPage::updateUsenameText( bool increment )
 void UserProfilPage::process( GamePadMsgType message_ )
 {
     bool newActivatedState = !isGamepadShutdown( message_ );
-qDebug() << "uparrow" << message_.acc.other;
+
     if( activated != newActivatedState)
     {
         activated = newActivatedState;

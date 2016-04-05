@@ -1,5 +1,20 @@
 bin/
-Snakeus/Debug
+Snakeus/bin
+Snakeus/obj
 games/Snakeus/Snakeus/.nuget/
 games/DameUs/DameUs/DameUs/Debug/
 games/Snakeus/
+OS/OS.pro.user
+OS/OS.pro.user.3.2-pre1
+OS/src/Config.h
+Snakeus/Snakeus.sdf
+Snakeus/Snakeus.sln
+Snakeus/Snakeus/Debug/Snakeus.tlog/CL.read.1.tlog
+Snakeus/Snakeus/Debug/Snakeus.tlog/CL.write.1.tlog
+Snakeus/Snakeus/Debug/Snakeus.tlog/Snakeus.lastbuildstate
+Snakeus/Snakeus/Debug/Snakeus.tlog/cl.command.1.tlog
+Snakeus/Snakeus/Debug/Snakeus.tlog/link.command.1.tlog
+Snakeus/Snakeus/Debug/Snakeus.tlog/link.write.1.tlog
+Snakeus/Snakeus/Debug/vc120.idb
+Snakeus/Snakeus/Snakeus.vcxproj
+>>>>>>> c5cfd9e244c8a20c4dc58495732f9d4fa7184bc8

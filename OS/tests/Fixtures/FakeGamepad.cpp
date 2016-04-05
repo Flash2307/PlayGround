@@ -8,7 +8,7 @@ FakeGamepad::FakeGamepad( const QString& serialPortName_, QObject *parent ) :
     QObject(parent),
     pClient( NULL ),
     mbedSerialBridge( NULL ),
-    loopbackMsg(),
+    loopbackMsg( 0 ),
     serialPortName( serialPortName_ )
 {
 }

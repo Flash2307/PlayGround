@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Snakeus" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bin/Snakeus/Debug/Snakeus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../games/Snakeus" />
+				<Option object_output="../bin/Snakeus/obj/Debug" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters='&quot;test 0&quot;' />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../bin/Snakeus/Release/Snakeus" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="../bin/Snakeus/obj/Release" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters='&quot;test 0&quot; &quot;test 1&quot;' />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp $(TARGET_OUTPUT_FILE) $(PROJECT_DIR)../games/Snakeus/game" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=gnu++14" />
+			<Add directory="../OS/src" />
+		</Compiler>
+		<Linker>
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+		</Linker>
+		<Unit filename="CollisionGrid.cpp" />
+		<Unit filename="CollisionGrid.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
+		<Unit filename="Line.cpp" />
+		<Unit filename="Line.h" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Player.h" />
+		<Unit filename="SystemInput.cpp" />
+		<Unit filename="SystemInput.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

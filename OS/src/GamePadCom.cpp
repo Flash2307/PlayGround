@@ -40,7 +40,7 @@ GamePadCom::GamePadCom( const QString& serialPortName_ ) :
         }
         else
         {
-            mbedSerialBridge->setBaudRate( SERIAL_BAUD_RATE );
+            mbedSerialBridge->setBaudRate( QSerialPort::Baud9600 );
             mbedSerialBridge->setDataBits( QSerialPort::Data8 );
             mbedSerialBridge->setParity( QSerialPort::NoParity );
             mbedSerialBridge->setStopBits( QSerialPort::OneStop );
@@ -83,11 +83,16 @@ void GamePadCom::dataArrive()
     if( pDevice != nullptr && pDevice->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
     {
         QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
-        GamePadMsgType msg;
+        GamePadMsgType msg = 0;
 
         memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
+        printBytes( gamepadMsg );
 
-        emit newMessageArrive( msg );
+        CommandFrame commandFrame;
+        commandFrame.cmd = msg;
+
+
+        emit newMessageArrive( commandFrame.cmd );
     }
 
 }

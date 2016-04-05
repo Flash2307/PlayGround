@@ -9,11 +9,10 @@
 
 #include "CommandSimulator.h"
 #include "GameProcess.h"
-#include "Config.h"
 
 HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent ),
-    gamepadCom( COM_PORT_NAME )
+    gamepadCom( "/dev/ttyACM0" )
 {
     for( size_t index = 0; index < MaxUser; ++index )
     {
@@ -67,29 +66,13 @@ HomeWindow::~HomeWindow()
 void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 {
     int viewIndex = views->currentIndex();
+    CommandFrame commandFrame;
 
-    qDebug() << "acc.x: " << message_.acc.x;
-    qDebug() << "acc.y: " << message_.acc.y;
-    qDebug() << "acc.z: " << message_.acc.z;
-    qDebug() << "acc.other: " << message_.acc.other;
+    commandFrame.cmd = message_;
 
-    if( message_.acc.y > 400 )
-    {
-        setLeftArrow( message_, true );
-    }
-    else if( message_.acc.y < -400 )
-    {
-        setRigthArrow( message_, true );
-    }
-
-    if( message_.acc.x  > 400 )
-    {
-        setUpArrow( message_, true );
-    }
-    else if( message_.acc.x < -400 )
-    {
-        setDownArrow( message_, true );
-    }
+    qDebug() << "acc.x: " << commandFrame.acc.x;
+    qDebug() << "acc.y: " << commandFrame.acc.y;
+    qDebug() << "acc.z: " << commandFrame.acc.z;
 
     if( profilViewIndex == viewIndex )
     {
