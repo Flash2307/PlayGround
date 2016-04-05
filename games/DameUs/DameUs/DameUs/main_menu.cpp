@@ -21,7 +21,6 @@ void main_menu::Initialize(sf::RenderWindow* window)
 	this->quit = new sf::Text("Quitter", *this->font, 128U);
 	this->quit->setOrigin(this->quit->getGlobalBounds().width / 2, this->quit->getGlobalBounds().height / 2);
 	this->quit->setPosition(window->getSize().x / 2, window->getSize().y / 2 + this->play->getGlobalBounds().height);
-
 }
 void main_menu::Update(sf::RenderWindow* window)
 {

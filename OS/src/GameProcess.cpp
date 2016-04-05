@@ -23,8 +23,8 @@ void GameProcess::newMessageArrive( GamePadMsgType message_ )
 {
     if( currentGame.state() == QProcess::Running )
     {
-        qDebug() << "Send message: " << message_;
-        processStdin << message_ << ' ';
+        qDebug() << "Send message: " << message_.cmd;
+        processStdin << message_.cmd << ' ';
         processStdin.flush();
     }
 }

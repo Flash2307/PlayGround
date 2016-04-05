@@ -11,4 +11,9 @@ public:
 	bool isSelected();
 };
 
+RedChipKing::RedChipKing()
+{
+	this->texture = new Entity();
+	this->load();
+}
 
