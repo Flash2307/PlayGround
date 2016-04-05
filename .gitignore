@@ -3,6 +3,11 @@
 Makefile
 bin/
 Snakeus/Debug/
+Snakeus/Release/
+Snakeus/Snakeus/Release/
+Snakeus/Snakeus/Debug/
+Snakeus/Snakeus/Snakeus.vcxproj.user
+Snakeus/Snakeus.opensdf
 OS/OS.pro.user
 games/Snakeus/
 games/DameUs/DameUs/DameUs/Debug/

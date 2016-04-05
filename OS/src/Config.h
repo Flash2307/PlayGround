@@ -8,7 +8,7 @@
 #endif
 
 #ifdef _MSC_VER
-#   define COM_PORT_NAME "COM5"
+#   define COM_PORT_NAME "COM6"
 #else
 #   define COM_PORT_NAME "/dev/ttyACM0"
 #endif

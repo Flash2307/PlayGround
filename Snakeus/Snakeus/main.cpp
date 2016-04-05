@@ -6,10 +6,13 @@
 
 int main( int argc, char** argv )
 {
-	sf::RenderWindow window(sf::VideoMode( SCREEN_WIDTH, SCREEN_HEIGHT ), "ZATAKA!");
-	window.setFramerateLimit(30);
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	sf::RenderWindow window( desktop, "ZATAKA!", sf::Style::Fullscreen);
 
-	Game game( argc, argv );
+	window.setFramerateLimit(30);
+	window.setVerticalSyncEnabled( false );
+
+	Game game(argc, argv, desktop );
 
 	while( window.isOpen() )
 	{

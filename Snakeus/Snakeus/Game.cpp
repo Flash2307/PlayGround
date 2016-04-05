@@ -15,18 +15,10 @@ static const sf::Color Yellow( 255, 255, 0 );
 static const size_t FONT_SIZE = 30;
 static const size_t PADDING_SIZE = 10;
 
-static void renderStatBoard( sf::RenderWindow* pWindow_ )
-{
-	sf::RectangleShape rectangle;
-	rectangle.setPosition(sf::Vector2f(WORLD_WIDTH, 0));
-	rectangle.setSize(sf::Vector2f(5, SCREEN_HEIGHT ));
-	rectangle.setFillColor( Color::Yellow );
-	pWindow_->draw( rectangle );
-}
-
-Game::Game( int argc_, char** argv_ ) :
+Game::Game( int argc_, char** argv_, const sf::VideoMode& desktop_ ) :
+	desktop(desktop_ ),
 	systemCom( argc_, argv_ ),
-	pCollisionGrid( std::make_shared< CollisionGrid >( WORLD_WIDTH, SCREEN_HEIGHT, 100 ) ),
+	pCollisionGrid( std::make_shared< CollisionGrid >( worldWidth(), screenHeight(), GRID_SCALE ) ),
 	hasPlayerAlive( true ),
 	quit( false ),
 	scoreSended( false )
@@ -167,6 +159,15 @@ void Game::draw(sf::RenderWindow* pWindow_)
 	}
 }
 
+void Game::renderStatBoard(sf::RenderWindow* pWindow_)
+{
+	sf::RectangleShape rectangle;
+	rectangle.setPosition(sf::Vector2f(worldWidth(), 0));
+	rectangle.setSize(sf::Vector2f(5, screenHeight()));
+	rectangle.setFillColor(Color::Yellow);
+	pWindow_->draw(rectangle);
+}
+
 void Game::renderLines( sf::RenderWindow* pWindow_ )
 {
 	std::for_each( lines.begin(), lines.end(),
@@ -197,11 +198,11 @@ void Game::renderEndGameMessages( sf::RenderWindow* pWindow_ )
 	text.setColor(sf::Color::Red);
 
 	text.setString( "Appuyer sur 'a' pour refaire une partie." );
-	text.setPosition(sf::Vector2f(WORLD_WIDTH/2 - text.getLocalBounds().width/2,  WORLD_HEIGHT/2 ));
+	text.setPosition( sf::Vector2f( worldWidth() / 2 - text.getLocalBounds().width / 2, screenHeight() / 2 ) );
 	pWindow_->draw(text);
 
 	text.setString( "Appuyer sur 'b' pour quitter." );
-	text.setPosition(sf::Vector2f(WORLD_WIDTH/2 - text.getLocalBounds().width/2,  WORLD_HEIGHT/2 + FONT_SIZE + 10 ));
+	text.setPosition( sf::Vector2f( worldWidth() / 2 - text.getLocalBounds().width / 2, screenHeight() / 2 + text.getLocalBounds().height + PADDING_SIZE ) );
 	pWindow_->draw(text);
 }
 
@@ -217,17 +218,17 @@ void Game::renderLineStat( sf::RenderWindow* pWindow_, Line& line_ )
 
 	strStream.str( std::string() );
 	strStream << "Player " << playerIndex << ( line_.isAlive() ? " alive" : " dead" );
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex ));
+	text.setPosition(sf::Vector2f(worldWidth() + PADDING_SIZE, 150 * playerIndex));
 	text.setString( strStream.str() );
 	pWindow_->draw(text);
 
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex + PADDING_SIZE + FONT_SIZE ));
+	text.setPosition(sf::Vector2f(worldWidth() + PADDING_SIZE, 150 * playerIndex + PADDING_SIZE + text.getLocalBounds().height ) );
 	text.setString( player.getName() );
 	pWindow_->draw(text);
 
 	strStream.str( std::string() );
 	strStream << "Score: " << line_.getPlayer().getScore();
-	text.setPosition(sf::Vector2f(WORLD_WIDTH + PADDING_SIZE,  150 * playerIndex + 2 * (PADDING_SIZE + FONT_SIZE) ));
+	text.setPosition(sf::Vector2f(worldWidth() + PADDING_SIZE, 150 * playerIndex + 2 * (PADDING_SIZE + text.getLocalBounds().height)));
 	text.setString( strStream.str() );
 	pWindow_->draw(text);
 }
