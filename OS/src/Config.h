@@ -3,7 +3,7 @@
 
 #define FAST_BAUD_RATE 1
 
-#if _MSC_VER <= 2013
+#if defined( _MSC_VER ) && _MSC_VER <= 2013
 #   define constexpr const
 #endif
 

@@ -152,12 +152,14 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
 
     gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
+    this->hide();
 }
 
 void HomeWindow::gameStop( const QString& failueMessage_ )
 {
     this->gameSelection.setFailureMessage( failueMessage_ );
     this->views->setCurrentIndex( gameSelectionViewIndex );
+    this->show();
 }
 
 
