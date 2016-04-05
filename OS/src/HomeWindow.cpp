@@ -6,6 +6,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QStackedLayout>
+#include <QVBoxLayout>
 
 #include "CommandSimulator.h"
 #include "GameProcess.h"
@@ -48,13 +49,14 @@ HomeWindow::HomeWindow(QWidget *parent) :
 QWidget* HomeWindow::prepareProfilPages()
 {
     QWidget* pCentralWidget = new QWidget();
-    QHBoxLayout* pHBox = new QHBoxLayout( pCentralWidget );
 
-    pHBox->addWidget( profilPages[ 0 ] );
-    pHBox->addWidget( profilPages[ 1 ] );
-    pHBox->addWidget( profilPages[ 2 ] );
-    pHBox->addWidget( profilPages[ 3 ] );
-    pCentralWidget->setLayout( pHBox );
+    QVBoxLayout* pBox = new QVBoxLayout( pCentralWidget );
+    pBox->addWidget( profilPages[ 0 ] );
+    pBox->addWidget( profilPages[ 1 ] );
+    pBox->addWidget( profilPages[ 2 ] );
+    pBox->addWidget( profilPages[ 3 ] );
+    pBox->setAlignment( Qt::AlignHCenter );
+    pCentralWidget->setLayout( pBox );
 
     return pCentralWidget;
 }

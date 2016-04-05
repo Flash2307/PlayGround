@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDirIterator>
+#include <QScrollArea>
 #include <QDebug>
 
 #include "FileLoader.h"
@@ -85,9 +86,15 @@ GameSelection::GameSelection() :
     this->prepareBackToSelectionProfileBtn();
     this->prepareFailureMessageLabel();
 
+    QWidget* pGameListWidget = new QWidget();
+    pGameListWidget->setLayout( pGameList );
+
+    QScrollArea* pScrollArea = new QScrollArea();
+    pScrollArea->setWidget( pGameListWidget );
+
     QVBoxLayout* pMainLayout = new QVBoxLayout();
     pMainLayout->addWidget( this->pFailureMessageLabel );
-    pMainLayout->addLayout( pGameList );
+    pMainLayout->addWidget( pScrollArea );
     pMainLayout->addWidget( this->pBackToProfileSelection );
 
     this->setLayout( pMainLayout );
@@ -156,13 +163,16 @@ void GameSelection::lauchGameCommand()
         QString gameCmd( "%1/%2/%3" );
         gameCmd = gameCmd.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
 
-        qDebug() << "Start game " << gameCmd;
+        if( QFile::exists( gameCmd ) )
+        {
+            qDebug() << "Start game " << gameCmd;
 
-        GameConfig gameConfig;
-        gameConfig.cmd = gameCmd;
-        gameConfig.workingDir = ".";
+            GameConfig gameConfig;
+            gameConfig.cmd = gameCmd;
+            gameConfig.workingDir = ".";
 
-        emit startGame( gameConfig );
+            emit startGame( gameConfig );
+        }
     }
 }
 

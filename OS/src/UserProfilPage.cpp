@@ -11,6 +11,8 @@
 
 #include "FileLoader.h"
 
+constexpr static size_t MaxUserProfilWidth = 500;
+
 void applyTexture( QWidget* pWidget, const QString& texturePath )
 {
     QPalette p;
@@ -43,6 +45,7 @@ UserProfilPage::UserProfilPage( size_t gamepadIndex ) :
 
     this->setLayout( pVBox );
     this->setStyleSheet( readFiles( QStringList() << "css/GameProfil.css" ) );
+    this->setMaximumWidth( MaxUserProfilWidth );
     applyTexture( this, "./img/ProfilPage.jpg" );
 }
 
