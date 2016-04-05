@@ -13,7 +13,7 @@
 constexpr char gameBaseDir[] = "./games";
 constexpr char gamePictureFileName[] = "picture.jpg";
 constexpr char gameDescriptionFileName[] = "description.txt";
-constexpr char gameAppFileName[] = "game";
+constexpr char gameAppFileName[] = GAME_APP_EXE_NAME;
 constexpr char selectedGameTagName[] = "elementWithFocus";
 constexpr char defaultGameImg[] = "./img/NoImage.jpg";
 constexpr char noDescriptionAvaibleText[] = "Aucune description du jeu disponible.";

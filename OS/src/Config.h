@@ -3,14 +3,16 @@
 
 #define FAST_BAUD_RATE 1
 
-#if defined( _MSC_VER ) && _MSC_VER <= 2013
-#   define constexpr const
-#endif
-
 #ifdef _MSC_VER
 #   define COM_PORT_NAME "COM6"
+#   define GAME_APP_EXE_NAME "game.exe"
 #else
 #   define COM_PORT_NAME "/dev/ttyACM0"
+#   define GAME_APP_EXE_NAME "game"
+#endif
+
+#if defined( _MSC_VER ) && _MSC_VER <= 2013
+#   define constexpr const
 #endif
 
 #if FAST_BAUD_RATE == 1
