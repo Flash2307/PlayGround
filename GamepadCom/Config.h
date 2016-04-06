@@ -1,6 +1,8 @@
 #ifndef CONFIG_H_INCLUDED 
 #define CONFIG_H_INCLUDED
 
+#include <stdint.h>
+
 // Mettre à 1 pour utiliser le code de l'accéléromètre.
 #define ENABLE_ACCELEROMETER 1
 
@@ -9,7 +11,15 @@
 #define USE_XCTU             0
 
 // Mettre à 0 pour activer l'affichage.
-#define NDEBUG               0
+#define NDEBUG               1
+
+#define FAST_BAUD_RATE       1
+
+#if FAST_BAUD_RATE == 1
+#   define SERIAL_BAUD_RATE  115200
+#else
+#   define SERIAL_BAUD_RATE  9600
+#endif
 
 #if NDEBUG == 0
 #   define DEBUG_DISPLAY( Code ) Code
@@ -24,5 +34,7 @@
 #endif
 
 #define StaticArraySize( arrayName ) ( sizeof( arrayName ) / sizeof( arrayName[ 0 ] ) )
+
+typedef uint64_t CommandType;
 
 #endif

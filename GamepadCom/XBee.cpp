@@ -53,7 +53,7 @@ XBee::XBee( PinName tx_, PinName rx_, PinName rst_ ) :
     xbeeIO( tx_, rx_ ),
     rst( rst_ )
 {
-
+    // xbeeIO.baud( SERIAL_BAUD_RATE );
 }
 
 // Initialise la configuration du xbee.
@@ -68,7 +68,7 @@ void XBee::init( const Configuration& config_ )
 // Fait le liens avec xctu et le xbee.
 void XBee::xctuLink( XBee& xbee_, Serial& terminal )
 {
-    Serial& xbeeIO = xbee_.serialRef();
+    BufferedSerial& xbeeIO = xbee_.serialRef();
     
     while(1)
     {
@@ -86,7 +86,7 @@ void XBee::xctuLink( XBee& xbee_, Serial& terminal )
 
 // Change le pan id sur le xbee.
 void XBee::init( uint8_t panId[ PanIdByteCount ] )
-{
+{   
     uint8_t initCommand1[] = { 0x08, 0x43, 0x49, 0x44 };
     uint8_t checksum = 0;
     uint16_t paquetSize = StaticArraySize(initCommand1) + PanIdByteCount;
@@ -120,7 +120,7 @@ void XBee::reset()
 // Envoi un transmit request au xbee.
 void XBee::sendTx( const uint8_t macAdress[ MacAdressByteCount ], uint16_t adress16Bits, const uint8_t data[], size_t length )
 {
-    Serial& out = this->xbeeIO;
+    BufferedSerial& out = this->xbeeIO;
     uint8_t checksum  = 0x10 + 0x01;
     uint16_t messageSize = 14 + length;
     
@@ -237,7 +237,7 @@ bool XBee::receive( XBeeTrame& trame_ )
     return state == ReceptionCompleted && trame_.trame.frameType == 0x90 && checksumXbeeTrame( trame_ ) == trame_.trame.checksum ;
 }
 
-Serial& XBee::serialRef()
+BufferedSerial& XBee::serialRef()
 {
     return this->xbeeIO;
 }

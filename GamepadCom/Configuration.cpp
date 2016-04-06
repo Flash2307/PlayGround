@@ -44,6 +44,11 @@ size_t Configuration::getSensorUpdateTimeMs() const
     return this->sensorUpdateTimeMsc;
 }
 
+size_t Configuration::getGamepadId() const
+{
+    return this->gamepadId;
+}
+
 // Retourne le pan id du réseau.
 void Configuration::getPanId( PanIdType panId_ ) const
 {
@@ -68,6 +73,7 @@ void Configuration::display( mbed::Serial& out ) const
     out.printf( "Configuration:\r\n" );
     out.printf( "Is coordinator: %i\r\n", (int)this->coordinatorRole );
     out.printf( "sensorUpdateTimeMsc: %i\r\n", sensorUpdateTimeMsc);
+    out.printf( "gamepadId: %i\r\n", gamepadId);
     
     out.printf( "Pan Id: " );
     displayHexArray( out, this->panId, PanIdByteCount ); 
@@ -88,8 +94,7 @@ bool Configuration::loadConfiguration( const char* configurationPath_ )
     
     if( in.is_open() )
     {
-        in >> std::dec >> coordinatorRole;
-        in >> sensorUpdateTimeMsc;
+        in >> std::dec >> coordinatorRole >> sensorUpdateTimeMsc >> gamepadId;
         readHexArray( in, panId, PanIdByteCount );
         readHexArray( in, coordinatorMacAdress, MacAdressByteCount );
         in.close();
