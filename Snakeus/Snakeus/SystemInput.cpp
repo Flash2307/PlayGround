@@ -2,8 +2,8 @@
 
 #include <algorithm>
 #include <iostream>
-#include <cassert>
 #include <sstream>
+#include <cassert>
 
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
@@ -11,34 +11,6 @@
 #include <GamepadMsg.h>
 
 #include <thread>
-
-#ifdef _MSC_VER
-
-static bool inputAvailable()
-{
-	return true;
-}
-
-#else
-
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/select.h>
-
-static bool inputAvailable()
-{
-	struct timeval tv;
-	fd_set fds;
-	tv.tv_sec = 0;
-	tv.tv_usec = 0;
-	FD_ZERO(&fds);
-	FD_SET(STDIN_FILENO, &fds);
-	select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
-
-	return (FD_ISSET(0, &fds));
-}
-
-#endif
 
 #ifndef NDEBUG
 
@@ -76,6 +48,21 @@ static void sendTestData()
 //std::thread testData(sendTestData);
 
 #endif
+
+/*
+
+std::for_each( players.begin(), players.end(),
+[]( Player& player_ )
+{
+if( player_.isValid() )
+{
+player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
+player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
+player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
+player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
+}
+});
+*/
 
 void SystemInput::updateInput(SystemInput* systemInput_)
 {
@@ -160,23 +147,3 @@ PlayerArrayType SystemInput::getPlayers()
 	return this->players;
 }
 
-void SystemInput::update()
-{
-	/*
- 
- std::for_each( players.begin(), players.end(),
- []( Player& player_ )
- {
- if( player_.isValid() )
- {
- player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
- player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
- player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
- player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
- }
- });
- */
-
-
-
-}

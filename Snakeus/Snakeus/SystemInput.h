@@ -17,7 +17,6 @@ public:
 	~SystemInput();
 
 	PlayerArrayType getPlayers();
-	void update();
 private:
 	static void updateInput(SystemInput* systemInput_);
 

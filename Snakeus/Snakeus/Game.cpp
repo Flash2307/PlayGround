@@ -55,8 +55,6 @@ void Game::initPlayers()
 
 void Game::update()
 {
-	systemCom.update();
-
 	if( this->hasPlayerAlive )
 	{
 		this->updateLinesPosition();
