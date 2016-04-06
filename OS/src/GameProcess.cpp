@@ -31,8 +31,8 @@ void GameProcess::newMessageArrive( GamePadMsgType message_ )
 
 void GameProcess::stateChanged(QProcess::ProcessState newState)
 {
-    if( newState == QProcess::NotRunning && lastState == QProcess::Starting ||
-        newState == QProcess::NotRunning && lastState == QProcess::NotRunning
+    if( ( newState == QProcess::NotRunning && lastState == QProcess::Starting ) ||
+        ( newState == QProcess::NotRunning && lastState == QProcess::NotRunning )
     )
     {
         emit gameStop( QString( "Le jeux n'a pas pu être démarré." ) );
