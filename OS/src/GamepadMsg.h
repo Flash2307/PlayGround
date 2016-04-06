@@ -5,6 +5,7 @@
 
 #include "Config.h"
 
+constexpr size_t GameDestinationPort = 7755;
 constexpr static size_t MaxUser = 4;
 constexpr static int UpArrowBitNum = 3;
 constexpr static int DownArrowBitNum = 4;

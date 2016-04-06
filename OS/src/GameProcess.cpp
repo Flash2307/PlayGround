@@ -5,7 +5,6 @@
 constexpr char logFilePath[] = "./games/log.txt";
 
 GameProcess::GameProcess() :
-    processStdin( &currentGame ),
     lastState( QProcess::NotRunning )
 {
     QObject::connect( &currentGame, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( gameFinished(int, QProcess::ExitStatus) ) );
@@ -24,8 +23,8 @@ void GameProcess::newMessageArrive( GamePadMsgType message_ )
     if( currentGame.state() == QProcess::Running )
     {
         qDebug() << "Send message: " << message_.cmd;
-        processStdin << message_.cmd << ' ';
-        processStdin.flush();
+        comWithGame.writeDatagram( (const char*)&message_, sizeof( message_), QHostAddress::LocalHost, GameDestinationPort );
+        comWithGame.flush();
     }
 }
 
@@ -81,5 +80,4 @@ void GameProcess::startGame( GameConfig gameConfig_ )
 
     currentGame.setWorkingDirectory( gameConfig_.workingDir );
     currentGame.start( gameConfig_.cmd, arguments );
-    processStdin.setDevice( &currentGame );
 }
