@@ -4,7 +4,7 @@
 #define FAST_BAUD_RATE 1
 
 #ifdef _MSC_VER
-#   define COM_PORT_NAME "COM6"
+#   define COM_PORT_NAME "COM4"
 #   define GAME_APP_EXE_NAME "game.exe"
 #else
 #   define COM_PORT_NAME "/dev/ttyACM0"

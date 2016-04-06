@@ -1,13 +1,14 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
+#include <direct.h>
 
 #include "Game.h"
 
 int main( int argc, char** argv )
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	sf::RenderWindow window( desktop, "ZATAKA!", sf::Style::Fullscreen);
+	sf::RenderWindow window( desktop, "ZATAKA!"/*, sf::Style::Fullscreen*/);
 
 	window.setFramerateLimit(30);
 	window.setVerticalSyncEnabled( false );

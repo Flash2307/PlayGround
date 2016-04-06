@@ -2,6 +2,8 @@
 
 #include <QtEndian>
 
+#include <cassert>
+
 static void printBytes( const QByteArray& bytes_ )
 {
     for( int index = 0; index < bytes_.size(); ++index )
@@ -69,6 +71,8 @@ void GamePadCom::newConnection()
 
 void GamePadCom::dataArrive()
 {
+    constexpr static int HeaderChar = '~';
+
     QIODevice* pDevice = NULL;
 
     if( mbedSerialBridge == NULL )
@@ -80,14 +84,31 @@ void GamePadCom::dataArrive()
         pDevice = mbedSerialBridge;
     }
 
-    if( pDevice != nullptr && pDevice->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
+    if( pDevice != nullptr )
     {
-        QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
-        GamePadMsgType msg;
+        char skip = '\0';
 
-        memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
+        while( ( pDevice->peek( &skip, 1 ), skip ) != HeaderChar && pDevice->bytesAvailable() > 0 )
+        {
+            pDevice->getChar( &skip );
+        }
 
-        emit newMessageArrive( msg );
+        if( ( pDevice->peek( &skip, 1 ), skip ) == HeaderChar &&
+            pDevice->bytesAvailable() >= (qint64)( sizeof( GamePadMsgType ) + 1 ) )
+        {
+            pDevice->getChar( &skip );
+
+            QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
+            GamePadMsgType msg;
+
+            assert( (char)gamepadMsg[ 0 ] != HeaderChar );
+            memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
+
+            emit newMessageArrive( msg );
+        }
     }
+
+
+
 
 }

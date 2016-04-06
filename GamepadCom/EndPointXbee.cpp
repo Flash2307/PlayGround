@@ -1,20 +1,24 @@
 #include "EndPointXbee.h"
 
-#include "rtos.h"
-#include <stdint.h>
+#include <sstream>
 
 extern Serial terminal;
 
 // Mailbox pour la communication entre la prise de données
 // et l'envoi de données par le xbee.
-Queue< uint16_t, 5 > dataCollectedMailbox;
+Mail< CommandType, 5 > dataCollectedMailbox;
 
 // Initialisation d'un xbee routeur.
 EndpointXbee::EndpointXbee() :
     xbee( p13, p14, p12 )
 {
-
+    std::fill( this->sensorDataCollectFn, this->sensorDataCollectFn + SENSOR_COUNT, (CollectSensorDataFn)NULL );
 } 
+
+void EndpointXbee::setCollectionFn( CollectSensorDataFn collectionFn_, size_t index_ )
+{
+    this->sensorDataCollectFn[ index_ ] = collectionFn_;
+}
 
 // Commence l'exécution de la capture des données.
 void EndpointXbee::exec( const Configuration& config_ )
@@ -34,12 +38,28 @@ void EndpointXbee::exec( const Configuration& config_ )
     
     while(1) 
     {
-        uint16_t value = 1;
-        
-        dataCollectedMailbox.put( (uint16_t*)value );
-        DEBUG_DISPLAY(  terminal.printf( "Data sended\r\n" ) );     
+        processSensorData();         
         wait_ms( triggerTimeRateMs ); // Temps d'attente spécifier dans la configuration.    
     }
+}
+
+// Prends les données des capteurs.
+void EndpointXbee::processSensorData()
+{
+    CommandType* pSensorData = dataCollectedMailbox.alloc();
+    
+    for( size_t index = 0; index < SENSOR_COUNT; ++index )
+    {
+        CollectSensorDataFn fn = this->sensorDataCollectFn[ index ];
+        
+        if( fn != NULL )
+        {
+            *pSensorData = fn();
+        }  
+    }
+    
+    dataCollectedMailbox.put( pSensorData );
+    DEBUG_DISPLAY(  terminal.printf( "Data sended\r\n" ) );
 }
 
 // Thread d'envoi de données au coordinateur.
@@ -53,10 +73,17 @@ void EndpointXbee::sendDataToCoordinator( const void* pData )
         
         if( evt.status == osEventMail ) 
         {
-            uint16_t gamepadState = (uint16_t)evt.value.p;  
-            DEBUG_DISPLAY( terminal.printf( "Data: %s \r\n", gamepadState ) );
+            CommandType* pSensorData = (CommandType*)evt.value.p;  
+            /*
+            std::stringstream sensorValueStream;
+            std::string sensorValues;
             
-            pEnpointXbee->xbee.sendTx( pEnpointXbee->coordinatorMacAdress, Coordinator16BitsAddress, (uint8_t*)&gamepadState, sizeof( uint16_t ) );
+            sensorValueStream << *pSensorData;
+            sensorValues = sensorValueStream.str();*/
+            DEBUG_DISPLAY( displayHexArray( terminal, (const uint8_t*)pSensorData, sizeof(*pSensorData) ) );
+            
+            pEnpointXbee->xbee.sendTx( pEnpointXbee->coordinatorMacAdress, Coordinator16BitsAddress, (uint8_t*)pSensorData, sizeof(*pSensorData) );              
+            dataCollectedMailbox.free( pSensorData );
         }
         else DEBUG_DISPLAY(  terminal.printf( "Unexpected data received\r\n" ) );
     }

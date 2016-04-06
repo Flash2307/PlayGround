@@ -3,7 +3,7 @@
 
 #include "XBee.h"
 
-class WebSocketCom;
+class TCPServerCom;
 class Configuration;
 
 class CoordinatorXbee
@@ -12,6 +12,7 @@ public:
     CoordinatorXbee();
     
     void exec( const Configuration& config_ );
+    void collectAvaibleData();
 protected:
     XBee xbee;
 };

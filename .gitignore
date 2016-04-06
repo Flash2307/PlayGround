@@ -8,8 +8,13 @@ Snakeus/Snakeus/Release/
 Snakeus/Snakeus/Debug/
 Snakeus/Snakeus/Snakeus.vcxproj.user
 Snakeus/Snakeus.opensdf
+TestGame/Debug/
 OS/OS.pro.user
+games/TestGame/
 games/Snakeus/
 games/DameUs/DameUs/DameUs/Debug/
-games/Snakeus/
+games/DameUs/DameUs/Debug/
+games/DameUs/DameUs/DameUs.v12.suo    
+games/DameUs/DameUs/Debug/DameUs.ilk
+games/DameUs/DameUs/Debug/DameUs.pdb
 

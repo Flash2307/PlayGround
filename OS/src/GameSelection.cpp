@@ -142,15 +142,14 @@ void GameSelection::detectAvaibleGame()
 
     while( it.hasNext() )
     {
+        it.next();
         QString gameName = it.fileName();
 
-        if( it.fileInfo().isDir() && gameName != "." )
+        if( it.fileInfo().isDir() && gameName != "." && gameName != ".." )
         {
             qDebug() << "Game avaible: " << gameName;
             avaibleGames.append( gameName );
         }
-
-        it.next();
     }
 }
 
