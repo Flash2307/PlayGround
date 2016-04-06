@@ -50,4 +50,5 @@ HEADERS  += HomeWindow.h \
     src/GameProcess.h \
     src/SelectableWidget.h \
     tests/GamepadMsgSerialTest.h \
-    src/Config.h
+    src/Config.h \
+    src/Profile.h

@@ -114,16 +114,19 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 
 void HomeWindow::userReady()
 {
-    bool atLeastOnePlayer = false;
-
-    bool isEveryOneReady = std::all_of( profilPages, profilPages + MaxUser,
-    [ &atLeastOnePlayer ]( UserProfilPage* userProfile )
+    bool isEveryOneReady = false;
+    for(UserProfilPage* item : profilPages)
     {
-        atLeastOnePlayer = atLeastOnePlayer || userProfile->isActivated();
-        return userProfile->isReady() || !userProfile->isActivated();
-    });
+        if(item->isConnected())
+            isEveryOneReady = true;
+        else if(item->isConnecting())
+        {
+            isEveryOneReady = false;
+            break;
+        }
+    }
 
-    if( isEveryOneReady && atLeastOnePlayer )
+    if( isEveryOneReady )
     {
         this->views->setCurrentIndex( this->gameSelectionViewIndex );
     }
