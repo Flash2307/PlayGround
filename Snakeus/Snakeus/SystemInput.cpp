@@ -6,14 +6,17 @@
 #include <sstream>
 
 #include <SFML/Window.hpp>
+#include <SFML/Network.hpp>
 
 #include <GamepadMsg.h>
+
+#include <thread>
 
 #ifdef _MSC_VER
 
 static bool inputAvailable()
 {
-	return false;
+	return true;
 }
 
 #else
@@ -37,7 +40,88 @@ static bool inputAvailable()
 
 #endif
 
-SystemInput::SystemInput( int argc_, char** argv_ )
+#ifndef NDEBUG
+
+static void printError( sf::Socket::Status error )
+{
+	switch (error)
+	{
+	case sf::Socket::Status::Error:
+		std::cout << "Unexpected upd socket error\n";
+		break;
+	case sf::Socket::Status::Disconnected:
+		std::cout << "Disconnected upd socket error\n";
+		break;
+	case sf::Socket::Status::NotReady:
+		std::cout << "Disconnected upd socket error\n";
+		break;
+	default:
+		std::cout << "upd socket error!?\n";
+		break;
+	}
+}
+
+static void sendTestData()
+{
+	GamePadMsgType command;
+	sf::UdpSocket socket;
+
+	while (1)
+	{
+		socket.send(&command, sizeof(command), sf::IpAddress::LocalHost, GameDestinationPort);
+		sf::sleep(sf::milliseconds(10));
+	}
+}
+
+//std::thread testData(sendTestData);
+
+#endif
+
+void SystemInput::updateInput(SystemInput* systemInput_)
+{
+	assert(systemInput_ != nullptr);
+
+	GamePadMsgType command;
+	size_t bufferFilledDataCount = 0;
+
+	std::size_t receivedData;
+	sf::IpAddress senderIp;
+	unsigned short port;
+
+	sf::UdpSocket socket;
+	sf::Socket::Status error = socket.bind(GameDestinationPort);
+	assert(error == sf::Socket::Done);
+
+	socket.setBlocking(false);
+	
+	while( systemInput_->run )
+	{
+		error = socket.receive(&command, sizeof(GamePadMsgType) - bufferFilledDataCount, receivedData, senderIp, port);
+		bufferFilledDataCount += receivedData;
+
+		if (error != sf::Socket::Done)
+		{
+			sf::sleep(sf::milliseconds(10));
+		}
+
+		if (bufferFilledDataCount == sizeof(GamePadMsgType))
+		{
+			size_t index = getGamepadIndex(command);
+			assert(index < PLAYER_COUNT);
+
+			systemInput_->players[index].setAKeyPressed(isGamepadABtn(command));
+			systemInput_->players[index].setBKeyPressed(isGamepadBBtn(command));
+			systemInput_->players[index].setLeftKeyPressed(isGamepadLeftArrow(command));
+			systemInput_->players[index].setRightKeyPressed(isGamepadRigthArrow(command));
+			bufferFilledDataCount = 0;
+		}
+	}
+
+	socket.unbind();
+}
+
+SystemInput::SystemInput( int argc_, char** argv_ ) :
+	run( true )
 {
 	std::stringstream inputStream;
 	std::string username;
@@ -61,6 +145,14 @@ SystemInput::SystemInput( int argc_, char** argv_ )
 		players[ 2 ] = Player( "Antoine", 2 );
 		players[ 3 ] = Player( "Joel", 3 );
 	}
+
+	this->updateKeys = std::thread( updateInput, this );
+}
+
+SystemInput::~SystemInput()
+{
+	this->run = false;
+	this->updateKeys.join();
 }
 
 PlayerArrayType SystemInput::getPlayers()
@@ -70,31 +162,21 @@ PlayerArrayType SystemInput::getPlayers()
 
 void SystemInput::update()
 {
-	std::for_each( players.begin(), players.end(),
-	[]( Player& player_ )
-	{
-		if( player_.isValid() )
-		{
-			player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
-			player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
-			player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
-			player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
-		}
-	});
+	/*
+ 
+ std::for_each( players.begin(), players.end(),
+ []( Player& player_ )
+ {
+ if( player_.isValid() )
+ {
+ player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
+ player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
+ player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
+ player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
+ }
+ });
+ */
 
-	GamePadMsgType command;
-	size_t index = 0;
 
-	while( inputAvailable() )
-	{
-		std::cin >> command.cmd;
 
-		index = getGamepadIndex( command );
-		assert( index < PLAYER_COUNT );
-
-		players[ index ].setAKeyPressed( isGamepadABtn( command ) );
-		players[ index ].setBKeyPressed( isGamepadBBtn( command ) );
-		players[ index ].setLeftKeyPressed( isGamepadLeftArrow( command ) );
-		players[ index ].setRightKeyPressed( isGamepadRigthArrow( command ) );
-	}
 }

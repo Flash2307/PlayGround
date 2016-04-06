@@ -3,6 +3,7 @@
 
 #include <string>
 #include <array>
+#include <thread>
 
 #include "Player.h"
 
@@ -12,10 +13,16 @@ typedef std::array< Player, PLAYER_COUNT > PlayerArrayType;
 class SystemInput
 {
 public:
-	SystemInput( int argc_, char** argv_ );
+	SystemInput(int argc_, char** argv_);
+	~SystemInput();
+
 	PlayerArrayType getPlayers();
 	void update();
 private:
+	static void updateInput(SystemInput* systemInput_);
+
+	bool run;
+	std::thread updateKeys;
 	PlayerArrayType players;
 };
 
