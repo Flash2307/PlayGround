@@ -92,19 +92,20 @@ void HomeWindow::updateGamepadMessage( GamePadMsgType& message_ )
         setDownArrow( message_, true );
     }
 
+    size_t userIndex = getGamepadIndex( message_ );
     GamePadMsgType tmpMessage = message_;
-    setABtn( tmpMessage, isGamepadABtn( message_  ) && !isGamepadABtn( lastMessage ) );
-    setBBtn( tmpMessage, isGamepadBBtn( message_  ) && !isGamepadBBtn( lastMessage ) );
+    setABtn( tmpMessage, isGamepadABtn( message_  ) && !isGamepadABtn( lastMessage[ userIndex ] ) );
+    setBBtn( tmpMessage, isGamepadBBtn( message_  ) && !isGamepadBBtn( lastMessage[ userIndex ] ) );
 
     if( !this->arrowKeyRepeat )
     {
-        setUpArrow( tmpMessage, isGamepadUpArrow( message_  ) && !isGamepadUpArrow( lastMessage ) );
-        setDownArrow( tmpMessage, isGamepadDownArrow( message_  ) && !isGamepadDownArrow( lastMessage ) );
-        setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage ) );
-        setRigthArrow( tmpMessage, isGamepadRigthArrow( message_  ) && !isGamepadRigthArrow( lastMessage ) );
+        setUpArrow( tmpMessage, isGamepadUpArrow( message_  ) && !isGamepadUpArrow( lastMessage[ userIndex ] ) );
+        setDownArrow( tmpMessage, isGamepadDownArrow( message_  ) && !isGamepadDownArrow( lastMessage[ userIndex ] ) );
+        setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage[ userIndex ] ) );
+        setRigthArrow( tmpMessage, isGamepadRigthArrow( message_  ) && !isGamepadRigthArrow( lastMessage[ userIndex ] ) );
     }
 
-    lastMessage = message_;
+    lastMessage[ userIndex ] = message_;
     message_ = tmpMessage;
 }
 

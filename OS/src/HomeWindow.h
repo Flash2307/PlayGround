@@ -42,7 +42,7 @@ private:
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
     DatabaseFacade dbFacade;
-    GamePadMsgType lastMessage;
+    GamePadMsgType lastMessage[ MaxUser ];
     bool arrowKeyRepeat = false;
 };
 
