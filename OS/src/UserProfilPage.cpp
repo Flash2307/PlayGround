@@ -105,6 +105,9 @@ UserProfilPage::UserProfilPage( size_t gamepadIndex ) :
     labelConnectedProfileName = new QLabel(panelConnected);
     layoutConnectedProfile->addWidget(labelConnectedProfileName);
 
+    labelConnectedReady = new QLabel(" - Prêt !", panelConnected);
+    layoutConnectedProfile->addWidget(labelConnectedReady);
+
     changeState(NOT_CONNECTED);
     changeSelectedProfile(selectedProfileIndex);
 }
