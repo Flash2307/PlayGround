@@ -22,7 +22,7 @@ void applyTexture( QWidget* pWidget, const QString& texturePath )
     pWidget->setPalette(p);
 }
 
-UserProfilPage::UserProfilPage( size_t gamepadIndex ) :
+UserProfilPage::UserProfilPage( size_t ) :
     selectedProfileIndex(0)
 {
     //TODO : get this from the database
@@ -123,7 +123,7 @@ void UserProfilPage::changeState(State newState)
 
 void UserProfilPage::changeSelectedProfile(int index)
 {
-    if(index >= profiles.size() || index < 0)
+    if((size_t)index >= profiles.size() || index < 0)
         return;
 
     selectedProfileIndex = index;

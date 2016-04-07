@@ -55,32 +55,31 @@ private:
     void changeSelectedProfile(int index);
 
 private:
-    int selectedProfileIndex;
-    State state;
+    int selectedProfileIndex = 0;
+    State state = NOT_CONNECTED;
     std::vector<Profile> profiles;
 
     // UI
-    QVBoxLayout* layoutGlobal;
-    QWidget* panelNotConnected;
-    QWidget* panelConnecting;
-    QWidget* panelConnected;
+    QVBoxLayout* layoutGlobal = nullptr;
+    QWidget* panelNotConnected = nullptr;
+    QWidget* panelConnecting = nullptr;
+    QWidget* panelConnected = nullptr;
 
-    QVBoxLayout* layoutNotConnected;
-    QLabel* labelNotConnectedInstruction;
+    QVBoxLayout* layoutNotConnected = nullptr;
+    QLabel* labelNotConnectedInstruction = nullptr;
 
-    QVBoxLayout* layoutConnecting;
-    QLabel* imageConnectingArrowUp;
-    QWidget* widgetConnectingProfile;
-    QHBoxLayout* layoutConnectingProfile;
-    QLabel* imageConnectingProfilePict;
-    QLabel* labelConnectingProfileName;
-    QLabel* imageConnectingArrowDown;
-    QLabel* labelConnectingControls;
+    QVBoxLayout* layoutConnecting = nullptr;
+    QLabel* imageConnectingArrowUp = nullptr;
+    QWidget* widgetConnectingProfile = nullptr;
+    QHBoxLayout* layoutConnectingProfile = nullptr;
+    QLabel* imageConnectingProfilePict = nullptr;
+    QLabel* labelConnectingProfileName = nullptr;
+    QLabel* imageConnectingArrowDown = nullptr;
+    QLabel* labelConnectingControls = nullptr;
 
-    QHBoxLayout* layoutConnectedProfile;
-    QLabel* imageConnectedProfilePict;
-    QLabel* labelConnectedProfileName;
-    QLabel* labelConnectedReady;
+    QHBoxLayout* layoutConnectedProfile = nullptr;
+    QLabel* imageConnectedProfilePict = nullptr;
+    QLabel* labelConnectedProfileName = nullptr;
 };
 
 #endif // USERPROFILPAGE_H

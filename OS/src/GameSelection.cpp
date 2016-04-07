@@ -184,7 +184,7 @@ void GameSelection::process( GamePadMsgType message_ )
     else if( isGamepadABtn( message_ ) )
     {
         QPushButton* pButton = this->gamePanels[ selectedGameIndex ]->findChild< QPushButton* >( avaibleGames[ selectedGameIndex ] );
-         pButton->animateClick();
+        pButton->animateClick();
     }
     else if( this->gamePanels.size() > 0 )
     {
@@ -193,12 +193,14 @@ void GameSelection::process( GamePadMsgType message_ )
             setWidgetSelected( false );
             --selectedGameIndex;
             setWidgetSelected( true );
+            this->update();
         }
         else if( isGamepadRigthArrow( message_ ) && selectedGameIndex + 1 < (size_t)this->gamePanels.size() )
         {
             setWidgetSelected( false );
             ++selectedGameIndex;
             setWidgetSelected( true );
+            this->update();
         }
         else if( isGamepadUpArrow( message_ ) )
         {
