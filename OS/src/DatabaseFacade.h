@@ -16,9 +16,9 @@ class DatabaseFacade
 public:
     DatabaseFacade();
 
-    void connectUser( const QString& username_ );
-    void addUserStat( int userId, const QString& gameName_, int score_ );
-    std::vector< Score > getHightScores( const QString& gameName_ );
+    static void connectUser( const QString& username_ );
+    static void addUserStat( int userId, const QString& gameName_, int score_ );
+    static std::vector< Score > getHightScores( const QString& gameName_ );
 private:
     void openConnexion();
 };

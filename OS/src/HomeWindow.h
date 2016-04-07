@@ -7,6 +7,7 @@
 #include "UserProfilPage.h"
 #include "GameSelection.h"
 #include "GameProcess.h"
+#include "DatabaseFacade.h"
 
 class QLabel;
 class QStackedLayout;
@@ -38,6 +39,7 @@ private:
     int profilViewIndex;
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
+    DatabaseFacade dbFacade;
 };
 
 #endif // HOMEWINDOW_H
