@@ -2,6 +2,7 @@
 #define CONFIG_H_INCLUDED
 
 #define FAST_BAUD_RATE 1
+#define USE_KEYBOARD_FOR_LOCAL_DEBUG 1
 
 #ifdef _MSC_VER
 #   define COM_PORT_NAME "COM4"
@@ -20,6 +21,13 @@
 #else
 #   define SERIAL_BAUD_RATE QSerialPort::Baud9600
 #endif
+
+#if USE_KEYBOARD_FOR_LOCAL_DEBUG == 1
+#   define ON_USE_GAMEPAD( CALL )
+#else
+#   define ON_USE_GAMEPAD( CALL ) CALL
+#endif
+
 
 #endif // CONFIG_H
 

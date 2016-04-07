@@ -72,15 +72,8 @@ void HomeWindow::setArrowKeyRepeat( bool enable_ )
     this->arrowKeyRepeat = enable_;
 }
 
-void HomeWindow::newMessageArrive( GamePadMsgType message_ )
+void HomeWindow::updateGamepadMessage( GamePadMsgType& message_ )
 {
-    int viewIndex = views->currentIndex();
-
-    qDebug() << "acc.x: " << message_.acc.x;
-    qDebug() << "acc.y: " << message_.acc.y;
-    qDebug() << "acc.z: " << message_.acc.z;
-    qDebug() << "acc.other: " << message_.acc.other;
-
     if( message_.acc.y > 400 )
     {
         setLeftArrow( message_, true );
@@ -113,6 +106,18 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 
     lastMessage = message_;
     message_ = tmpMessage;
+}
+
+void HomeWindow::newMessageArrive( GamePadMsgType message_ )
+{
+    int viewIndex = views->currentIndex();
+
+    qDebug() << "acc.x: " << message_.acc.x;
+    qDebug() << "acc.y: " << message_.acc.y;
+    qDebug() << "acc.z: " << message_.acc.z;
+    qDebug() << "acc.other: " << message_.acc.other;
+
+    ON_USE_GAMEPAD( updateGamepadMessage( message_ ); )
 
     if( profilViewIndex == viewIndex )
     {

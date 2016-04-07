@@ -30,6 +30,7 @@ public slots:
     void showProfilSelectionView();
 private:
     QWidget* prepareProfilPages();
+    void updateGamepadMessage( GamePadMsgType& message_ );
 
     GamePadCom gamepadCom;
     GameSelection gameSelection;
