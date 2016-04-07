@@ -80,6 +80,7 @@ private:
     QHBoxLayout* layoutConnectedProfile = nullptr;
     QLabel* imageConnectedProfilePict = nullptr;
     QLabel* labelConnectedProfileName = nullptr;
+    QLabel* labelConnectedReady = nullptr;
 };
 
 #endif // USERPROFILPAGE_H

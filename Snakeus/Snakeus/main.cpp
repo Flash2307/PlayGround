@@ -13,7 +13,7 @@ int main( int argc, char** argv )
 	window.setFramerateLimit(30);
 	window.setVerticalSyncEnabled( false );
 
-	Game game(argc, argv, desktop );
+	Game game( argc, argv, desktop );
 
 	while( window.isOpen() )
 	{

@@ -44,6 +44,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
 
     this->setWindowTitle( "Console de jeux" );
     this->installEventFilter( new CommandSimulator() );
+    this->setArrowKeyRepeat( false );
 }
 
 QWidget* HomeWindow::prepareProfilPages()
@@ -64,6 +65,11 @@ QWidget* HomeWindow::prepareProfilPages()
 HomeWindow::~HomeWindow()
 {
 
+}
+
+void HomeWindow::setArrowKeyRepeat( bool enable_ )
+{
+    this->arrowKeyRepeat = enable_;
 }
 
 void HomeWindow::newMessageArrive( GamePadMsgType message_ )
@@ -92,6 +98,22 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
     {
         setDownArrow( message_, true );
     }
+
+    GamePadMsgType tmpMessage = message_;
+    setABtn( tmpMessage, isGamepadABtn( message_  ) && !isGamepadABtn( lastMessage ) );
+    setBBtn( tmpMessage, isGamepadBBtn( message_  ) && !isGamepadBBtn( lastMessage ) );
+    setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage ) );
+
+    if( !this->arrowKeyRepeat )
+    {
+        setUpArrow( tmpMessage, isGamepadUpArrow( message_  ) && !isGamepadUpArrow( lastMessage ) );
+        setDownArrow( tmpMessage, isGamepadDownArrow( message_  ) && !isGamepadDownArrow( lastMessage ) );
+        setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage ) );
+        setRigthArrow( tmpMessage, isGamepadRigthArrow( message_  ) && !isGamepadRigthArrow( lastMessage ) );
+    }
+
+    lastMessage = message_;
+    message_ = tmpMessage;
 
     if( profilViewIndex == viewIndex )
     {
@@ -157,6 +179,7 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
 
     gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
+    this->setArrowKeyRepeat( true );
     this->hide();
 }
 
@@ -164,6 +187,7 @@ void HomeWindow::gameStop( const QString& failueMessage_ )
 {
     this->gameSelection.setFailureMessage( failueMessage_ );
     this->views->setCurrentIndex( gameSelectionViewIndex );
+    this->setArrowKeyRepeat( false );
     this->show();
 }
 

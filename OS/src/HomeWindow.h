@@ -21,6 +21,7 @@ public:
 
     bool isOnProfilPage() const;
     bool isOnGameSelectionPage() const;
+    void setArrowKeyRepeat( bool enable_ );
 public slots:
     void lauchGame( GameConfig gameConfig_ );
     void gameStop( const QString& failueMessage_ );
@@ -40,6 +41,8 @@ private:
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
     DatabaseFacade dbFacade;
+    GamePadMsgType lastMessage;
+    bool arrowKeyRepeat = false;
 };
 
 #endif // HOMEWINDOW_H

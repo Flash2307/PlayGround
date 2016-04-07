@@ -9,8 +9,10 @@ constexpr size_t GameDestinationPort = 7755;
 constexpr static size_t MaxUser = 4;
 constexpr static int UpArrowBitNum = 3;
 constexpr static int DownArrowBitNum = 4;
-constexpr static int RigthArrowBitNum = 6;
 constexpr static int LeftArrowBitNum = 5;
+constexpr static int RigthArrowBitNum = 6;
+constexpr static int ABtnBitNum = 7;
+constexpr static int BBtnBitNum = 8;
 
 union CommandFrame
 {
@@ -134,5 +136,24 @@ inline GamePadMsgType& setRigthArrow( GamePadMsgType& message_, bool enable_ )
 
     return message_;
 }
+
+inline GamePadMsgType& setABtn( GamePadMsgType& message_, bool enable_ )
+{
+    message_.acc.other = enable_ ?
+                ( message_.acc.other | ( 1 << ABtnBitNum ) ) :
+                ( message_.acc.other & ~( 1 << ABtnBitNum ) );
+
+    return message_;
+}
+
+inline GamePadMsgType& setBBtn( GamePadMsgType& message_, bool enable_ )
+{
+    message_.acc.other = enable_ ?
+                ( message_.acc.other | ( 1 << BBtnBitNum ) ) :
+                ( message_.acc.other & ~( 1 << BBtnBitNum ) );
+
+    return message_;
+}
+
 
 #endif // GAMEPADMSG_H
