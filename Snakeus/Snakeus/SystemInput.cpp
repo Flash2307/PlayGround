@@ -12,6 +12,8 @@
 
 #include <thread>
 
+#include "Config.h"
+
 #ifndef NDEBUG
 
 static void printError( sf::Socket::Status error )
@@ -49,7 +51,7 @@ static void sendTestData()
 
 #endif
 
-#ifdef USE_KEYBOARD_FOR_MOVING
+#ifdef USE_GAMEPAD_FOR_MOVING
 
 void SystemInput::updateInput(SystemInput* systemInput_)
 {
