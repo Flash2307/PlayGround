@@ -102,7 +102,6 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
     GamePadMsgType tmpMessage = message_;
     setABtn( tmpMessage, isGamepadABtn( message_  ) && !isGamepadABtn( lastMessage ) );
     setBBtn( tmpMessage, isGamepadBBtn( message_  ) && !isGamepadBBtn( lastMessage ) );
-    setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage ) );
 
     if( !this->arrowKeyRepeat )
     {
@@ -173,8 +172,11 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
 {
     for( size_t index = 0; index < MaxUser; ++index )
     {
-        assert( profilPages[ index ] != nullptr );
-        gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
+        if( profilPages[ index ]->isConnected() )
+        {
+            assert( profilPages[ index ] != nullptr );
+            gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
+        }
     }
 
     gameProcess.startGame( gameConfig_ );
