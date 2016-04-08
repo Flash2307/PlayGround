@@ -18,7 +18,7 @@ enum GameCommand
 class SelectableWidget : public QWidget
 {
 public:
-    SelectableWidget( Game game, GameCommand command_);
+    SelectableWidget( QWidget* parent, Game game, GameCommand command_);
 
     inline void setSelected( bool isSelected_ ) {selected = isSelected_;setGameCommand(LAUNCH);}
     inline bool isSelected() const {return selected;}

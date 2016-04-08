@@ -11,6 +11,9 @@
 class QLabel;
 class QPushButton;
 class SelectableWidget;
+class QScrollArea;
+class QVBoxLayout;
+class QHBoxLayout;
 
 class GameSelection : public QWidget
 {
@@ -30,9 +33,11 @@ signals:
     void returnToProfileSelection();
 
 private:
-    void prepareFailureMessageLabel();
-
+    QVBoxLayout* pMainLayout;
     QLabel* pFailureMessageLabel;
+    QScrollArea* pScrollArea;
+    QWidget* pGameListWidget;
+    QHBoxLayout* pGameList;
 
     std::vector< Game > avaibleGames;    // Games base dir.
     QVector< SelectableWidget* > gamePanels;

@@ -48,30 +48,30 @@ GameSelection::GameSelection() :
 {
     detectAvaibleGame();
 
-    QHBoxLayout* pGameList = new QHBoxLayout();
+    pMainLayout = new QVBoxLayout(this);
+    pFailureMessageLabel = new QLabel(this);
+    pScrollArea = new QScrollArea(this);
+    pGameListWidget = new QWidget(pScrollArea);
+    pGameList = new QHBoxLayout(pScrollArea);
 
     foreach( Game game, avaibleGames )
     {
-        SelectableWidget* gamePanel = new SelectableWidget( game, LAUNCH );
-        gamePanel->setMaximumWidth( 410 );
+        SelectableWidget* gamePanel = new SelectableWidget( pScrollArea, game, LAUNCH );
         pGameList->addWidget( gamePanel );
         this->gamePanels.append( gamePanel );
     }
 
-    this->prepareFailureMessageLabel();
+    pFailureMessageLabel->hide();
 
-    QWidget* pGameListWidget = new QWidget();
     pGameListWidget->setLayout( pGameList );
 
-    QScrollArea* pScrollArea = new QScrollArea();
     pScrollArea->setWidget( pGameListWidget );
 
-    QVBoxLayout* pMainLayout = new QVBoxLayout();
-    pMainLayout->addWidget( this->pFailureMessageLabel );
+    pMainLayout->addWidget( pFailureMessageLabel );
     pMainLayout->addWidget( pScrollArea );
 
-    this->setLayout( pMainLayout );
-    this->setWidgetSelected( true );
+    setLayout( pMainLayout );
+    setWidgetSelected( true );
 }
 
 void GameSelection::setWidgetSelected( bool selected_ )
@@ -81,12 +81,6 @@ void GameSelection::setWidgetSelected( bool selected_ )
         this->gamePanels[ selectedGameIndex ]->setSelected( selected_ );
         this->gamePanels[ selectedGameIndex ]->update();
     }
-}
-
-void GameSelection::prepareFailureMessageLabel()
-{
-    this->pFailureMessageLabel = new QLabel();
-    this->pFailureMessageLabel->hide();
 }
 
 void GameSelection::setFailureMessage( const QString& failueMessage_ )

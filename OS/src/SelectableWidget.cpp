@@ -6,7 +6,8 @@
 #include <QPushButton>
 
 
-SelectableWidget::SelectableWidget( Game game, GameCommand command_ ) :
+SelectableWidget::SelectableWidget( QWidget* parent, Game game, GameCommand command_ ) :
+    QWidget(parent),
     game(game),
     command( command_ ),
     selected( false )
@@ -31,9 +32,8 @@ SelectableWidget::SelectableWidget( Game game, GameCommand command_ ) :
 
     labelGameDescription = new QLabel(game.getDescription(), this);
     labelGameDescription->setWordWrap( true );
-    labelGameDescription->setFont( QFont( "Arial", 24 ) );
+    labelGameDescription->setFont( QFont( "Arial", 18 ) );
     labelGameDescription->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    labelGameDescription->setStyleSheet("QLabel { background-color: #A0A0A0A0; border: 1px solid black; }");
     labelGameDescription->setAlignment(Qt::AlignTop);
     layoutGlobal->addWidget(labelGameDescription);
 
@@ -41,14 +41,14 @@ SelectableWidget::SelectableWidget( Game game, GameCommand command_ ) :
     labelStartGame->setAlignment(Qt::AlignCenter);
     labelStartGame->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     labelStartGame->setFixedHeight(50);
-    labelStartGame->setMargin(15);
+    labelStartGame->setFont( QFont( "Arial", 24, QFont::Bold ) );
     layoutGlobal->addWidget(labelStartGame);
 
     labelStatistics = new QLabel("Voir statistiques", this);
     labelStatistics->setAlignment(Qt::AlignCenter);
     labelStatistics->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     labelStatistics->setFixedHeight(50);
-    labelStatistics ->setMargin(15);
+    labelStatistics->setFont( QFont( "Arial", 24, QFont::Bold ) );
     layoutGlobal->addWidget(labelStatistics);
 
 
@@ -90,7 +90,7 @@ void SelectableWidget::paintEvent( QPaintEvent* pPaintEvent_ )
     else
         painter.setBrush( QBrush( QColor( 255, 255, 255 ) ) );
 
-    painter.drawRect( QRect( 0, 0, width, height ) );
+    //painter.drawRect( QRect( 0, 0, width, height ) );
     painter.setBrush( QBrush( QColor( 255, 255, 255 ) ) );
     painter.drawRect( QRect( 5, 5, width - 11, height - 11 ) );
     painter.end();
