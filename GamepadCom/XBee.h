@@ -2,6 +2,7 @@
 #define XBEE_H_INCLUDED
 
 #include "mbed.h"
+#include "BufferedSerial.h"
 
 class Configuration;
 
@@ -55,9 +56,9 @@ public:
     void sendTransmitStatus( uint16_t adress16Bits );
     bool receive( XBeeTrame& xbeeTrame_ );
     
-    Serial& serialRef();
+    BufferedSerial& serialRef();
 private:
-    Serial xbeeIO;
+    BufferedSerial xbeeIO;
     DigitalOut rst;
 };
 

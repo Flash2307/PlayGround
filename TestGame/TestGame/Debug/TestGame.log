@@ -1,0 +1,13 @@
+﻿La génération a démarré 2016-04-06 11:39:02.
+     1>Projet "Q:\PlayGround\TestGame\TestGame\TestGame.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>Link:
+         TestGame.vcxproj -> Q:\PlayGround\TestGame\Debug\TestGame.exe
+       PostBuildEvent:
+         copy Q:\PlayGround\TestGame\Debug\TestGame.exe Q:\PlayGround\TestGame\..\games\TestGame\game.exe
+         :VCEnd
+                 1 fichier(s) copié(s).
+     1>Génération du projet "Q:\PlayGround\TestGame\TestGame\TestGame.vcxproj" terminée (Build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:00.93

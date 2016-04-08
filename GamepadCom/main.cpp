@@ -1,5 +1,6 @@
 #include "CoordinatorXbee.h"
 #include "EndPointXbee.h"
+#include "Config.h"
 
 // Communication avec le teminal.
 Serial terminal( USBTX, USBRX );
@@ -7,10 +8,17 @@ Serial terminal( USBTX, USBRX );
 // Mandatoire pour l'accès au système de fichiers.
 LocalFileSystem local("local");  
 
+extern size_t gamepadId;
+
 int main() 
 {    
+    DEBUG_DISPLAY( terminal.printf( "Started...\r\n" ); )
+
     // Chargement de la configuration.
     Configuration config( "/local/config.txt", "/local/hostname.txt" );
+    
+    gamepadId = config.getGamepadId();
+    terminal.baud( SERIAL_BAUD_RATE );
     
     // La configuration détemine si le device est un coordinateur ou un routeur.
     if( config.isCoordinator() )
@@ -27,8 +35,12 @@ int main()
         led2 = 1;
         
         EndpointXbee enpoint;
+        enpoint.setCollectionFn( &fetchAccelerometerData, 0 );
         enpoint.exec( config );
+        
     }
     
     return 0;
 }
+
+

@@ -6,13 +6,15 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QStackedLayout>
+#include <QVBoxLayout>
 
 #include "CommandSimulator.h"
 #include "GameProcess.h"
+#include "Config.h"
 
 HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent ),
-    gamepadCom( "/dev/ttyACM0" )
+    gamepadCom( COM_PORT_NAME )
 {
     for( size_t index = 0; index < MaxUser; ++index )
     {
@@ -42,18 +44,20 @@ HomeWindow::HomeWindow(QWidget *parent) :
 
     this->setWindowTitle( "Console de jeux" );
     this->installEventFilter( new CommandSimulator() );
+    this->setArrowKeyRepeat( false );
 }
 
 QWidget* HomeWindow::prepareProfilPages()
 {
     QWidget* pCentralWidget = new QWidget();
-    QHBoxLayout* pHBox = new QHBoxLayout( pCentralWidget );
 
-    pHBox->addWidget( profilPages[ 0 ] );
-    pHBox->addWidget( profilPages[ 1 ] );
-    pHBox->addWidget( profilPages[ 2 ] );
-    pHBox->addWidget( profilPages[ 3 ] );
-    pCentralWidget->setLayout( pHBox );
+    QVBoxLayout* pBox = new QVBoxLayout( pCentralWidget );
+    pBox->addWidget( profilPages[ 0 ] );
+    pBox->addWidget( profilPages[ 1 ] );
+    pBox->addWidget( profilPages[ 2 ] );
+    pBox->addWidget( profilPages[ 3 ] );
+    pBox->setAlignment( Qt::AlignHCenter );
+    pCentralWidget->setLayout( pBox );
 
     return pCentralWidget;
 }
@@ -63,16 +67,58 @@ HomeWindow::~HomeWindow()
 
 }
 
+void HomeWindow::setArrowKeyRepeat( bool enable_ )
+{
+    this->arrowKeyRepeat = enable_;
+}
+
+void HomeWindow::updateGamepadMessage( GamePadMsgType& message_ )
+{
+    if( message_.acc.y > 400 )
+    {
+        setLeftArrow( message_, true );
+    }
+    else if( message_.acc.y < -400 )
+    {
+        setRigthArrow( message_, true );
+    }
+
+    if( message_.acc.x  > 400 )
+    {
+        setUpArrow( message_, true );
+    }
+    else if( message_.acc.x < -400 )
+    {
+        setDownArrow( message_, true );
+    }
+
+    size_t userIndex = getGamepadIndex( message_ );
+    GamePadMsgType tmpMessage = message_;
+    setABtn( tmpMessage, isGamepadABtn( message_  ) && !isGamepadABtn( lastMessage[ userIndex ] ) );
+    setBBtn( tmpMessage, isGamepadBBtn( message_  ) && !isGamepadBBtn( lastMessage[ userIndex ] ) );
+
+    if( !this->arrowKeyRepeat )
+    {
+        setUpArrow( tmpMessage, isGamepadUpArrow( message_  ) && !isGamepadUpArrow( lastMessage[ userIndex ] ) );
+        setDownArrow( tmpMessage, isGamepadDownArrow( message_  ) && !isGamepadDownArrow( lastMessage[ userIndex ] ) );
+        setLeftArrow( tmpMessage, isGamepadLeftArrow( message_  ) && !isGamepadLeftArrow( lastMessage[ userIndex ] ) );
+        setRigthArrow( tmpMessage, isGamepadRigthArrow( message_  ) && !isGamepadRigthArrow( lastMessage[ userIndex ] ) );
+    }
+
+    lastMessage[ userIndex ] = message_;
+    message_ = tmpMessage;
+}
+
 void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 {
     int viewIndex = views->currentIndex();
-    CommandFrame commandFrame;
 
-    commandFrame.cmd = message_;
+    qDebug() << "acc.x: " << message_.acc.x;
+    qDebug() << "acc.y: " << message_.acc.y;
+    qDebug() << "acc.z: " << message_.acc.z;
+    qDebug() << "acc.other: " << message_.acc.other;
 
-    qDebug() << "acc.x: " << commandFrame.acc.x;
-    qDebug() << "acc.y: " << commandFrame.acc.y;
-    qDebug() << "acc.z: " << commandFrame.acc.z;
+    ON_USE_GAMEPAD( updateGamepadMessage( message_ ); )
 
     if( profilViewIndex == viewIndex )
     {
@@ -95,16 +141,19 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 
 void HomeWindow::userReady()
 {
-    bool atLeastOnePlayer = false;
-
-    bool isEveryOneReady = std::all_of( profilPages, profilPages + MaxUser,
-    [ &atLeastOnePlayer ]( UserProfilPage* userProfile )
+    bool isEveryOneReady = false;
+    for(UserProfilPage* item : profilPages)
     {
-        atLeastOnePlayer = atLeastOnePlayer || userProfile->isActivated();
-        return userProfile->isReady() || !userProfile->isActivated();
-    });
+        if(item->isConnected())
+            isEveryOneReady = true;
+        else if(item->isConnecting())
+        {
+            isEveryOneReady = false;
+            break;
+        }
+    }
 
-    if( isEveryOneReady && atLeastOnePlayer )
+    if( isEveryOneReady )
     {
         this->views->setCurrentIndex( this->gameSelectionViewIndex );
     }
@@ -129,18 +178,25 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
 {
     for( size_t index = 0; index < MaxUser; ++index )
     {
-        assert( profilPages[ index ] != nullptr );
-        gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
+        if( profilPages[ index ]->isConnected() )
+        {
+            assert( profilPages[ index ] != nullptr );
+            gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
+        }
     }
 
     gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
+    this->setArrowKeyRepeat( true );
+    this->hide();
 }
 
 void HomeWindow::gameStop( const QString& failueMessage_ )
 {
     this->gameSelection.setFailureMessage( failueMessage_ );
     this->views->setCurrentIndex( gameSelectionViewIndex );
+    this->setArrowKeyRepeat( false );
+    this->show();
 }
 
 

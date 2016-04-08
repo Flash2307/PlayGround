@@ -1,12 +1,14 @@
 #include "CoordinatorXbee.h"
 
-#include "EthernetInterface.h"
-
 #include "Config.h"
 #include "Configuration.h"
+#include "TCPServerCom.h"
+#include "SensorDataCollection.h"
 #include "Util.h"
 
 extern Serial terminal;
+
+enum { HeaderChar = '~' };
 
 // Initialisation du coordinateur du xbee.
 CoordinatorXbee::CoordinatorXbee() :
@@ -17,31 +19,47 @@ CoordinatorXbee::CoordinatorXbee() :
 
 // Exécution du coodinateur, il ne fait que  reçevoir les données du xbee.
 void CoordinatorXbee::exec( const Configuration& config_ )
-{        
-    EthernetInterface eth;
-    eth.init(); //Use DHCP
-    eth.connect();
-    printf("IP Address is %s\n", eth.getIPAddress());
-    
-    TCPSocketConnection sock;
-    sock.connect( "mbed.org", 5000 );
-    
-    XBeeTrame xbeeTrame;
-    
+{   
     this->xbee.reset();
+    
     DEBUG_DISPLAY( config_.display( terminal ); )
+    
+    // Appel conditionnel à la boucle de xctu.
     CALL_XCTU_LOOP( XBee::xctuLink( this->xbee, terminal ); )
     
     this->xbee.init( config_ );
     
+    DEBUG_DISPLAY( terminal.printf( "Coordinator ready.\r\n" ); )
+    
     while(1) 
     {
-        if( xbee.receive( xbeeTrame ) )
-        {
-            DEBUG_DISPLAY( terminal.printf( "Received: %i\r\n", *(uint16_t*)xbeeTrame.trame.data ); )
-            sock.send( (char*)xbeeTrame.trame.data, sizeof( uint16_t ) );
-        }
+        collectAvaibleData();
     }
 }
 
+// Tente de lire une trame de réception de données venant du xbee.
+void CoordinatorXbee::collectAvaibleData()
+{
+    XBeeTrame xbeeTrame;
+           
+    if( xbee.receive( xbeeTrame ) )
+    {       
+        union
+        {
+            CommandType dataReceived;
+            uint8_t rawData[ sizeof( CommandType ) ];
+        };
+        
+        dataReceived = ( *(const CommandType*)xbeeTrame.trame.data );
+                
+        DEBUG_DISPLAY( displayHexArray( terminal, rawData, sizeof( CommandType ) ); )
+        
+        terminal.putc( HeaderChar );
+        
+        for( size_t index = 0; index < sizeof( CommandType ); ++index )
+        {
+            terminal.putc( rawData[ index ] );
+        }
+    }
+}
     

@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDirIterator>
+#include <QScrollArea>
 #include <QDebug>
 
 #include "FileLoader.h"
@@ -13,7 +14,7 @@
 constexpr char gameBaseDir[] = "./games";
 constexpr char gamePictureFileName[] = "picture.jpg";
 constexpr char gameDescriptionFileName[] = "description.txt";
-constexpr char gameAppFileName[] = "game";
+constexpr char gameAppFileName[] = GAME_APP_EXE_NAME;
 constexpr char selectedGameTagName[] = "elementWithFocus";
 constexpr char defaultGameImg[] = "./img/NoImage.jpg";
 constexpr char noDescriptionAvaibleText[] = "Aucune description du jeu disponible.";
@@ -85,9 +86,15 @@ GameSelection::GameSelection() :
     this->prepareBackToSelectionProfileBtn();
     this->prepareFailureMessageLabel();
 
+    QWidget* pGameListWidget = new QWidget();
+    pGameListWidget->setLayout( pGameList );
+
+    QScrollArea* pScrollArea = new QScrollArea();
+    pScrollArea->setWidget( pGameListWidget );
+
     QVBoxLayout* pMainLayout = new QVBoxLayout();
     pMainLayout->addWidget( this->pFailureMessageLabel );
-    pMainLayout->addLayout( pGameList );
+    pMainLayout->addWidget( pScrollArea );
     pMainLayout->addWidget( this->pBackToProfileSelection );
 
     this->setLayout( pMainLayout );
@@ -135,15 +142,14 @@ void GameSelection::detectAvaibleGame()
 
     while( it.hasNext() )
     {
+        it.next();
         QString gameName = it.fileName();
 
-        if( it.fileInfo().isDir() && gameName != "." )
+        if( it.fileInfo().isDir() && gameName != "." && gameName != ".." )
         {
             qDebug() << "Game avaible: " << gameName;
             avaibleGames.append( gameName );
         }
-
-        it.next();
     }
 }
 
@@ -156,13 +162,16 @@ void GameSelection::lauchGameCommand()
         QString gameCmd( "%1/%2/%3" );
         gameCmd = gameCmd.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
 
-        qDebug() << "Start game " << gameCmd;
+        if( QFile::exists( gameCmd ) )
+        {
+            qDebug() << "Start game " << gameCmd;
 
-        GameConfig gameConfig;
-        gameConfig.cmd = gameCmd;
-        gameConfig.workingDir = ".";
+            GameConfig gameConfig;
+            gameConfig.cmd = gameCmd;
+            gameConfig.workingDir = ".";
 
-        emit startGame( gameConfig );
+            emit startGame( gameConfig );
+        }
     }
 }
 
@@ -175,7 +184,7 @@ void GameSelection::process( GamePadMsgType message_ )
     else if( isGamepadABtn( message_ ) )
     {
         QPushButton* pButton = this->gamePanels[ selectedGameIndex ]->findChild< QPushButton* >( avaibleGames[ selectedGameIndex ] );
-         pButton->animateClick();
+        pButton->animateClick();
     }
     else if( this->gamePanels.size() > 0 )
     {
@@ -184,12 +193,14 @@ void GameSelection::process( GamePadMsgType message_ )
             setWidgetSelected( false );
             --selectedGameIndex;
             setWidgetSelected( true );
+            this->update();
         }
         else if( isGamepadRigthArrow( message_ ) && selectedGameIndex + 1 < (size_t)this->gamePanels.size() )
         {
             setWidgetSelected( false );
             ++selectedGameIndex;
             setWidgetSelected( true );
+            this->update();
         }
         else if( isGamepadUpArrow( message_ ) )
         {
