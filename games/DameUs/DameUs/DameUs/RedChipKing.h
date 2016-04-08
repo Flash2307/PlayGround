@@ -8,7 +8,7 @@ public:
 	RedChipKing();
 	~RedChipKing();
 	void load();
-	bool isSelected();
+	void getPossibleDestinations(Move*[], Board*);
 };
 
 

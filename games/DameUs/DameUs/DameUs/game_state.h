@@ -27,7 +27,7 @@ class game_state
 public:
 	game_state()
 	{
-		this->state = NULL;
+		this->state = nullptr;
 	}
 
 	void SetWindow(sf::RenderWindow* window)
@@ -37,12 +37,12 @@ public:
 
 	void SetState(tiny_state* state)
 	{
-		if (this->state != NULL)
+		if (this->state != nullptr)
 		{
 			this->state->Destroy(this->window);
 		}
 		this->state = state;
-		if (this->state != NULL)
+		if (this->state != nullptr)
 		{
 			this->state->Initialize(this->window);
 		}
@@ -50,14 +50,14 @@ public:
 
 	void Update()
 	{
-		if (this->state != NULL)
+		if (this->state != nullptr)
 		{
 			this->state->Update(this->window);
 		}
 	}
 	void Render()
 	{
-		if (this->state != NULL)
+		if (this->state != nullptr)
 		{
 			this->state->Render(this->window);
 		}
@@ -65,7 +65,7 @@ public:
 
 	~game_state()
 	{
-		if (this->state != NULL)
+		if (this->state != nullptr)
 		{
 			this->state->Destroy(this->window);
 		}

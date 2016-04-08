@@ -72,6 +72,7 @@
     <ClCompile Include="BlackChip.cpp" />
     <ClCompile Include="BlackChipKing.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="DeadChipBuffer.cpp" />
     <ClCompile Include="GameControls.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="Highlight.cpp" />
@@ -79,8 +80,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_game.cpp" />
     <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="RedChip.cpp" />
     <ClCompile Include="RedChipKing.cpp" />
+    <ClCompile Include="TurnState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlackChip.h" />
@@ -88,6 +91,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Chip.h" />
     <ClInclude Include="Coordinates.h" />
+    <ClInclude Include="DeadChipBuffer.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameControls.h" />
     <ClInclude Include="GameInfo.h" />
@@ -97,8 +101,10 @@
     <ClInclude Include="KeyboardControlsPlayer1.h" />
     <ClInclude Include="main_game.h" />
     <ClInclude Include="main_menu.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="RedChip.h" />
     <ClInclude Include="RedChipKing.h" />
+    <ClInclude Include="TurnState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
