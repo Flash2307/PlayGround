@@ -8,6 +8,6 @@ public:
 	BlackChipKing();
 	~BlackChipKing();
 	void load();
-	bool isSelected();
+	void getPossibleDestinations(Move*[], Board*);
 };
 
