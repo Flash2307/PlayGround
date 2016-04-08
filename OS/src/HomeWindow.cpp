@@ -196,6 +196,7 @@ void HomeWindow::gameStop( const QString& failueMessage_ )
     this->views->setCurrentIndex( gameSelectionViewIndex );
     this->setArrowKeyRepeat( false );
     this->show();
+    this->setFocus();
 }
 
 

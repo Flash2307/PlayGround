@@ -6,6 +6,7 @@
 
 #include "GamepadMsg.h"
 #include "GameProcess.h"
+#include "Game.h"
 
 class QLabel;
 class QPushButton;
@@ -17,22 +18,23 @@ class GameSelection : public QWidget
 public:
     GameSelection();
     void setFailureMessage( const QString& failueMessage_ );
+
 public slots:
     void detectAvaibleGame();
     void lauchGameCommand();
     void process( GamePadMsgType message_ );
     void setWidgetSelected( bool selected_ );
+
 signals:
     void startGame( GameConfig gameConfig_ );
     void returnToProfileSelection();
+
 private:
     void prepareFailureMessageLabel();
-    void prepareBackToSelectionProfileBtn();
 
     QLabel* pFailureMessageLabel;
-    QPushButton* pBackToProfileSelection;
 
-    QVector< QString > avaibleGames;    // Games base dir.
+    std::vector< Game > avaibleGames;    // Games base dir.
     QVector< SelectableWidget* > gamePanels;
     size_t selectedGameIndex;
 };

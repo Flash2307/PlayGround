@@ -50,40 +50,14 @@ GameSelection::GameSelection() :
 
     QHBoxLayout* pGameList = new QHBoxLayout();
 
-    foreach( QString gameName, avaibleGames )
+    foreach( Game game, avaibleGames )
     {
-        QLabel* pGameTitleLabel = new QLabel( gameName );
-        pGameTitleLabel->setWordWrap( true );
-        pGameTitleLabel->setFont( QFont( "Arial", 48, QFont::Bold ) );
-
-        QLabel* pGamePixmap = new QLabel();
-        pGamePixmap->setPixmap( QPixmap( fetchGameImage( gameName ) ).scaled( 400, 600 ) );
-        pGamePixmap->setMaximumSize( QSize( 500, 800 ) );
-
-        QLabel* pGameDescriptionLabel = new QLabel( fetchGameDescription( gameName ) );
-        pGameDescriptionLabel->setWordWrap( true );
-        pGameDescriptionLabel->setFont( QFont( "Arial", 34 ) );
-
-        QPushButton* pStartGameBtn = new QPushButton();
-        pStartGameBtn->setObjectName( gameName );
-        pStartGameBtn->setMaximumWidth( 400 );
-        QObject::connect( pStartGameBtn, SIGNAL( clicked() ), this, SLOT( lauchGameCommand() ) );
-
-        QVBoxLayout* gamePreview = new QVBoxLayout();
-        gamePreview->addWidget( pGameTitleLabel );
-        gamePreview->addWidget( pGamePixmap );
-        gamePreview->addWidget( pGameDescriptionLabel );
-        gamePreview->addStretch();
-        gamePreview->addWidget( pStartGameBtn );
-
-        SelectableWidget* gamePanel = new SelectableWidget( gameName, GameCommand::Lauch, pStartGameBtn );
+        SelectableWidget* gamePanel = new SelectableWidget( game, LAUNCH );
         gamePanel->setMaximumWidth( 410 );
-        gamePanel->setLayout( gamePreview );
         pGameList->addWidget( gamePanel );
         this->gamePanels.append( gamePanel );
     }
 
-    this->prepareBackToSelectionProfileBtn();
     this->prepareFailureMessageLabel();
 
     QWidget* pGameListWidget = new QWidget();
@@ -95,7 +69,6 @@ GameSelection::GameSelection() :
     QVBoxLayout* pMainLayout = new QVBoxLayout();
     pMainLayout->addWidget( this->pFailureMessageLabel );
     pMainLayout->addWidget( pScrollArea );
-    pMainLayout->addWidget( this->pBackToProfileSelection );
 
     this->setLayout( pMainLayout );
     this->setWidgetSelected( true );
@@ -116,12 +89,6 @@ void GameSelection::prepareFailureMessageLabel()
     this->pFailureMessageLabel->hide();
 }
 
-void GameSelection::prepareBackToSelectionProfileBtn()
-{
-    this->pBackToProfileSelection = new QPushButton( "Back" );
-    QObject::connect( this->pBackToProfileSelection, SIGNAL( clicked() ), this, SIGNAL( returnToProfileSelection() ) );
-}
-
 void GameSelection::setFailureMessage( const QString& failueMessage_ )
 {
     if( failueMessage_.isEmpty() )
@@ -139,52 +106,51 @@ void GameSelection::setFailureMessage( const QString& failueMessage_ )
 void GameSelection::detectAvaibleGame()
 {
     QDirIterator it( gameBaseDir );
-
+    int id = 0;
     while( it.hasNext() )
     {
         it.next();
-        QString gameName = it.fileName();
+        QString name = it.fileName();
 
-        if( it.fileInfo().isDir() && gameName != "." && gameName != ".." )
+
+        if( it.fileInfo().isDir() && name != "." && name != ".." )
         {
-            qDebug() << "Game avaible: " << gameName;
-            avaibleGames.append( gameName );
+            qDebug() << "Game avaible: " << name;
+
+            QString path = QString("%1/%2/%3").arg(gameBaseDir).arg(name).arg(gameAppFileName);
+
+            avaibleGames.emplace_back(id++, name, path, fetchGameDescription(name) , QPixmap(fetchGameImage(name)));
         }
     }
 }
 
 void GameSelection::lauchGameCommand()
 {
-    QObject* pObj = sender();
+    GameConfig gameConfig;
+    gameConfig.cmd = gamePanels.at(selectedGameIndex)->getGamePath();
+    gameConfig.workingDir = ".";
 
-    if( pObj != nullptr && pObj->objectName().isEmpty() == false )
-    {
-        QString gameCmd( "%1/%2/%3" );
-        gameCmd = gameCmd.arg( gameBaseDir ).arg( pObj->objectName() ).arg( gameAppFileName );
+    qDebug() << "Start game " << gameConfig.cmd;
 
-        if( QFile::exists( gameCmd ) )
-        {
-            qDebug() << "Start game " << gameCmd;
-
-            GameConfig gameConfig;
-            gameConfig.cmd = gameCmd;
-            gameConfig.workingDir = ".";
-
-            emit startGame( gameConfig );
-        }
-    }
+    emit startGame( gameConfig );
 }
 
 void GameSelection::process( GamePadMsgType message_ )
 {
     if( isGamepadBBtn( message_ ) )
     {
-        this->pBackToProfileSelection->animateClick();
+        returnToProfileSelection();
     }
     else if( isGamepadABtn( message_ ) )
     {
-        QPushButton* pButton = this->gamePanels[ selectedGameIndex ]->findChild< QPushButton* >( avaibleGames[ selectedGameIndex ] );
-        pButton->animateClick();
+        GameCommand command = gamePanels[ selectedGameIndex ]->getCommand();
+
+        if(command == LAUNCH)
+            lauchGameCommand();
+        else if(command == SHOW_STATS)
+        {
+            //TODO: Add stats page
+        }
     }
     else if( this->gamePanels.size() > 0 )
     {
@@ -204,11 +170,11 @@ void GameSelection::process( GamePadMsgType message_ )
         }
         else if( isGamepadUpArrow( message_ ) )
         {
-            this->gamePanels[ selectedGameIndex ]->nextCommand();
+            this->gamePanels[ selectedGameIndex ]->previousCommand();
         }
         else if( isGamepadDownArrow( message_ ) )
         {
-            this->gamePanels[ selectedGameIndex ]->previousCommand();
+            this->gamePanels[ selectedGameIndex ]->nextCommand();
         }
     }
 }
