@@ -10,15 +10,8 @@ Highlight::Highlight()
 
 Highlight::~Highlight()
 {
-	if (this->texture != nullptr)
-	{
-		delete this->texture;
-	}
-	if (this->coordinates != nullptr)
-	{
-		delete this->coordinates;
-	}
-	
+	delete this->texture;
+	delete this->coordinates;
 }
 
 void Highlight::load()
@@ -28,10 +21,6 @@ void Highlight::load()
 
 void Highlight::setCoordinates(int i, int j, sf::RenderWindow* window)
 {
-	if (this->coordinates == nullptr || this == nullptr)
-	{
-		return;
-	}
 	int height = window->getSize().y;
 	int width = window->getSize().x;
 

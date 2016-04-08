@@ -8,5 +8,5 @@ public:
 	BlackChip();
 	~BlackChip();
 	virtual void load();
-	virtual void getPossibleDestinations(Move*[], Board*);
+	virtual bool isSelected();
 };

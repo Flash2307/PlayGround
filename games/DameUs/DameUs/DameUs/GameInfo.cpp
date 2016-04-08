@@ -1,10 +1,10 @@
 #include "GameInfo.h"
 #include <iostream>
 
-GameInfo* GameInfo::instance = nullptr;
+GameInfo* GameInfo::instance = NULL;
 GameInfo* GameInfo::getInstance()
 {
-	if (instance == nullptr)
+	if (instance == NULL)
 	{
 		instance = new GameInfo();
 	}
@@ -19,15 +19,6 @@ GameInfo::GameInfo()
 
 	this->redChipsRemaining = 12;
 	this->blackChipsRemaining = 12;
-
-	this->currentPosition = new Coordinates();
-	hopping = false;
-}
-
-void GameInfo::resetCounters()
-{
-	this->blackChipsRemaining = 12;
-	this->redChipsRemaining = 12;
 }
 
 GameInfo::~GameInfo()
@@ -57,30 +48,4 @@ int GameInfo::getRedChipsRemaining()
 Turn GameInfo::getTurn()
 {
 	return currentTurn;
-}
-
-void GameInfo::setCurrentCoordinates(int j, int i)
-{
-	this->currentPosition->x = i;
-	this->currentPosition->y = j;
-}
-
-Coordinates* GameInfo::getCurrentCoodinates()
-{
-	return this->currentPosition;
-}
-
-void GameInfo::changeTurn()
-{
-	switch (this->currentTurn)
-	{
-	case Red:
-		this->currentTurn = Black;
-		break;
-	case Black:
-		this->currentTurn = Red;
-		break;
-	default:
-		break;
-	}
 }

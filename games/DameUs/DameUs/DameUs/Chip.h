@@ -2,40 +2,12 @@
 
 #include "Entity.h"
 #include "Coordinates.h"
-#include "Move.h"
-#include <iostream>
-class Board;
-
-enum ChipType
-{
-	Normal,
-	King
-};
 
 class Chip
 {
 public:
-	bool isSelected(){ return this->selected; }
-	void select(){ 
-		std::cout << this->coordinates->y << this->coordinates->x << " selected\n";
-		this->selected = true; }
-	void unSelect() { 
-		std::cout << this->coordinates->y << this->coordinates->x << " unSelected\n";
-		this->selected = false; }
-	virtual void getPossibleDestinations(Move*[], Board*){}
-
+	virtual bool isSelected(){ return false; }
 	virtual void load(){}
-
-	ChipType getChipType()
-	{
-		return this->chipType;
-	}
-	
-	void setChipType(ChipType chipType)
-	{
-		this->chipType = chipType;
-	}
-
 	Entity* getTexture()
 	{
 		return this->texture;
@@ -51,15 +23,8 @@ public:
 		this->coordinates->y = preambuleHeight + j * 75;
 
 		this->texture->setPosition(this->coordinates->x, this->coordinates->y);
-		this->coordinates->x = i;
-		this->coordinates->y = j;
 	}
 
-	void setCoordinates(int i, int j)
-	{
-		this->coordinates->x = i;
-		this->coordinates->y = j;
-	}
 	Coordinates* getCoordinates()
 	{
 		return coordinates;
@@ -67,6 +32,4 @@ public:
 protected:
 	Entity* texture;
 	Coordinates* coordinates;
-	bool selected;
-	ChipType chipType;
 };

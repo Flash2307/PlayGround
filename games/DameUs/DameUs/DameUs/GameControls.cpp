@@ -1,10 +1,10 @@
 #include "GameControls.h"
 
 
-GameControls* GameControls::instance = nullptr;
+GameControls* GameControls::instance = NULL;
 GameControls* GameControls::getInstance()
 	{
-		if (instance == nullptr)
+		if (instance == NULL)
 		{
 			instance = new GameControls(new KeyboardControlsPlayer1(), new KeyboardControlsPlayer1());
 		}
