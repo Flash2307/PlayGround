@@ -1,0 +1,3 @@
+Un à quatre joueurs
+
+Version de base du jeu Zataka.
