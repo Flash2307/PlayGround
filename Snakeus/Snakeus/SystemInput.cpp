@@ -12,6 +12,8 @@
 
 #include <thread>
 
+#include "Config.h"
+
 #ifndef NDEBUG
 
 static void printError( sf::Socket::Status error )
@@ -49,20 +51,7 @@ static void sendTestData()
 
 #endif
 
-/*
-
-std::for_each( players.begin(), players.end(),
-[]( Player& player_ )
-{
-if( player_.isValid() )
-{
-player_.setLeftKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Left ) );
-player_.setRightKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::Right ) );
-player_.setAKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) );
-player_.setBKeyPressed( sf::Keyboard::isKeyPressed( sf::Keyboard::Key::B ) );
-}
-});
-*/
+#ifdef USE_GAMEPAD_FOR_MOVING
 
 void SystemInput::updateInput(SystemInput* systemInput_)
 {
@@ -106,6 +95,30 @@ void SystemInput::updateInput(SystemInput* systemInput_)
 
 	socket.unbind();
 }
+
+#else
+
+void SystemInput::updateInput(SystemInput* systemInput_)
+{
+	while (systemInput_->run)
+	{
+		std::for_each(systemInput_->players.begin(), systemInput_->players.end(),
+			[](Player& player_)
+		{
+			if (player_.isValid())
+			{
+				player_.setLeftKeyPressed(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left));
+				player_.setRightKeyPressed(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right));
+				player_.setAKeyPressed(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A));
+				player_.setBKeyPressed(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::B));
+			}
+		});
+
+		sf::sleep( sf::microseconds( 10 ) );
+	}
+}
+
+#endif
 
 SystemInput::SystemInput( int argc_, char** argv_ ) :
 	run( true )

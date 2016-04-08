@@ -2,13 +2,23 @@
 #define CONFIG_H_INCLUDED
 
 #define FAST_BAUD_RATE 1
-#define USE_KEYBOARD_FOR_LOCAL_DEBUG 1
+#define USE_KEYBOARD_FOR_LOCAL_DEBUG 0
+#define AUTO_DETECT_COM_PORT 0
+
+#if AUTO_DETECT_COM_PORT == 0
+#   ifdef _MSC_VER
+#       define COM_PORT_NAME "COM4"
+#   else
+#       define COM_PORT_NAME "/dev/ttyACM0"
+#   endif
+#   define CALL_AUTO_DETECT_COM_PORT( CALL )
+#else
+#   define CALL_AUTO_DETECT_COM_PORT( CALL ) CALL
+#endif
 
 #ifdef _MSC_VER
-#   define COM_PORT_NAME "COM4"
 #   define GAME_APP_EXE_NAME "game.exe"
 #else
-#   define COM_PORT_NAME "/dev/ttyACM0"
 #   define GAME_APP_EXE_NAME "game"
 #endif
 
