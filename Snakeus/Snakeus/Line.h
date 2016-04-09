@@ -33,6 +33,7 @@ private:
 	Player player;
 
 	int holeCounter;
+	int pointCount;
 	double angle;
 	sf::Color playerColor;
 

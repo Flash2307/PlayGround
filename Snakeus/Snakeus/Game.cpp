@@ -21,7 +21,8 @@ Game::Game( int argc_, char** argv_, const sf::VideoMode& desktop_ ) :
 	pCollisionGrid( std::make_shared< CollisionGrid >( worldWidth(), screenHeight(), GRID_SCALE ) ),
 	hasPlayerAlive( true ),
 	quit( false ),
-	scoreSended( false )
+	scoreSended( false ),
+	isStatBoardRendered( false )
 {
 
 	this->initRessources();
@@ -141,8 +142,11 @@ void Game::sendStatictics()
 
 void Game::draw(sf::RenderWindow* pWindow_)
 {
-	renderStatBoard( pWindow_ );
-
+	if(!isStatBoardRendered)
+	{
+		this->renderStatBoard(pWindow_);
+		isStatBoardRendered = true;
+	}
 	if( this->hasPlayerAlive )
 	{
 		this->renderLines( pWindow_ );
@@ -174,13 +178,13 @@ void Game::renderLines( sf::RenderWindow* pWindow_ )
 		if( pLine_ != nullptr )
 		{
 			pLine_->draw( pWindow_ );
-			this->renderLineStat( pWindow_, *pLine_ );
 		}
 	});
 }
 
 void Game::renderEndGameMessages( sf::RenderWindow* pWindow_ )
 {
+	renderStatBoard(pWindow_);
 	std::for_each( this->lines.begin(), this->lines.end(),
 	[ this, pWindow_ ]( LinePtrType& pLine_ )
 	{

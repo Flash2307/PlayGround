@@ -40,6 +40,7 @@ Line::Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid
 	pNextPoint( std::make_unique< Circle >( player_.spawnX(), player_.spawnY(), CIRCLE_RAY ) ),
 	player( player_ ),
 	holeCounter( 0 ),
+	pointCount( 0 ),
 	angle( 0 ),
 	playerColor( getUserColor( player_.getIndex() ) ),
 	inHole( false ),
@@ -86,7 +87,7 @@ void Line::update()
 				detectCollision();
 				pNextPoint = pCollisionGrid->append( std::move( pNextPoint ) );
 			}
-
+			pointCount++;
 			inHole = false;
 		}
 		else if( holeCounter >= HOLE_FREQUENCY + HOLE_LENGTH )
@@ -99,7 +100,7 @@ void Line::update()
 		}
 
 		holeCounter++;
-		this->player.setScore( this->getPointCount() );
+		this->player.setScore( pointCount );
 	}
 }
 
@@ -139,7 +140,7 @@ void Line::draw( sf::RenderWindow* window )
 	assert( pNextPoint != nullptr );
 	Circle* pNext = pNextPoint->pNext;
 
-	while( pNext != nullptr )
+	if( pNext != nullptr )
 	{
 		shape.setPosition( pNext->posX, pNext->posY );
 		window->draw( shape );
@@ -170,15 +171,6 @@ double Line::getAngle() const
 
 size_t Line::getPointCount() const
 {
-	Circle* pNext = pNextPoint->pNext;
-	size_t pointCount = 1;
-
-	while( pNext != nullptr )
-	{
-		++pointCount;
-		pNext = pNext->pNext;
-	}
-
 	return pointCount;
 }
 
