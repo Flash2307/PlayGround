@@ -8,9 +8,9 @@
 
 SelectableWidget::SelectableWidget( QWidget* parent, Game game, GameCommand command_ ) :
     QWidget(parent),
-    game(game),
+    selected( false ),
     command( command_ ),
-    selected( false )
+    game(game)
 {   
     this->setFixedWidth(420);
 

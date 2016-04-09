@@ -18,8 +18,8 @@ public:
 
 private:
     int id;
-    QString path;
     QString name;
+    QString path;
     QString description;
     QPixmap picture;
 };
