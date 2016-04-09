@@ -22,7 +22,7 @@ Game::Game( int argc_, char** argv_, const sf::VideoMode& desktop_ ) :
 	hasPlayerAlive( true ),
 	quit( false ),
 	scoreSended( false ),
-	isStatBoardRendered( false )
+	clearScreen( true )
 {
 
 	this->initRessources();
@@ -120,6 +120,7 @@ void Game::reset()
 	this->hasPlayerAlive = true;
 	this->pCollisionGrid->clear();
 	this->resetAllLines();
+	this->clearScreen = true;
 }
 
 void Game::sendStatictics()
@@ -142,10 +143,13 @@ void Game::sendStatictics()
 
 void Game::draw(sf::RenderWindow* pWindow_)
 {
-	if(!isStatBoardRendered)
+	if(clearScreen)
 	{
+		pWindow_->clear();
+		pWindow_->display();
+		pWindow_->clear();
 		this->renderStatBoard(pWindow_);
-		isStatBoardRendered = true;
+		clearScreen = false;
 	}
 	if( this->hasPlayerAlive )
 	{

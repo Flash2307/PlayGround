@@ -7,8 +7,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#define SPEED 2.5f
-#define TURN_SPEED 0.07f
+#define SPEED 4.0f
+#define TURN_SPEED 0.11f
 
 #define HOLE_FREQUENCY 100
 #define HOLE_LENGTH 10
@@ -134,23 +134,20 @@ void Line::detectCollision()
 
 void Line::draw( sf::RenderWindow* window )
 {
-	sf::CircleShape shape(3.f);
-	shape.setFillColor( playerColor );
-
-	assert( pNextPoint != nullptr );
-	Circle* pNext = pNextPoint->pNext;
-
-	if( pNext != nullptr )
+	if( !inHole )
 	{
-		shape.setPosition( pNext->posX, pNext->posY );
-		window->draw( shape );
-		pNext = pNext->pNext;
-	}
+		sf::CircleShape shape(3.f);
+		shape.setFillColor( playerColor );
 
-	if( inHole )
-	{
-		shape.setPosition( pNextPoint->posX, pNextPoint->posY );
-		window->draw( shape );
+		assert( pNextPoint != nullptr );
+		Circle* pNext = pNextPoint->pNext;
+
+		if( pNext != nullptr )
+		{
+			shape.setPosition( pNext->posX, pNext->posY );
+			window->draw( shape );
+			pNext = pNext->pNext;
+		}
 	}
 }
 
