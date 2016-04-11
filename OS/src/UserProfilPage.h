@@ -57,7 +57,7 @@ private:
 private:
     int selectedProfileIndex = 0;
     State state = NOT_CONNECTED;
-    std::vector<Profile>& profiles;
+    std::vector<Profile> profiles;
 
     // UI
     QVBoxLayout* layoutGlobal = nullptr;

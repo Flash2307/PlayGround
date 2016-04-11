@@ -28,6 +28,7 @@ public slots:
     void newMessageArrive( GamePadMsgType );
     void userReady();
     void showProfilSelectionView();
+    void saveScores( const std::vector< UserScore >& scores_ );
 private:
     QWidget* prepareProfilPages();
     void updateGamepadMessage( GamePadMsgType& message_ );

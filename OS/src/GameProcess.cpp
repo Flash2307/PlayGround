@@ -3,6 +3,7 @@
 #include <QDebug>
 
 constexpr char logFilePath[] = "./games/log.txt";
+constexpr char ScoreCommandName[] = "Score";
 
 GameProcess::GameProcess() :
     lastState( QProcess::NotRunning )
@@ -59,7 +60,30 @@ void GameProcess::readyReadStandardError()
 
 void GameProcess::readyReadStandardOutput()
 {
-    // Command from the game arrive, answer on game stdin
+    QString line = this->currentGame.readAllStandardOutput();
+    QTextStream stream( &line );
+    QString command;
+    int userIndex = -1;
+    int score = 0;
+
+    std::vector< UserScore > scores;
+
+    while( !stream.atEnd() )
+    {
+        stream >> command;
+        stream >> userIndex;
+        stream >> score;
+
+        if( command == ScoreCommandName )
+        {
+            scores.emplace_back( gameConfig.gameName, userIndex, score );
+        }
+    }
+
+    if( !scores.empty() )
+    {
+        emit saveScores( scores );
+    }
 }
 
 void GameProcess::startGame( GameConfig gameConfig_ )

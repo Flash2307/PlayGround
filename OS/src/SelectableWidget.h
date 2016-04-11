@@ -25,6 +25,7 @@ public:
 
     inline GameCommand getCommand() const {return command;}
     inline QString getGamePath() const {return game.getPath();}
+    inline Game getGame() const { return game; }
 
     void nextCommand();
     void previousCommand();

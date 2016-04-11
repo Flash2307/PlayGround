@@ -18,6 +18,11 @@ HomeWindow::HomeWindow(QWidget *parent) :
 {
     std::vector<Profile> profiles = db.getUsers();
 
+    if( profiles.empty() )
+    {
+        profiles.emplace_back( 12, "Gabriel", QPixmap( "./img/NoImage.jpg" ) );
+    }
+
     for( size_t index = 0; index < MaxUser; ++index )
     {\
         profilPages[ index ] = new UserProfilPage(profiles);
@@ -28,6 +33,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     QObject::connect( &gameSelection, SIGNAL( startGame( GameConfig ) ), this, SLOT( lauchGame( GameConfig ) ) );
     QObject::connect( &gameSelection, SIGNAL( returnToProfileSelection() ), this, SLOT( showProfilSelectionView() ) );
     QObject::connect( &gameProcess, SIGNAL( gameStop( const QString& ) ), this, SLOT( gameStop( const QString& ) ) );
+    QObject::connect( &gameProcess, SIGNAL( saveScores(const std::vector<UserScore>& ) ), this, SLOT( saveScores(const std::vector<UserScore>& ) ) );
 
 
     this->views = new QStackedLayout();
@@ -141,6 +147,17 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
     }
 }
 
+void HomeWindow::saveScores( const std::vector< UserScore >& scores_ )
+{
+    for( UserScore score : scores_ )
+    {
+        int userIndex = score.userIndex;
+        const Profile& profile = profilPages[ userIndex ]->getSelectedProfile();
+        int userId = profile.getId();
+        db.addUserStat( userId, score.gameName, score.score );
+    }
+}
+
 void HomeWindow::userReady()
 {
     bool isEveryOneReady = false;
@@ -179,10 +196,11 @@ bool HomeWindow::isOnGameSelectionPage() const
 void HomeWindow::lauchGame( GameConfig gameConfig_ )
 {
     for( size_t index = 0; index < MaxUser; ++index )
-    {
+    {        
+        assert( profilPages[ index ] != nullptr );
+
         if( profilPages[ index ]->isConnected() )
         {
-            assert( profilPages[ index ] != nullptr );
             gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
         }
     }
@@ -190,7 +208,6 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
     gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
     this->setArrowKeyRepeat( true );
-    this->hide();
 }
 
 void HomeWindow::gameStop( const QString& failueMessage_ )

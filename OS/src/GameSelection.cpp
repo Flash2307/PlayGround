@@ -123,6 +123,7 @@ void GameSelection::lauchGameCommand()
     GameConfig gameConfig;
     gameConfig.cmd = gamePanels.at(selectedGameIndex)->getGamePath();
     gameConfig.workingDir = ".";
+    gameConfig.gameName = gamePanels.at(selectedGameIndex)->getGame().getName();
 
     qDebug() << "Start game " << gameConfig.cmd;
 

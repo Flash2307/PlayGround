@@ -13,6 +13,22 @@ struct GameConfig
     QString cmd;
     QString workingDir;
     QString playerNames[ MaxUser ];
+    QString gameName;
+};
+
+struct UserScore
+{
+    UserScore( const QString& gameName_,int userIndex_, int score_ ) :
+        gameName( gameName_ ),
+        userIndex( userIndex_ ),
+        score( score_ )
+    {
+
+    }
+
+    QString gameName;
+    int userIndex;
+    int score;
 };
 
 class GameProcess : public QObject
@@ -31,6 +47,7 @@ public slots:
     void startGame( GameConfig gameConfig_ );
 signals:
     void gameStop( const QString& failureMessage_ );
+    void saveScores( const std::vector< UserScore >& scores_ );
 private:
     QProcess currentGame;
     QProcess::ProcessState lastState;
