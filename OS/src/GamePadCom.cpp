@@ -101,7 +101,6 @@ void GamePadCom::dataArrive()
             QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
             GamePadMsgType msg;
 
-            assert( (char)gamepadMsg[ 0 ] != HeaderChar );
             memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
 
             emit newMessageArrive( msg );

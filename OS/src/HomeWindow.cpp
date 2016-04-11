@@ -125,10 +125,12 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
 {
     int viewIndex = views->currentIndex();
 
+#ifdef SHOW_COMMAND_DATA
     qDebug() << "acc.x: " << message_.acc.x;
     qDebug() << "acc.y: " << message_.acc.y;
     qDebug() << "acc.z: " << message_.acc.z;
     qDebug() << "acc.other: " << message_.acc.other;
+#endif
 
     ON_USE_GAMEPAD( updateGamepadMessage( message_ ); )
 

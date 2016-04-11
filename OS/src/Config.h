@@ -4,6 +4,11 @@
 #define FAST_BAUD_RATE 1
 #define USE_KEYBOARD_FOR_LOCAL_DEBUG 1
 #define AUTO_DETECT_COM_PORT 0
+#define NDEBUG 1
+
+#if NDEBUG == 0
+#   define SHOW_COMMAND_DATA
+#endif
 
 #if AUTO_DETECT_COM_PORT == 0
 #   ifdef _MSC_VER
