@@ -44,7 +44,6 @@ private:
     int profilViewIndex;
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
-    DatabaseFacade dbFacade;
     GamePadMsgType lastMessage[ MaxUser ];
     bool arrowKeyRepeat = false;
 };

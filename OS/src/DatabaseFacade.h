@@ -11,6 +11,9 @@ class Profile;
 
 struct Score
 {
+    Score(QString userName, int score):
+        userName(userName), score(score){}
+
     QString userName;
     int score;
 };

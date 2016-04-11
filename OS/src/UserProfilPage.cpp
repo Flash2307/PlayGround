@@ -22,19 +22,10 @@ void applyTexture( QWidget* pWidget, const QString& texturePath )
     pWidget->setPalette(p);
 }
 
-UserProfilPage::UserProfilPage( std::vector<Profile>& profiles ) :
+UserProfilPage::UserProfilPage( std::vector<Profile> profiles ) :
     selectedProfileIndex(0),
     profiles(profiles)
 {
-    //TODO : get this from the database
-    profiles.emplace_back(0, "Kevin", QPixmap("img/NoImage.jpg"));
-    profiles.emplace_back(1, "Antoine", QPixmap("img/NoImage.jpg"));
-    profiles.emplace_back(2, "Gabriel", QPixmap("img/NoImage.jpg"));
-    profiles.emplace_back(3, "Joel", QPixmap("img/NoImage.jpg"));
-    profiles.emplace_back(4, "Benjamin", QPixmap("img/NoImage.jpg"));
-
-    qDebug() << profiles.size();
-
     this->setStyleSheet( readFiles( QStringList() << "css/GameProfil.css" ) );
     applyTexture( this, "./img/ProfilPage.jpg" );
 

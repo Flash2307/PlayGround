@@ -16,6 +16,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent ),
     gamepadCom( COM_PORT_NAME )
 {
+
     std::vector<Profile> profiles = db.getUsers();
 
     if( profiles.empty() )
@@ -24,7 +25,10 @@ HomeWindow::HomeWindow(QWidget *parent) :
     }
 
     for( size_t index = 0; index < MaxUser; ++index )
-    {\
+    {
+        if(profiles.size() > index)
+            qDebug() << profiles.at(index).getName();
+
         profilPages[ index ] = new UserProfilPage(profiles);
         QObject::connect( profilPages[ index ], SIGNAL( readyToPlay() ), this, SLOT( userReady() ) );
     }

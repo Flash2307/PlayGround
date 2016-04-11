@@ -35,7 +35,7 @@ class UserProfilPage : public QWidget
 {
     Q_OBJECT
 public:
-    UserProfilPage( std::vector<Profile>& profiles );
+    UserProfilPage( std::vector<Profile> profiles );
 
     void process( GamePadMsgType message_ );
 
