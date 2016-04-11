@@ -35,7 +35,7 @@ void GameProcess::stateChanged(QProcess::ProcessState newState)
         ( newState == QProcess::NotRunning && lastState == QProcess::NotRunning )
     )
     {
-        emit gameStop( QString( "Le jeux n'a pas pu être démarré." ) );
+        emit gameStop( QString( "Le jeu n'a pas pu être démarré." ) );
     }
 
     lastState = newState;
@@ -47,7 +47,7 @@ void GameProcess::gameFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
     if( exitStatus == QProcess::CrashExit || exitCode != 0 )
     {
-        failureMessage = "Le jeux c'est terminé de manière inatandu.";
+        failureMessage = "Le jeu c'est terminé de manière inatandu.";
     }
 
     emit gameStop( failureMessage );
@@ -67,6 +67,8 @@ void GameProcess::readyReadStandardOutput()
     int score = 0;
 
     std::vector< UserScore > scores;
+
+    qDebug() << "called ";
 
     while( !stream.atEnd() )
     {

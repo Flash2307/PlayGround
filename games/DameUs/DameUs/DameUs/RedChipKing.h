@@ -11,9 +11,5 @@ public:
 	void getPossibleDestinations(Move*[], Board*);
 };
 
-RedChipKing::RedChipKing()
-{
-	this->texture = new Entity();
-	this->load();
-}
+
 
