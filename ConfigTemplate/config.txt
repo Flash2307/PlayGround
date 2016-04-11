@@ -7,7 +7,13 @@ leftKeyPinIndex
 rigthKeyPinIndex
 aKeyPinIndex
 bKeyPinIndex
-accSda
-accScl  
+accSdaPinIndex
+accSclPinIndex  
+xbeeRxPinIndex
+xbeeTxPinIndex
+xbeeRstPinIndex
+rLedPinIndex
+gLedPinIndex
+bLedPinIndex
 00 00 00 00 00 00 01 28
 00 13 A2 00 40 A7 45 57
