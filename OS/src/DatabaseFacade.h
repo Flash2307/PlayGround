@@ -4,6 +4,10 @@
 #include <vector>
 
 #include <QString>
+#include <QtSql/QSqlDatabase>
+
+class QSqlDatabase;
+class Profile;
 
 struct Score
 {
@@ -15,12 +19,17 @@ class DatabaseFacade
 {
 public:
     DatabaseFacade();
+    ~DatabaseFacade();
 
-    static void connectUser( const QString& username_ );
-    static void addUserStat( int userId, const QString& gameName_, int score_ );
-    static std::vector< Score > getHightScores( const QString& gameName_ );
+    std::vector< Profile > getUsers();
+    void addUserStat( int userId, const QString& gameName_, int score_ );
+    std::vector< Score > getHightScores( const QString& gameName_ );
 private:
     void openConnexion();
+    void closeConnection();
+
+    bool connected;
+    QSqlDatabase db;
 };
 
 #endif // DATABASEFACADE_H

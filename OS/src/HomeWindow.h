@@ -32,6 +32,8 @@ private:
     QWidget* prepareProfilPages();
     void updateGamepadMessage( GamePadMsgType& message_ );
 
+    DatabaseFacade db;
+
     GamePadCom gamepadCom;
     GameSelection gameSelection;
     GameProcess gameProcess;
