@@ -16,6 +16,14 @@ public:
 	bool bKey();
 	bool enterKey();
 	bool escapeKey();
+	bool lastUpKey;
+	bool lastLeftKey;
+	bool lastRightKey;
+	bool lastDownKey;
+	bool lastAKey;
+	bool lastBKey;
+	bool lastEnterKey;
+	bool lastEscapeKey;
 
 private:
 
