@@ -59,6 +59,7 @@ void GameProcess::readyReadStandardError()
 
 void GameProcess::readyReadStandardOutput()
 {
+    qDebug() << this->currentGame.readAllStandardOutput();
     // Command from the game arrive, answer on game stdin
 }
 

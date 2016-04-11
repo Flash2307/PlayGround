@@ -35,7 +35,7 @@ class UserProfilPage : public QWidget
 {
     Q_OBJECT
 public:
-    UserProfilPage( std::vector<Profile>& profiles );
+    UserProfilPage( std::vector<Profile> profiles );
 
     void process( GamePadMsgType message_ );
 
@@ -57,7 +57,7 @@ private:
 private:
     int selectedProfileIndex = 0;
     State state = NOT_CONNECTED;
-    std::vector<Profile>& profiles;
+    std::vector<Profile> profiles;
 
     // UI
     QVBoxLayout* layoutGlobal = nullptr;
