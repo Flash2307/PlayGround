@@ -86,20 +86,20 @@ void HomeWindow::setArrowKeyRepeat( bool enable_ )
 
 void HomeWindow::updateGamepadMessage( GamePadMsgType& message_ )
 {
-    if( message_.acc.y > 400 )
+    if( message_.acc.y > -400 )
     {
         setLeftArrow( message_, true );
     }
-    else if( message_.acc.y < -400 )
+    else if( message_.acc.y < 400 )
     {
         setRigthArrow( message_, true );
     }
 
-    if( message_.acc.x  > 400 )
+    if( message_.acc.x  > -400 )
     {
         setUpArrow( message_, true );
     }
-    else if( message_.acc.x < -400 )
+    else if( message_.acc.x < 400 )
     {
         setDownArrow( message_, true );
     }
