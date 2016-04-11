@@ -25,6 +25,7 @@ public:
 	bool isInHole();
 	void kill();
 	void reset();
+	bool isScoreUpdated();
 private:
 	void detectCollision();
 
@@ -39,4 +40,5 @@ private:
 
 	bool inHole;
 	bool alive;
+	bool scoreUpdated;
 };
