@@ -5,7 +5,6 @@
 constexpr char logFilePath[] = "./games/log.txt";
 
 GameProcess::GameProcess() :
-    processStdin( &currentGame ),
     lastState( QProcess::NotRunning )
 {
     QObject::connect( &currentGame, SIGNAL( finished(int, QProcess::ExitStatus) ), this, SLOT( gameFinished(int, QProcess::ExitStatus) ) );
@@ -23,15 +22,17 @@ void GameProcess::newMessageArrive( GamePadMsgType message_ )
 {
     if( currentGame.state() == QProcess::Running )
     {
-        qDebug() << "Send message: " << message_;
-        processStdin << message_ << ' ';
-        processStdin.flush();
+        qDebug() << "Send message: " << message_.cmd;
+        comWithGame.writeDatagram( (const char*)&message_, sizeof( message_), QHostAddress::LocalHost, GameDestinationPort );
+        comWithGame.flush();
     }
 }
 
 void GameProcess::stateChanged(QProcess::ProcessState newState)
 {
-    if( newState == QProcess::NotRunning && lastState == QProcess::Starting )
+    if( ( newState == QProcess::NotRunning && lastState == QProcess::Starting ) ||
+        ( newState == QProcess::NotRunning && lastState == QProcess::NotRunning )
+    )
     {
         emit gameStop( QString( "Le jeux n'a pas pu être démarré." ) );
     }
@@ -79,5 +80,4 @@ void GameProcess::startGame( GameConfig gameConfig_ )
 
     currentGame.setWorkingDirectory( gameConfig_.workingDir );
     currentGame.start( gameConfig_.cmd, arguments );
-    processStdin.setDevice( &currentGame );
 }

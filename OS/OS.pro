@@ -8,6 +8,7 @@ QT       += core gui
 QT       += network
 QT       += testlib
 QT       += serialport
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -48,4 +49,6 @@ HEADERS  += HomeWindow.h \
     src/CommandSimulator.h \
     src/GameProcess.h \
     src/SelectableWidget.h \
-    tests/GamepadMsgSerialTest.h
+    tests/GamepadMsgSerialTest.h \
+    src/Config.h \
+    src/Profile.h

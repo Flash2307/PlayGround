@@ -1,0 +1,10 @@
+#pragma once
+
+#define USE_KEYBOARD_ELSE_GAMEPAD 0
+
+#if USE_KEYBOARD_ELSE_GAMEPAD == 1
+#	define USE_KEYBOARD_FOR_MOVING
+#else
+#	define USE_GAMEPAD_FOR_MOVING
+#endif
+

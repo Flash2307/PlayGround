@@ -23,6 +23,7 @@ public:
 
     bool isCoordinator() const;
     size_t getSensorUpdateTimeMs() const;
+    size_t getGamepadId() const;
     void getPanId( PanIdType panId_ ) const;
     void getMacAdress( MacAdressType macAdress_ ) const;
     std::string getHostname() const;
@@ -37,6 +38,7 @@ private:
 
     bool coordinatorRole;
     size_t sensorUpdateTimeMsc;
+    size_t gamepadId;
     PanIdType panId;
     MacAdressType coordinatorMacAdress;
     std::string hostname;

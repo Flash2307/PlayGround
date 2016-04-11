@@ -11,4 +11,3 @@ public:
 	void getPossibleDestinations(Move*[], Board*);
 };
 
-

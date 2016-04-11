@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QProcess>
-#include <QTextStream>
+#include <QUdpSocket>
 #include <QFile>
 
 #include "GamepadMsg.h"
@@ -33,8 +33,8 @@ signals:
     void gameStop( const QString& failureMessage_ );
 private:
     QProcess currentGame;
-    QTextStream processStdin;
     QProcess::ProcessState lastState;
+    QUdpSocket comWithGame;
     GameConfig gameConfig;
 };
 

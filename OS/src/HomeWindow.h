@@ -7,6 +7,7 @@
 #include "UserProfilPage.h"
 #include "GameSelection.h"
 #include "GameProcess.h"
+#include "DatabaseFacade.h"
 
 class QLabel;
 class QStackedLayout;
@@ -20,6 +21,7 @@ public:
 
     bool isOnProfilPage() const;
     bool isOnGameSelectionPage() const;
+    void setArrowKeyRepeat( bool enable_ );
 public slots:
     void lauchGame( GameConfig gameConfig_ );
     void gameStop( const QString& failueMessage_ );
@@ -28,6 +30,7 @@ public slots:
     void showProfilSelectionView();
 private:
     QWidget* prepareProfilPages();
+    void updateGamepadMessage( GamePadMsgType& message_ );
 
     GamePadCom gamepadCom;
     GameSelection gameSelection;
@@ -38,6 +41,9 @@ private:
     int profilViewIndex;
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
+    DatabaseFacade dbFacade;
+    GamePadMsgType lastMessage[ MaxUser ];
+    bool arrowKeyRepeat = false;
 };
 
 #endif // HOMEWINDOW_H

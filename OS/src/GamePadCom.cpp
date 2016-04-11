@@ -2,6 +2,8 @@
 
 #include <QtEndian>
 
+#include <cassert>
+
 static void printBytes( const QByteArray& bytes_ )
 {
     for( int index = 0; index < bytes_.size(); ++index )
@@ -40,7 +42,7 @@ GamePadCom::GamePadCom( const QString& serialPortName_ ) :
         }
         else
         {
-            mbedSerialBridge->setBaudRate( QSerialPort::Baud9600 );
+            mbedSerialBridge->setBaudRate( SERIAL_BAUD_RATE );
             mbedSerialBridge->setDataBits( QSerialPort::Data8 );
             mbedSerialBridge->setParity( QSerialPort::NoParity );
             mbedSerialBridge->setStopBits( QSerialPort::OneStop );
@@ -69,6 +71,8 @@ void GamePadCom::newConnection()
 
 void GamePadCom::dataArrive()
 {
+    constexpr static int HeaderChar = '~';
+
     QIODevice* pDevice = NULL;
 
     if( mbedSerialBridge == NULL )
@@ -80,19 +84,31 @@ void GamePadCom::dataArrive()
         pDevice = mbedSerialBridge;
     }
 
-    if( pDevice != nullptr && pDevice->bytesAvailable() >= (qint64)sizeof( GamePadMsgType ) )
+    if( pDevice != nullptr )
     {
-        QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
-        GamePadMsgType msg = 0;
+        char skip = '\0';
 
-        memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
-        printBytes( gamepadMsg );
+        while( ( pDevice->peek( &skip, 1 ), skip ) != HeaderChar && pDevice->bytesAvailable() > 0 )
+        {
+            pDevice->getChar( &skip );
+        }
 
-        CommandFrame commandFrame;
-        commandFrame.cmd = msg;
+        if( ( pDevice->peek( &skip, 1 ), skip ) == HeaderChar &&
+            pDevice->bytesAvailable() >= (qint64)( sizeof( GamePadMsgType ) + 1 ) )
+        {
+            pDevice->getChar( &skip );
 
+            QByteArray gamepadMsg = pDevice->read( sizeof( GamePadMsgType ) );
+            GamePadMsgType msg;
 
-        emit newMessageArrive( commandFrame.cmd );
+            assert( (char)gamepadMsg[ 0 ] != HeaderChar );
+            memcpy( &msg, gamepadMsg.data(), sizeof( msg ) );
+
+            emit newMessageArrive( msg );
+        }
     }
+
+
+
 
 }
