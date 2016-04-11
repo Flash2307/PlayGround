@@ -35,16 +35,17 @@ static sf::Color getUserColor( size_t index_ )
 	return sf::Color::Red;
 }
 
-Line::Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid_ ) :
-	pCollisionGrid( pCollisionGrid_ ),
-	pNextPoint( std::make_unique< Circle >( player_.spawnX(), player_.spawnY(), CIRCLE_RAY ) ),
-	player( player_ ),
-	holeCounter( 0 ),
-	pointCount( 0 ),
-	angle( 0 ),
-	playerColor( getUserColor( player_.getIndex() ) ),
-	inHole( false ),
-	alive( true )
+Line::Line(const Player& player_, const SharedCollisionGridType& pCollisionGrid_) :
+	pCollisionGrid(pCollisionGrid_),
+	pNextPoint(std::make_unique< Circle >(player_.spawnX(), player_.spawnY(), CIRCLE_RAY)),
+	player(player_),
+	holeCounter(0),
+	pointCount(0),
+	angle(0),
+	playerColor(getUserColor(player_.getIndex())),
+	inHole(false),
+	alive(true),
+	scoreUpdated(true)
 {
 
 }
@@ -56,6 +57,9 @@ void Line::reset()
 	this->angle = 0;
 	this->inHole = false;
 	this->alive = true;
+	this->scoreUpdated = true;
+	this->pointCount = 0;
+	player.setScore(0);
 }
 
 void Line::update()
@@ -194,4 +198,10 @@ bool Line::isInHole()
 void Line::kill()
 {
 	alive = false;
+	scoreUpdated = false;
+}
+
+bool Line::isScoreUpdated()
+{
+	return scoreUpdated;
 }

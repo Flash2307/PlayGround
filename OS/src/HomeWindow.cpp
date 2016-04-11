@@ -45,7 +45,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     this->gameSelectionViewIndex = this->views->addWidget( &this->gameSelection );
 
     QVBoxLayout* inGameLayout = new QVBoxLayout();
-    inGameLayout->addWidget( new QLabel( "Un jeux est en cours..." ) );
+    inGameLayout->addWidget( new QLabel( "Un jeu est en cours..." ) );
     QWidget* inGameView = new QWidget();
     inGameView->setLayout( inGameLayout );
     this->gameIsRunningViewIndex = this->views->addWidget( inGameView );
