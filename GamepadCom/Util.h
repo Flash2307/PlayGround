@@ -4,13 +4,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
-namespace mbed
-{
-
-class Serial;
-
-}
+#include "mbed.h"
 
 void displayHexArray( mbed::Serial& out, const uint8_t data[], size_t length );
+PinName mapPinNameFromIndex( size_t pinIndex_ );
 
 #endif

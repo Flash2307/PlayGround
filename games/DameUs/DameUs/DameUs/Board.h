@@ -25,7 +25,7 @@ public:
 	void removeChip(int j, int i);
 	void navigateRedChips();
 	void navigateBlackChips();
-	void navigateChips(Chip* chips[][8], Controls* controls);
+	void navigateChips(Chip* chips[][8]);
 	void chooseChip(Chip*[][8]);
 	void unChooseChips(Chip* chips[][8], bool forceUnselection);
 	bool hasNothing(int j, int i);

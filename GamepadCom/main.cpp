@@ -8,7 +8,7 @@ Serial terminal( USBTX, USBRX );
 // Mandatoire pour l'accès au système de fichiers.
 LocalFileSystem local("local");  
 
-extern size_t gamepadId;
+extern Sensors* pSensors;
 
 int main() 
 {    
@@ -17,7 +17,6 @@ int main()
     // Chargement de la configuration.
     Configuration config( "/local/config.txt", "/local/hostname.txt" );
     
-    gamepadId = config.getGamepadId();
     terminal.baud( SERIAL_BAUD_RATE );
     
     // La configuration détemine si le device est un coordinateur ou un routeur.
@@ -33,6 +32,9 @@ int main()
     {
         DigitalOut led2( LED2 );
         led2 = 1;
+        
+        Sensors sensors( config );
+        pSensors = &sensors;
         
         EndpointXbee enpoint;
         enpoint.setCollectionFn( &fetchAccelerometerData, 0 );

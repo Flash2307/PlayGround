@@ -67,6 +67,46 @@ std::string Configuration::getHostname() const
     return this->hostname;
 }
 
+size_t Configuration::getUpKeyPinIndex() const
+{
+    return upKeyPinIndex;
+}
+    
+size_t Configuration::getDownKeyPinIndex() const
+{
+    return downKeyPinIndex;
+}
+
+size_t Configuration::getLeftKeyPinIndex() const
+{
+    return leftKeyPinIndex;
+}
+
+size_t Configuration::getRigthKeyPinIndex() const
+{
+    return rigthKeyPinIndex;
+}
+
+size_t Configuration::getAKeyPinIndex() const
+{
+    return aKeyPinIndex;
+}
+
+size_t Configuration::getBKeyPinIndex() const
+{
+    return bKeyPinIndex;
+}
+
+size_t Configuration::getAccSda() const
+{
+    return accSda;
+}
+
+size_t Configuration::getAccScl() const
+{
+    return accScl;
+}
+
 // Affiche la configuration dans une communication sérial.
 void Configuration::display( mbed::Serial& out ) const
 {
@@ -74,6 +114,14 @@ void Configuration::display( mbed::Serial& out ) const
     out.printf( "Is coordinator: %i\r\n", (int)this->coordinatorRole );
     out.printf( "sensorUpdateTimeMsc: %i\r\n", sensorUpdateTimeMsc);
     out.printf( "gamepadId: %i\r\n", gamepadId);
+    out.printf( "upKeyPinIndex: %i\r\n", upKeyPinIndex);
+    out.printf( "downKeyPinIndex: %i\r\n", downKeyPinIndex );
+    out.printf( "leftKeyPinIndex: %i\r\n", leftKeyPinIndex );
+    out.printf( "rigthKeyPinIndex: %i\r\n", rigthKeyPinIndex );
+    out.printf( "aKeyPinIndex: %i\r\n", aKeyPinIndex );
+    out.printf( "bKeyPinIndex: %i\r\n", bKeyPinIndex );
+    out.printf( "accSda: %i\r\n", accSda );
+    out.printf( "accScl: %i\r\n", accScl );
     
     out.printf( "Pan Id: " );
     displayHexArray( out, this->panId, PanIdByteCount ); 
@@ -94,7 +142,21 @@ bool Configuration::loadConfiguration( const char* configurationPath_ )
     
     if( in.is_open() )
     {
-        in >> std::dec >> coordinatorRole >> sensorUpdateTimeMsc >> gamepadId;
+        in 
+            >> std::dec 
+            >> coordinatorRole 
+            >> sensorUpdateTimeMsc 
+            >> gamepadId
+            >> upKeyPinIndex
+            >> downKeyPinIndex
+            >> leftKeyPinIndex
+            >> rigthKeyPinIndex
+            >> aKeyPinIndex
+            >> bKeyPinIndex
+            >> accSda
+            >> accScl           
+            ;
+            
         readHexArray( in, panId, PanIdByteCount );
         readHexArray( in, coordinatorMacAdress, MacAdressByteCount );
         in.close();

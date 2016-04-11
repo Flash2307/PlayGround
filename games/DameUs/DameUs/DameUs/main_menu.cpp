@@ -7,28 +7,29 @@ void main_menu::Initialize(sf::RenderWindow* window)
 	this->gameControls = GameControls::getInstance();
 	this->selected = 0;
 
-	this->font = new sf::Font();
+	this->font = std::make_unique< sf::Font >();
 	this->font->loadFromFile("font.ttf");
 
-	this->title = new sf::Text("DameUs", *this->font, 256U);
+	this->title = std::make_unique< sf::Text >( "DameUs", *this->font, 256U );
 	this->title->setOrigin(this->title->getGlobalBounds().width / 2, this->title->getGlobalBounds().height / 2);
 	this->title->setPosition(window->getSize().x / 2, window->getSize().y / 8);
 
-	this->play = new sf::Text("2 Joueurs", *this->font, 128U);
+	this->play = std::make_unique< sf::Text >( "2 Joueurs", *this->font, 128U );
 	this->play->setOrigin(this->play->getGlobalBounds().width / 2, this->play->getGlobalBounds().height / 2);
 	this->play->setPosition(window->getSize().x / 2, window->getSize().y / 2);
 
-	this->quit = new sf::Text("Quitter", *this->font, 128U);
+	this->quit = std::make_unique< sf::Text >( "Quitter", *this->font, 128U );
 	this->quit->setOrigin(this->quit->getGlobalBounds().width / 2, this->quit->getGlobalBounds().height / 2);
 	this->quit->setPosition(window->getSize().x / 2, window->getSize().y / 2 + this->play->getGlobalBounds().height);
 }
+
 void main_menu::Update(sf::RenderWindow* window)
 {
-	if (this->gameControls->player1Controls->upKey() && !this->upKey)
+	if (this->gameControls->upKey() && !this->upKey)
 	{
 		this->selected -= 1;
 	}
-	if (this->gameControls->player1Controls->downKey() && !this->downKey)
+	if (this->gameControls->downKey() && !this->downKey)
 	{
 		this->selected += 1;
 	}
@@ -41,7 +42,7 @@ void main_menu::Update(sf::RenderWindow* window)
 		this->selected = 1;
 	}
 
-	if (this->gameControls->player1Controls->enterKey())
+	if (this->gameControls->aKey())
 	{
 		switch (this->selected)
 		{
@@ -53,9 +54,10 @@ void main_menu::Update(sf::RenderWindow* window)
 			break;
 		}
 	}
-	this->upKey = this->gameControls->player1Controls->upKey();
-	this->downKey = this->gameControls->player1Controls->downKey();
+	this->upKey = this->gameControls->upKey();
+	this->downKey = this->gameControls->downKey();
 }
+
 void main_menu::Render(sf::RenderWindow* window)
 {
 	this->play->setColor(sf::Color::White);
@@ -73,12 +75,4 @@ void main_menu::Render(sf::RenderWindow* window)
 	window->draw(*this->play);
 	window->draw(*this->quit);
 }
-void main_menu::Destroy(sf::RenderWindow* window)
-{/*
- 	delete this->font;
-	delete this->title;
-	delete this->play;
-	delete this->quit;
- */
 
-}

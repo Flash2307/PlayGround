@@ -1,19 +1,30 @@
 #pragma once
 #include "Controls.h"
-#include "KeyboardControlsPlayer1.h"
 
 class GameControls
 {
 
 public:
 	static GameControls* getInstance();
-	~GameControls();
-	Controls* player1Controls;
-	Controls* player2Controls;
 
-private:
-	GameControls(Controls*, Controls*);
-	static GameControls* instance;
+	GameControls();
+	~GameControls();
+
+	bool upKey();
+	bool leftKey();
+	bool rightKey();
+	bool downKey();
+	bool aKey();
+	bool bKey();
+
+	void clear();
+
+	bool upKeyPressed;
+	bool downKeyPressed;
+	bool leftKeyPressed;
+	bool rigthKeyPressed;
+	bool aKeyPressed;
+	bool bKeyPressed;
 
 };
 

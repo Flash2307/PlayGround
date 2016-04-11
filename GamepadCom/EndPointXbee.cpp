@@ -30,7 +30,7 @@ void EndpointXbee::exec( const Configuration& config_ )
     config_.getMacAdress( this->coordinatorMacAdress );
     
     DEBUG_DISPLAY( config_.display( terminal ); )
-    CALL_XCTU_LOOP( XBee::xctuLink(  this->xbee, terminal ); )
+    CALL_XCTU_LOOP( XBee::xctuLink( this->xbee, terminal ); )
     
     this->xbee.init( config_ );
     

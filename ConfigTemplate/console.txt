@@ -1,5 +1,13 @@
-0
-100
-0
+1 
+sensorUpdateTimeMsc 
+gamepadId
+upKeyPinIndex
+downKeyPinIndex
+leftKeyPinIndex
+rigthKeyPinIndex
+aKeyPinIndex
+bKeyPinIndex
+accSda
+accScl  
 00 00 00 00 00 00 01 28
 00 13 A2 00 40 A7 45 57

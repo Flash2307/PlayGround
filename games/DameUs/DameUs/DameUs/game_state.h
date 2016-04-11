@@ -2,32 +2,32 @@
 
 #include <SFML/Graphics.hpp>
 
-class tiny_state
+struct tiny_state
 {
-public:
-	virtual void Initialize(sf::RenderWindow* window)
-	{
-	}
+	virtual ~tiny_state() = default;
 
-	virtual void Update(sf::RenderWindow* window)
-	{
-	}
-
-	virtual void Render(sf::RenderWindow* window)
-	{
-	}
-
-	virtual void Destroy(sf::RenderWindow* window)
-	{
-	}
+	virtual void Initialize(sf::RenderWindow* window) = 0;
+	virtual void Update(sf::RenderWindow* window) = 0;
+	virtual void Render(sf::RenderWindow* window) = 0;
+	virtual void Destroy(sf::RenderWindow* window) {}
 };
 
 class game_state
 {
 public:
-	game_state()
+	game_state() :
+		state( nullptr ),
+		window( nullptr )
 	{
-		this->state = nullptr;
+
+	}
+
+	virtual ~game_state()
+	{
+		if (this->state != nullptr)
+		{
+			this->state->Destroy(this->window);
+		}
 	}
 
 	void SetWindow(sf::RenderWindow* window)
@@ -60,14 +60,6 @@ public:
 		if (this->state != nullptr)
 		{
 			this->state->Render(this->window);
-		}
-	}
-
-	~game_state()
-	{
-		if (this->state != nullptr)
-		{
-			this->state->Destroy(this->window);
 		}
 	}
 private:

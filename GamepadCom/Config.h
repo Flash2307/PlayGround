@@ -11,9 +11,13 @@
 #define USE_XCTU             0
 
 // Mettre à 0 pour activer l'affichage.
-#define NDEBUG               1
+#define NDEBUG               0
 
-#define FAST_BAUD_RATE       1
+#if USE_XCTU == 1
+#   define FAST_BAUD_RATE       0
+#else
+#   define FAST_BAUD_RATE       1
+#endif
 
 #if FAST_BAUD_RATE == 1
 #   define SERIAL_BAUD_RATE  115200
