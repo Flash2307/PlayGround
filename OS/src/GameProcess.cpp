@@ -3,6 +3,7 @@
 #include <QDebug>
 
 constexpr char logFilePath[] = "./games/log.txt";
+constexpr char ScoreCommandName[] = "Score";
 
 GameProcess::GameProcess() :
     lastState( QProcess::NotRunning )
@@ -34,7 +35,7 @@ void GameProcess::stateChanged(QProcess::ProcessState newState)
         ( newState == QProcess::NotRunning && lastState == QProcess::NotRunning )
     )
     {
-        emit gameStop( QString( "Le jeux n'a pas pu être démarré." ) );
+        emit gameStop( QString( "Le jeu n'a pas pu être démarré." ) );
     }
 
     lastState = newState;
@@ -46,7 +47,7 @@ void GameProcess::gameFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
     if( exitStatus == QProcess::CrashExit || exitCode != 0 )
     {
-        failureMessage = "Le jeux c'est terminé de manière inatandu.";
+        failureMessage = "Le jeu c'est terminé de manière inatandu.";
     }
 
     emit gameStop( failureMessage );
@@ -59,7 +60,32 @@ void GameProcess::readyReadStandardError()
 
 void GameProcess::readyReadStandardOutput()
 {
-    // Command from the game arrive, answer on game stdin
+    QString line = this->currentGame.readAllStandardOutput();
+    QTextStream stream( &line );
+    QString command;
+    int userIndex = -1;
+    int score = 0;
+
+    std::vector< UserScore > scores;
+
+    qDebug() << "called ";
+
+    while( !stream.atEnd() )
+    {
+        stream >> command;
+        stream >> userIndex;
+        stream >> score;
+
+        if( command == ScoreCommandName )
+        {
+            scores.emplace_back( gameConfig.gameName, userIndex, score );
+        }
+    }
+
+    if( !scores.empty() )
+    {
+        emit saveScores( scores );
+    }
 }
 
 void GameProcess::startGame( GameConfig gameConfig_ )

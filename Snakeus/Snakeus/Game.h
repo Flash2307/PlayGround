@@ -64,4 +64,5 @@ private:
 	bool hasPlayerAlive;
 	bool quit;
 	bool scoreSended;
+	bool clearScreen;
 };

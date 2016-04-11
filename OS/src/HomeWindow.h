@@ -28,9 +28,12 @@ public slots:
     void newMessageArrive( GamePadMsgType );
     void userReady();
     void showProfilSelectionView();
+    void saveScores( const std::vector< UserScore >& scores_ );
 private:
     QWidget* prepareProfilPages();
     void updateGamepadMessage( GamePadMsgType& message_ );
+
+    DatabaseFacade db;
 
     GamePadCom gamepadCom;
     GameSelection gameSelection;
@@ -41,7 +44,6 @@ private:
     int profilViewIndex;
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
-    DatabaseFacade dbFacade;
     GamePadMsgType lastMessage[ MaxUser ];
     bool arrowKeyRepeat = false;
 };

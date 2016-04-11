@@ -16,9 +16,20 @@ HomeWindow::HomeWindow(QWidget *parent) :
     QMainWindow( parent ),
     gamepadCom( COM_PORT_NAME )
 {
+
+    std::vector<Profile> profiles = db.getUsers();
+
+    if( profiles.empty() )
+    {
+        profiles.emplace_back( 12, "Gabriel", QPixmap( "./img/NoImage.jpg" ) );
+    }
+
     for( size_t index = 0; index < MaxUser; ++index )
     {
-        profilPages[ index ] = new UserProfilPage( index + 1 );
+        if(profiles.size() > index)
+            qDebug() << profiles.at(index).getName();
+
+        profilPages[ index ] = new UserProfilPage(profiles);
         QObject::connect( profilPages[ index ], SIGNAL( readyToPlay() ), this, SLOT( userReady() ) );
     }
 
@@ -26,6 +37,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     QObject::connect( &gameSelection, SIGNAL( startGame( GameConfig ) ), this, SLOT( lauchGame( GameConfig ) ) );
     QObject::connect( &gameSelection, SIGNAL( returnToProfileSelection() ), this, SLOT( showProfilSelectionView() ) );
     QObject::connect( &gameProcess, SIGNAL( gameStop( const QString& ) ), this, SLOT( gameStop( const QString& ) ) );
+    QObject::connect( &gameProcess, SIGNAL( saveScores(const std::vector<UserScore>& ) ), this, SLOT( saveScores(const std::vector<UserScore>& ) ) );
 
 
     this->views = new QStackedLayout();
@@ -33,7 +45,7 @@ HomeWindow::HomeWindow(QWidget *parent) :
     this->gameSelectionViewIndex = this->views->addWidget( &this->gameSelection );
 
     QVBoxLayout* inGameLayout = new QVBoxLayout();
-    inGameLayout->addWidget( new QLabel( "Un jeux est en cours..." ) );
+    inGameLayout->addWidget( new QLabel( "Un jeu est en cours..." ) );
     QWidget* inGameView = new QWidget();
     inGameView->setLayout( inGameLayout );
     this->gameIsRunningViewIndex = this->views->addWidget( inGameView );
@@ -139,6 +151,17 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
     }
 }
 
+void HomeWindow::saveScores( const std::vector< UserScore >& scores_ )
+{
+    for( UserScore score : scores_ )
+    {
+        int userIndex = score.userIndex;
+        const Profile& profile = profilPages[ userIndex ]->getSelectedProfile();
+        int userId = profile.getId();
+        db.addUserStat( userId, score.gameName, score.score );
+    }
+}
+
 void HomeWindow::userReady()
 {
     bool isEveryOneReady = false;
@@ -177,10 +200,11 @@ bool HomeWindow::isOnGameSelectionPage() const
 void HomeWindow::lauchGame( GameConfig gameConfig_ )
 {
     for( size_t index = 0; index < MaxUser; ++index )
-    {
+    {        
+        assert( profilPages[ index ] != nullptr );
+
         if( profilPages[ index ]->isConnected() )
         {
-            assert( profilPages[ index ] != nullptr );
             gameConfig_.playerNames[ index ] = profilPages[ index ]->getUsername();
         }
     }
@@ -188,7 +212,6 @@ void HomeWindow::lauchGame( GameConfig gameConfig_ )
     gameProcess.startGame( gameConfig_ );
     this->views->setCurrentIndex( gameIsRunningViewIndex );
     this->setArrowKeyRepeat( true );
-    this->hide();
 }
 
 void HomeWindow::gameStop( const QString& failueMessage_ )
@@ -197,6 +220,7 @@ void HomeWindow::gameStop( const QString& failueMessage_ )
     this->views->setCurrentIndex( gameSelectionViewIndex );
     this->setArrowKeyRepeat( false );
     this->show();
+    this->setFocus();
 }
 
 

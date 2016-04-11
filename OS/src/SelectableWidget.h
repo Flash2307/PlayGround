@@ -2,36 +2,50 @@
 #define SELECTABLEWIDGET_H
 
 #include <QWidget>
+#include <QHBoxLayout>
+#include <QLabel>
+
+#include "Game.h"
 
 class QPushButton;
 
-enum class GameCommand
+enum GameCommand
 {
-    Lauch,
-    ShowStat,
-    LoadSavedGame
+    LAUNCH,
+    SHOW_STATS
 };
 
 class SelectableWidget : public QWidget
 {
 public:
-    SelectableWidget( const QString& gameName_, GameCommand command_, QPushButton* pCommandBtn_ );
+    SelectableWidget( QWidget* parent, Game game, GameCommand command_);
 
-    void setSelected( bool isSelected_ );
-    bool isSelected() const;
+    inline void setSelected( bool isSelected_ ) {selected = isSelected_;setGameCommand(LAUNCH);}
+    inline bool isSelected() const {return selected;}
 
-    void setGameCommand( GameCommand command_ );
-    GameCommand getCommand() const;
+    inline GameCommand getCommand() const {return command;}
+    inline QString getGamePath() const {return game.getPath();}
+    inline Game getGame() const { return game; }
 
     void nextCommand();
     void previousCommand();
+
 protected:
     void paintEvent(QPaintEvent *pe);
+    void setGameCommand( GameCommand command_ );
+
 private:
-    QString gameName;
-    GameCommand command;
-    QPushButton* pCommandBtn;
     bool selected;
+
+    GameCommand command;
+    Game game;
+
+    QVBoxLayout* layoutGlobal;
+    QLabel* labelGameName;
+    QLabel* labelGameImage;
+    QLabel* labelGameDescription;
+    QLabel* labelStartGame;
+    QLabel* labelStatistics;
 };
 
 #endif // SELECTABLEWIDGET_H

@@ -7,8 +7,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#define SPEED 2.5f
-#define TURN_SPEED 0.07f
+#define SPEED 4.0f
+#define TURN_SPEED 0.11f
 
 #define HOLE_FREQUENCY 100
 #define HOLE_LENGTH 10
@@ -35,15 +35,17 @@ static sf::Color getUserColor( size_t index_ )
 	return sf::Color::Red;
 }
 
-Line::Line( const Player& player_, const SharedCollisionGridType& pCollisionGrid_ ) :
-	pCollisionGrid( pCollisionGrid_ ),
-	pNextPoint( std::make_unique< Circle >( player_.spawnX(), player_.spawnY(), CIRCLE_RAY ) ),
-	player( player_ ),
-	holeCounter( 0 ),
-	angle( 0 ),
-	playerColor( getUserColor( player_.getIndex() ) ),
-	inHole( false ),
-	alive( true )
+Line::Line(const Player& player_, const SharedCollisionGridType& pCollisionGrid_) :
+	pCollisionGrid(pCollisionGrid_),
+	pNextPoint(std::make_unique< Circle >(player_.spawnX(), player_.spawnY(), CIRCLE_RAY)),
+	player(player_),
+	holeCounter(0),
+	pointCount(0),
+	angle(0),
+	playerColor(getUserColor(player_.getIndex())),
+	inHole(false),
+	alive(true),
+	scoreUpdated(true)
 {
 
 }
@@ -55,6 +57,9 @@ void Line::reset()
 	this->angle = 0;
 	this->inHole = false;
 	this->alive = true;
+	this->scoreUpdated = true;
+	this->pointCount = 0;
+	player.setScore(0);
 }
 
 void Line::update()
@@ -86,7 +91,7 @@ void Line::update()
 				detectCollision();
 				pNextPoint = pCollisionGrid->append( std::move( pNextPoint ) );
 			}
-
+			pointCount++;
 			inHole = false;
 		}
 		else if( holeCounter >= HOLE_FREQUENCY + HOLE_LENGTH )
@@ -99,7 +104,7 @@ void Line::update()
 		}
 
 		holeCounter++;
-		this->player.setScore( this->getPointCount() );
+		this->player.setScore( pointCount );
 	}
 }
 
@@ -133,23 +138,20 @@ void Line::detectCollision()
 
 void Line::draw( sf::RenderWindow* window )
 {
-	sf::CircleShape shape(3.f);
-	shape.setFillColor( playerColor );
-
-	assert( pNextPoint != nullptr );
-	Circle* pNext = pNextPoint->pNext;
-
-	while( pNext != nullptr )
+	if( !inHole )
 	{
-		shape.setPosition( pNext->posX, pNext->posY );
-		window->draw( shape );
-		pNext = pNext->pNext;
-	}
+		sf::CircleShape shape(3.f);
+		shape.setFillColor( playerColor );
 
-	if( inHole )
-	{
-		shape.setPosition( pNextPoint->posX, pNextPoint->posY );
-		window->draw( shape );
+		assert( pNextPoint != nullptr );
+		Circle* pNext = pNextPoint->pNext;
+
+		if( pNext != nullptr )
+		{
+			shape.setPosition( pNext->posX, pNext->posY );
+			window->draw( shape );
+			pNext = pNext->pNext;
+		}
 	}
 }
 
@@ -170,15 +172,6 @@ double Line::getAngle() const
 
 size_t Line::getPointCount() const
 {
-	Circle* pNext = pNextPoint->pNext;
-	size_t pointCount = 1;
-
-	while( pNext != nullptr )
-	{
-		++pointCount;
-		pNext = pNext->pNext;
-	}
-
 	return pointCount;
 }
 
@@ -205,4 +198,10 @@ bool Line::isInHole()
 void Line::kill()
 {
 	alive = false;
+	scoreUpdated = false;
+}
+
+bool Line::isScoreUpdated()
+{
+	return scoreUpdated;
 }

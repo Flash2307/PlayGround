@@ -5,79 +5,78 @@
 #include <QPainter>
 #include <QPushButton>
 
-SelectableWidget::SelectableWidget( const QString& gameName_, GameCommand command_, QPushButton* pCommandBtn_ ) :
-    gameName( gameName_ ),
+
+SelectableWidget::SelectableWidget( QWidget* parent, Game game, GameCommand command_ ) :
+    QWidget(parent),
+    selected( false ),
     command( command_ ),
-    pCommandBtn( pCommandBtn_ ),
-    selected( false )
-{
-    assert( this->pCommandBtn != nullptr );
+    game(game)
+{   
+    this->setFixedWidth(420);
+
+    layoutGlobal = new QVBoxLayout(this);
+    this->setLayout(layoutGlobal);
+    layoutGlobal->setAlignment(Qt::AlignHCenter);
+
+    labelGameName = new QLabel(game.getName(), this);
+    labelGameName->setWordWrap( true );
+    labelGameName->setFont( QFont( "Arial", 48, QFont::Bold ) );
+    layoutGlobal->addWidget(labelGameName);
+
+    labelGameImage = new QLabel(this);
+    labelGameImage->setFixedSize(400, 400);
+    labelGameImage->setMargin(20);
+    labelGameImage->setPixmap(game.getPicture());
+    labelGameImage->setScaledContents(true);
+    layoutGlobal->addWidget(labelGameImage);
+
+    labelGameDescription = new QLabel(game.getDescription(), this);
+    labelGameDescription->setWordWrap( true );
+    labelGameDescription->setFont( QFont( "Arial", 18 ) );
+    labelGameDescription->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    labelGameDescription->setAlignment(Qt::AlignTop);
+    layoutGlobal->addWidget(labelGameDescription);
+
+    labelStartGame = new QLabel("Lancer le jeu", this);
+    labelStartGame->setAlignment(Qt::AlignCenter);
+    labelStartGame->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    labelStartGame->setFixedHeight(50);
+    labelStartGame->setFont( QFont( "Arial", 24, QFont::Bold ) );
+    layoutGlobal->addWidget(labelStartGame);
+
+    labelStatistics = new QLabel("Voir statistiques", this);
+    labelStatistics->setAlignment(Qt::AlignCenter);
+    labelStatistics->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    labelStatistics->setFixedHeight(50);
+    labelStatistics->setFont( QFont( "Arial", 24, QFont::Bold ) );
+    layoutGlobal->addWidget(labelStatistics);
+
+
     this->setGameCommand( command_ );
-}
-
-void SelectableWidget::setSelected( bool isSelected_ )
-{
-    this->selected = isSelected_;
-}
-
-bool SelectableWidget::isSelected() const
-{
-    return this->selected;
 }
 
 void SelectableWidget::setGameCommand( GameCommand command_ )
 {
     this->command = command_;
+    labelStartGame->setStyleSheet("QLabel { background-color: #00000000; border: 1px solid black; }");
+    labelStatistics->setStyleSheet("QLabel { background-color: #00000000; border: 1px solid black; }");
 
-    switch( this->command )
-    {
-    case GameCommand::Lauch:
-        this->pCommandBtn->setText( QString( "Débuter %1" ).arg( this->gameName ) );
-        break;
-    case GameCommand::LoadSavedGame:
-        this->pCommandBtn->setText( QString( "Charger une partie de %1" ).arg( this->gameName ) );
-        break;
-    case GameCommand::ShowStat:
-        this->pCommandBtn->setText( QString( "Voir les statistiques de %1" ).arg( this->gameName ) );
-        break;
-    }
-}
-
-GameCommand SelectableWidget::getCommand() const
-{
-    return this->command;
+    if(selected && command == LAUNCH)
+        labelStartGame->setStyleSheet("QLabel { background-color: #FF00FF00; border: 1px solid black; }");
+    else if(selected && command == SHOW_STATS)
+        labelStatistics->setStyleSheet("QLabel { background-color: #FF00FF00; border: 1px solid black; }");
 }
 
 void SelectableWidget::nextCommand()
 {
-    switch( this->command )
-    {
-    case GameCommand::Lauch:
-        this->setGameCommand( GameCommand::LoadSavedGame );
-        break;
-    case GameCommand::LoadSavedGame:
-        this->setGameCommand( GameCommand::ShowStat );
-        break;
-    case GameCommand::ShowStat:
-        this->setGameCommand( GameCommand::Lauch );
-        break;
-    }
+    if(command != SHOW_STATS)
+        setGameCommand((GameCommand)(command + 1));
 }
 
 void SelectableWidget::previousCommand()
 {
-    switch( this->command )
-    {
-    case GameCommand::Lauch:
-        this->setGameCommand( GameCommand::ShowStat );
-        break;
-    case GameCommand::LoadSavedGame:
-        this->setGameCommand( GameCommand::Lauch );
-        break;
-    case GameCommand::ShowStat:
-        this->setGameCommand( GameCommand::LoadSavedGame );
-        break;
-    }
+    if(command != LAUNCH)
+        setGameCommand((GameCommand)(command - 1));
 }
 
 void SelectableWidget::paintEvent( QPaintEvent* pPaintEvent_ )
@@ -87,17 +86,13 @@ void SelectableWidget::paintEvent( QPaintEvent* pPaintEvent_ )
     int height = this->frameGeometry().height();
 
     if( this->selected )
-    {
         painter.setBrush( QBrush( QColor( 0, 255, 0 ) ) );
-    }
     else
-    {
-        painter.setBrush( QBrush( QColor( 255, 0, 0 ) ) );
-    }
+        painter.setBrush( QBrush( QColor( 255, 255, 255 ) ) );
 
-    painter.drawRect( QRect( 0, 0, width, height ) );
+    //painter.drawRect( QRect( 0, 0, width, height ) );
     painter.setBrush( QBrush( QColor( 255, 255, 255 ) ) );
-    painter.drawRect( QRect( 3, 3, width - 6, height - 6 ) );
+    painter.drawRect( QRect( 5, 5, width - 11, height - 11 ) );
     painter.end();
 
     QWidget::paintEvent( pPaintEvent_ );

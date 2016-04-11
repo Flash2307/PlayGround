@@ -25,6 +25,7 @@ public:
 	bool isInHole();
 	void kill();
 	void reset();
+	bool isScoreUpdated();
 private:
 	void detectCollision();
 
@@ -33,9 +34,11 @@ private:
 	Player player;
 
 	int holeCounter;
+	int pointCount;
 	double angle;
 	sf::Color playerColor;
 
 	bool inHole;
 	bool alive;
+	bool scoreUpdated;
 };

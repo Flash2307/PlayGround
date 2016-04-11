@@ -74,9 +74,11 @@ void main_menu::Render(sf::RenderWindow* window)
 	window->draw(*this->quit);
 }
 void main_menu::Destroy(sf::RenderWindow* window)
-{
-	delete this->font;
+{/*
+ 	delete this->font;
 	delete this->title;
 	delete this->play;
 	delete this->quit;
+ */
+
 }

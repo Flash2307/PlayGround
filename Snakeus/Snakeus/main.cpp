@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
-#include <direct.h>
 
 #include "Game.h"
 
@@ -25,7 +24,6 @@ int main( int argc, char** argv )
 				window.close();
 		}
 
-		window.clear();
 		game.update();
 		game.draw(&window);
 		window.display();
