@@ -54,6 +54,9 @@
     <ClCompile Include="GameControls.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardControlsPlayer1.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
     <ClCompile Include="RedChip.cpp">
       <Filter>Source Files\Objects\Chips</Filter>
     </ClCompile>
@@ -96,6 +99,9 @@
       <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="Controls.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardControlsPlayer1.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="GameControls.h">

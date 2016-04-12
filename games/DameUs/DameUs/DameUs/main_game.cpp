@@ -1,14 +1,10 @@
-#include <string>
-#include <sstream>
-
 #include "main_game.h"
 #include "main_menu.h"
 #include "Chip.h"
 #include "RedChipKing.h"
 #include "BlackChipKing.h"
-#include "GameControls.h"
-
-
+#include <string>
+#include <sstream>
 
 void main_game::Initialize(sf::RenderWindow* window)
 {
@@ -112,9 +108,9 @@ void main_game::setChipsRemainingText()
 
 void main_game::manageExit()
 {
-	//if (this->gameControls->escapeKey())
+	if (this->gameControls->player1Controls->escapeKey())
 	{
-	//	coreState.SetState(new main_menu());
+		coreState.SetState(new main_menu());
 	}
 }
 
@@ -204,7 +200,19 @@ void main_game::manageDestinationHighlight(Move* positions[], Chip* selectedChip
 
 	this->board->setHighlight(positions[destinationIndex]->newCoordinates->y, positions[destinationIndex]->newCoordinates->x );
 
-	GameControls* controls = GameControls::getInstance();
+	Controls* controls;
+	switch (this->gameInfo->getTurn())
+	{
+	case Red:
+		controls = this->gameControls->player1Controls;
+		break;
+	case Black:
+		controls = this->gameControls->player2Controls;
+		break;
+	default:
+		controls = this->gameControls->player1Controls;
+		break;
+	}
 
 	if (controls->rightKey())
 	{

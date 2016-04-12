@@ -188,9 +188,8 @@ void Board::removeAllHighlight()
 	}
 }
 
-void Board::navigateChips(Chip* chips[][8])
+void Board::navigateChips(Chip* chips[][8], Controls* controls)
 {
-	GameControls* controls = GameControls::getInstance();
 	auto gameInfo = GameInfo::getInstance();
 	auto position = gameInfo->getCurrentCoodinates();
 
@@ -347,12 +346,12 @@ void Board::navigateChips(Chip* chips[][8])
 
 void Board::navigateRedChips()
 {
-	this->navigateChips(this->redChips);
+	this->navigateChips(this->redChips, GameControls::getInstance()->player1Controls);
 }
 
 void Board::navigateBlackChips()
 {
-	this->navigateChips(this->blackChips);
+	this->navigateChips(this->blackChips, GameControls::getInstance()->player2Controls);
 }
 
 void Board::removePreviousHighlight()
@@ -393,7 +392,22 @@ void Board::chooseChip(Chip* chips[][8])
 
 	auto gameControls = GameControls::getInstance();
 
-	if (!gameControls->aKey())
+	Controls* controls;
+	switch (gameInfo->getTurn())
+	{
+	case Red:
+		chips = this->redChips;
+		controls = gameControls->player1Controls;
+		break;
+	case Black:
+		chips = this->blackChips;
+		controls = gameControls->player2Controls;
+		break;
+	default:
+		throw;
+	}
+
+	if (!controls->aKey())
 	{
 		return;
 	}
@@ -402,7 +416,7 @@ void Board::chooseChip(Chip* chips[][8])
 	int x = currentPosition->x;
 	int y = currentPosition->y;
 	
-	if (chips != nullptr && chips[y][x] != nullptr)
+	if (chips[y][x] != nullptr)
 	{
 		chips[y][x]->select();
 	}
@@ -415,7 +429,20 @@ void Board::unChooseChips(Chip* chips[][8], bool forceUnselection)
 	auto gameInfo = GameInfo::getInstance();
 	auto gameControls = GameControls::getInstance();
 
-	GameControls* controls = GameControls::getInstance();
+	Controls* controls;
+	switch (gameInfo->getTurn())
+	{
+	case Red:
+		chips = this->redChips;
+		controls = gameControls->player1Controls;
+		break;
+	case Black:
+		chips = this->blackChips;
+		controls = gameControls->player2Controls;
+		break;
+	default:
+		throw;
+	}
 
 	if (!controls->bKey() && !forceUnselection)
 	{
