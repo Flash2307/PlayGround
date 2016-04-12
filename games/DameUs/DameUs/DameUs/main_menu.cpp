@@ -24,11 +24,11 @@ void main_menu::Initialize(sf::RenderWindow* window)
 }
 void main_menu::Update(sf::RenderWindow* window)
 {
-	if (this->gameControls->player1Controls->upKey() && !this->upKey)
+	if (this->gameControls->player1Controls->upKey())
 	{
 		this->selected -= 1;
 	}
-	if (this->gameControls->player1Controls->downKey() && !this->downKey)
+	if (this->gameControls->player1Controls->downKey())
 	{
 		this->selected += 1;
 	}
@@ -41,7 +41,7 @@ void main_menu::Update(sf::RenderWindow* window)
 		this->selected = 1;
 	}
 
-	if (this->gameControls->player1Controls->enterKey())
+	if (this->gameControls->player1Controls->aKey())
 	{
 		switch (this->selected)
 		{

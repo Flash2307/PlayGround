@@ -15,6 +15,9 @@ GameControls::GameControls(Controls* p1, Controls* p2)
 {
 	this->player1Controls = p1;
 	this->player2Controls = p2;
+
+	this->player1Controls->startMonitor();
+	this->player2Controls->startMonitor();
 }
 
 GameControls::~GameControls()

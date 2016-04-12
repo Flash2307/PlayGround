@@ -1,5 +1,6 @@
 #include "game_state.h"
 #include "main_menu.h"
+#include <thread>
 
 game_state coreState; 
 bool quitGame = false;
@@ -34,6 +35,7 @@ int main()
 		{
 			window.close();
 		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(17));
 	}
 
 	return 0;

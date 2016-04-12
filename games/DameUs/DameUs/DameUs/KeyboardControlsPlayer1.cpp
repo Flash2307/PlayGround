@@ -2,72 +2,76 @@
 
 KeyboardControlsPlayer1::KeyboardControlsPlayer1()
 {
-	lastUpKey = false;
-	lastLeftKey = false;
-	lastRightKey = false;
-	lastDownKey = false;
-	lastAKey = false;
-	lastBKey = false;
-	lastEnterKey = false;
-	lastEscapeKey = false;
+	this->upKey_ = false;
+	this->leftKey_ = false;
+	this->rightKey_ = false;
+	this->downKey_ = false;
+	this->aKey_ = false;
+	this->bKey_ = false;
+	this->upKeyLast = false;
+	this->leftKeyLast = false;
+	this->rightKeyLast = false;
+	this->downKeyLast = false;
+	this->aKeyLast = false;
+	this->bKeyLast = false;
 }
 
 KeyboardControlsPlayer1::~KeyboardControlsPlayer1()
 {
 }
 
-bool KeyboardControlsPlayer1::upKey()
+void KeyboardControlsPlayer1::setUpKey(bool state)
 {
-	bool result = !this->lastUpKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
-	this->lastUpKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
-	return result;
+	this->upKeyLast = this->upKey_;
+	this->upKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
 }
 
-bool KeyboardControlsPlayer1::leftKey()
+void KeyboardControlsPlayer1::setDownKey(bool state)
 {
-	bool result = !this->lastLeftKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
-	this->lastLeftKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
-	return result;
+	this->downKeyLast = this->downKey_;
+	this->downKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
 }
 
-bool KeyboardControlsPlayer1::rightKey()
+void KeyboardControlsPlayer1::setLeftKey(bool state)
 {
-	bool result = !this->lastRightKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
-	this->lastRightKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
-	return result;
+	this->leftKeyLast = this->leftKey_;
+	this->leftKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
 }
 
-bool KeyboardControlsPlayer1::downKey()
+void KeyboardControlsPlayer1::setRightKey(bool state)
 {
-	bool result = !this->lastDownKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
-	this->lastDownKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
-	return result;
+	this->rightKeyLast = this->rightKey_;
+	this->rightKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
 }
 
-bool KeyboardControlsPlayer1::aKey()
+void KeyboardControlsPlayer1::setAKey(bool state)
 {
-	bool result = !this->lastAKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma);
-	this->lastAKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Comma);
-	return result;
+	this->aKeyLast = this->aKey_;
+	this->aKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
 }
 
-bool KeyboardControlsPlayer1::bKey()
+void KeyboardControlsPlayer1::setBKey(bool state)
 {
-	bool result = !this->lastBKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period);
-	this->lastBKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Period);
-	return result;
+	this->bKeyLast = this->bKey_;
+	this->bKey_ = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::B);
 }
 
-bool KeyboardControlsPlayer1::enterKey()
+void KeyboardControlsPlayer1::assignNewStates()
 {
-	bool result = !this->lastEnterKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return);
-	this->lastEnterKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Return);
-	return result;
+	while (true)
+	{
+		this->setAKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A));
+		this->setBKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::B));
+		this->setUpKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up));
+		this->setDownKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down));
+		this->setLeftKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left));
+		this->setRightKey(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right));
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+	}
+	
 }
 
-bool KeyboardControlsPlayer1::escapeKey()
+void KeyboardControlsPlayer1::startMonitor()
 {
-	bool result = !this->lastEscapeKey && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
-	this->lastEscapeKey = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
-	return result;
+	this->controlsMonitor = std::thread(&KeyboardControlsPlayer1::assignNewStates, this);
 }
