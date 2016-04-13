@@ -76,6 +76,7 @@
     <ClCompile Include="DeadChipBuffer.cpp" />
     <ClCompile Include="GameControls.cpp" />
     <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="GamePadControls.cpp" />
     <ClCompile Include="Highlight.cpp" />
     <ClCompile Include="KeyboardControlsPlayer1.cpp" />
     <ClCompile Include="main.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameControls.h" />
     <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="GamePadControls.h" />
     <ClInclude Include="game_state.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="Highlight.h" />

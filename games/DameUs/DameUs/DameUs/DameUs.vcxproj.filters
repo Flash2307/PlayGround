@@ -90,6 +90,9 @@
     <ClCompile Include="SystemInput.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="GamePadControls.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_state.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="SystemInput.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePadControls.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
