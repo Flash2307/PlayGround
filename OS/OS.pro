@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     src/CommandSimulator.cpp \
     src/GameProcess.cpp \
     src/SelectableWidget.cpp \
-    tests/GamepadMsgSerialTest.cpp
+    tests/GamepadMsgSerialTest.cpp \
+    src/GameStatPanel.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -52,4 +53,6 @@ HEADERS  += HomeWindow.h \
     tests/GamepadMsgSerialTest.h \
     src/Config.h \
     src/Profile.h \
-    src/Game.h
+    src/Game.h \
+    src/GameStatPanel.h \
+    src/Score.h

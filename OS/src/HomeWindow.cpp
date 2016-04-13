@@ -10,6 +10,7 @@
 
 #include "CommandSimulator.h"
 #include "GameProcess.h"
+#include "GameStatPanel.h"
 #include "Config.h"
 
 HomeWindow::HomeWindow(QWidget *parent) :
@@ -39,10 +40,14 @@ HomeWindow::HomeWindow(QWidget *parent) :
     QObject::connect( &gameProcess, SIGNAL( gameStop( const QString& ) ), this, SLOT( gameStop( const QString& ) ) );
     QObject::connect( &gameProcess, SIGNAL( saveScores(const std::vector<UserScore>& ) ), this, SLOT( saveScores(const std::vector<UserScore>& ) ) );
 
+    this->pGameStatPanel = new GameStatPanel( this );
+    QObject::connect( &gameSelection, SIGNAL( showGameStatView( QString ) ), this, SLOT( showGameStatView(QString) ) );
+    QObject::connect( this->pGameStatPanel, SIGNAL( goBackToGameSelection() ), this, SLOT( showGameSelectionView() ) );
 
     this->views = new QStackedLayout();
     this->profilViewIndex = this->views->addWidget( this->prepareProfilPages() );
     this->gameSelectionViewIndex = this->views->addWidget( &this->gameSelection );
+    this->gameStatViewIndex = this->views->addWidget( this->pGameStatPanel );
 
     QVBoxLayout* inGameLayout = new QVBoxLayout();
     inGameLayout->addWidget( new QLabel( "Un jeu est en cours..." ) );
@@ -147,6 +152,10 @@ void HomeWindow::newMessageArrive( GamePadMsgType message_ )
     {
         gameProcess.newMessageArrive( message_ );
     }
+    else if( this->gameStatViewIndex == viewIndex )
+    {
+        this->pGameStatPanel->process( message_ );
+    }
     else
     {
         qDebug() << "Unkown view " << viewIndex;
@@ -180,13 +189,25 @@ void HomeWindow::userReady()
 
     if( isEveryOneReady )
     {
-        this->views->setCurrentIndex( this->gameSelectionViewIndex );
+        this->showGameSelectionView();
     }
 }
 
-void  HomeWindow::showProfilSelectionView()
+void HomeWindow::showGameSelectionView()
+{
+    this->views->setCurrentIndex( this->gameSelectionViewIndex );
+}
+
+void HomeWindow::showProfilSelectionView()
 {
     this->views->setCurrentIndex( this->profilViewIndex );
+}
+
+void HomeWindow::showGameStatView( QString gameName_ )
+{
+    std::vector< Score > highScores =  db.getHightScores( gameName_, 10 );
+    this->pGameStatPanel->showStatForGame( gameName_, highScores );
+    this->views->setCurrentIndex( this->gameStatViewIndex );
 }
 
 bool HomeWindow::isOnProfilPage() const

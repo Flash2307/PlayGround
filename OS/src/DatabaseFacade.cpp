@@ -130,7 +130,7 @@ void DatabaseFacade::addUserStat( int userId, const QString& gameName_, int scor
     }
 }
 
-std::vector< Score > DatabaseFacade::getHightScores( const QString& gameName_ )
+std::vector< Score > DatabaseFacade::getHightScores( const QString& gameName_, int limit_ )
 {
     std::vector< Score > scores;
 
