@@ -6,17 +6,10 @@
 #include <QString>
 #include <QtSql/QSqlDatabase>
 
+#include "Score.h"
+
 class QSqlDatabase;
 class Profile;
-
-struct Score
-{
-    Score(QString userName, int score):
-        userName(userName), score(score){}
-
-    QString userName;
-    int score;
-};
 
 class DatabaseFacade
 {
@@ -26,7 +19,7 @@ public:
 
     std::vector< Profile > getUsers();
     void addUserStat( int userId, const QString& gameName_, int score_ );
-    std::vector< Score > getHightScores( const QString& gameName_ );
+    std::vector< Score > getHightScores( const QString& gameName_, int limit_ );
 private:
     void openConnexion();
     void closeConnection();

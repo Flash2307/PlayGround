@@ -11,6 +11,7 @@
 
 class QLabel;
 class QStackedLayout;
+class GameStatPanel;
 
 class HomeWindow : public QMainWindow
 {
@@ -28,6 +29,8 @@ public slots:
     void newMessageArrive( GamePadMsgType );
     void userReady();
     void showProfilSelectionView();
+    void showGameSelectionView();
+    void showGameStatView( QString game_ );
     void saveScores( const std::vector< UserScore >& scores_ );
 private:
     QWidget* prepareProfilPages();
@@ -39,11 +42,13 @@ private:
     GameSelection gameSelection;
     GameProcess gameProcess;
     UserProfilPage* profilPages[ MaxUser ];
+    GameStatPanel* pGameStatPanel = nullptr;
 
     QStackedLayout* views;
     int profilViewIndex;
     int gameSelectionViewIndex;
     int gameIsRunningViewIndex;
+    int gameStatViewIndex;
     GamePadMsgType lastMessage[ MaxUser ];
     bool arrowKeyRepeat = false;
 };

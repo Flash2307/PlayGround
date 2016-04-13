@@ -1,12 +1,15 @@
 #ifndef GAMESELECTION_H
 #define GAMESELECTION_H
 
+#include <vector>
+
 #include <QWidget>
 #include <QProcess>
 
 #include "GamepadMsg.h"
 #include "GameProcess.h"
 #include "Game.h"
+#include "Score.h"
 
 class QLabel;
 class QPushButton;
@@ -31,7 +34,7 @@ public slots:
 signals:
     void startGame( GameConfig gameConfig_ );
     void returnToProfileSelection();
-
+    void showGameStatView( const QString& gameName_ );
 private:
     QVBoxLayout* pMainLayout;
     QLabel* pFailureMessageLabel;

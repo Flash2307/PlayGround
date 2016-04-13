@@ -144,7 +144,7 @@ void GameSelection::process( GamePadMsgType message_ )
             lauchGameCommand();
         else if(command == SHOW_STATS)
         {
-            //TODO: Add stats page
+            emit showGameStatView( gamePanels[ selectedGameIndex ]->getGame().getName() );
         }
     }
     else if( this->gamePanels.size() > 0 )
