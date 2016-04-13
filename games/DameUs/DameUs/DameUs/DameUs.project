@@ -71,6 +71,8 @@
     <File Name="GameControls.h"/>
     <File Name="GameInfo.cpp"/>
     <File Name="GameInfo.h"/>
+    <File Name="GamePadControls.cpp"/>
+    <File Name="GamePadControls.h"/>
     <File Name="game_state.h"/>
     <File Name="Highlight.cpp"/>
     <File Name="Highlight.h"/>
@@ -87,6 +89,8 @@
     <File Name="RedChip.h"/>
     <File Name="RedChipKing.cpp"/>
     <File Name="RedChipKing.h"/>
+    <File Name="SystemInput.cpp"/>
+    <File Name="SystemInput.h"/>
     <File Name="TurnState.cpp"/>
     <File Name="TurnState.h"/>
   </VirtualDirectory>

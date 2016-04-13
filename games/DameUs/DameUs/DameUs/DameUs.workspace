@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="DameUs" Database="">
-  <Project Name="DameUs" Path="DameUs.project" Active="Yes"/>
-  <Project Name="DameUs" Path="../../../../../DameUs/DameUs/DameUs.project"/>
+  <Project Name="DameUs" Path="../../../../../DameUs/DameUs/DameUs.project" Active="Yes"/>
   <Project Name="DameUs" Path="DameUs/DameUs.project"/>
+  <Project Name="DameUs" Path="DameUs.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
@@ -12,9 +12,9 @@
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
+      <Project Name="DameUs" ConfigName="Release"/>
+      <Project Name="DameUs" ConfigName="Release"/>
       <Project Name="DameUs" ConfigName="Debug"/>
-      <Project Name="DameUs" ConfigName="Release"/>
-      <Project Name="DameUs" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

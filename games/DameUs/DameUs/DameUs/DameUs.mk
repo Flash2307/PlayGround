@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Benjamin
-Date                   :=11/04/2016
+Date                   :=12/04/2016
 CodeLitePath           :="C:\Program Files\CodeLite"
 LinkerName             :=g++
 SharedObjectLinkerName :=g++ -shared -fPIC
@@ -62,8 +62,8 @@ AS       := as
 ## User defined environment variables
 ##
 CodeLiteDir:=C:\Program Files\CodeLite
-Objects0=$(IntermediateDirectory)/BlackChip.cpp$(ObjectSuffix) $(IntermediateDirectory)/BlackChipKing.cpp$(ObjectSuffix) $(IntermediateDirectory)/Board.cpp$(ObjectSuffix) $(IntermediateDirectory)/DeadChipBuffer.cpp$(ObjectSuffix) $(IntermediateDirectory)/GameControls.cpp$(ObjectSuffix) $(IntermediateDirectory)/GameInfo.cpp$(ObjectSuffix) $(IntermediateDirectory)/Highlight.cpp$(ObjectSuffix) $(IntermediateDirectory)/KeyboardControlsPlayer1.cpp$(ObjectSuffix) $(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/main_game.cpp$(ObjectSuffix) \
-	$(IntermediateDirectory)/main_menu.cpp$(ObjectSuffix) $(IntermediateDirectory)/Move.cpp$(ObjectSuffix) $(IntermediateDirectory)/RedChip.cpp$(ObjectSuffix) $(IntermediateDirectory)/RedChipKing.cpp$(ObjectSuffix) $(IntermediateDirectory)/TurnState.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/BlackChip.cpp$(ObjectSuffix) $(IntermediateDirectory)/BlackChipKing.cpp$(ObjectSuffix) $(IntermediateDirectory)/Board.cpp$(ObjectSuffix) $(IntermediateDirectory)/DeadChipBuffer.cpp$(ObjectSuffix) $(IntermediateDirectory)/GameControls.cpp$(ObjectSuffix) $(IntermediateDirectory)/GameInfo.cpp$(ObjectSuffix) $(IntermediateDirectory)/GamePadControls.cpp$(ObjectSuffix) $(IntermediateDirectory)/Highlight.cpp$(ObjectSuffix) $(IntermediateDirectory)/KeyboardControlsPlayer1.cpp$(ObjectSuffix) $(IntermediateDirectory)/main.cpp$(ObjectSuffix) \
+	$(IntermediateDirectory)/main_game.cpp$(ObjectSuffix) $(IntermediateDirectory)/main_menu.cpp$(ObjectSuffix) $(IntermediateDirectory)/Move.cpp$(ObjectSuffix) $(IntermediateDirectory)/RedChip.cpp$(ObjectSuffix) $(IntermediateDirectory)/RedChipKing.cpp$(ObjectSuffix) $(IntermediateDirectory)/SystemInput.cpp$(ObjectSuffix) $(IntermediateDirectory)/TurnState.cpp$(ObjectSuffix) 
 
 
 
@@ -142,6 +142,14 @@ $(IntermediateDirectory)/GameInfo.cpp$(DependSuffix): GameInfo.cpp
 $(IntermediateDirectory)/GameInfo.cpp$(PreprocessSuffix): GameInfo.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/GameInfo.cpp$(PreprocessSuffix) "GameInfo.cpp"
 
+$(IntermediateDirectory)/GamePadControls.cpp$(ObjectSuffix): GamePadControls.cpp $(IntermediateDirectory)/GamePadControls.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/Benjamin/Documents/PlayGround/games/DameUs/DameUs/DameUs/GamePadControls.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/GamePadControls.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/GamePadControls.cpp$(DependSuffix): GamePadControls.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/GamePadControls.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/GamePadControls.cpp$(DependSuffix) -MM "GamePadControls.cpp"
+
+$(IntermediateDirectory)/GamePadControls.cpp$(PreprocessSuffix): GamePadControls.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/GamePadControls.cpp$(PreprocessSuffix) "GamePadControls.cpp"
+
 $(IntermediateDirectory)/Highlight.cpp$(ObjectSuffix): Highlight.cpp $(IntermediateDirectory)/Highlight.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/Benjamin/Documents/PlayGround/games/DameUs/DameUs/DameUs/Highlight.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/Highlight.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/Highlight.cpp$(DependSuffix): Highlight.cpp
@@ -205,6 +213,14 @@ $(IntermediateDirectory)/RedChipKing.cpp$(DependSuffix): RedChipKing.cpp
 
 $(IntermediateDirectory)/RedChipKing.cpp$(PreprocessSuffix): RedChipKing.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/RedChipKing.cpp$(PreprocessSuffix) "RedChipKing.cpp"
+
+$(IntermediateDirectory)/SystemInput.cpp$(ObjectSuffix): SystemInput.cpp $(IntermediateDirectory)/SystemInput.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/Benjamin/Documents/PlayGround/games/DameUs/DameUs/DameUs/SystemInput.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/SystemInput.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/SystemInput.cpp$(DependSuffix): SystemInput.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/SystemInput.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/SystemInput.cpp$(DependSuffix) -MM "SystemInput.cpp"
+
+$(IntermediateDirectory)/SystemInput.cpp$(PreprocessSuffix): SystemInput.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/SystemInput.cpp$(PreprocessSuffix) "SystemInput.cpp"
 
 $(IntermediateDirectory)/TurnState.cpp$(ObjectSuffix): TurnState.cpp $(IntermediateDirectory)/TurnState.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/Benjamin/Documents/PlayGround/games/DameUs/DameUs/DameUs/TurnState.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/TurnState.cpp$(ObjectSuffix) $(IncludePath)
