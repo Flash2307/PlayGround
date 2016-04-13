@@ -2,9 +2,9 @@
 #define CONFIG_H_INCLUDED
 
 #define FAST_BAUD_RATE 1
-#define USE_KEYBOARD_FOR_LOCAL_DEBUG 1
+#define USE_KEYBOARD_FOR_LOCAL_DEBUG 0
 #define AUTO_DETECT_COM_PORT 0
-#define NDEBUG 1
+#define NDEBUG 0
 
 #if NDEBUG == 0
 #   define SHOW_COMMAND_DATA
@@ -12,7 +12,7 @@
 
 #if AUTO_DETECT_COM_PORT == 0
 #   ifdef _MSC_VER
-#       define COM_PORT_NAME "COM4"
+#       define COM_PORT_NAME "COM5"
 #   else
 #       define COM_PORT_NAME "/dev/ttyACM0"
 #   endif

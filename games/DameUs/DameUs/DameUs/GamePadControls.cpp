@@ -59,5 +59,5 @@ void GamePadControls::setBKey(bool state)
 
 void GamePadControls::startMonitor()
 {
-	SystemInput sysInput(1, nullptr);
+
 }

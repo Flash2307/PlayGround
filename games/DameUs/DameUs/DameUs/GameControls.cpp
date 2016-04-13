@@ -1,5 +1,6 @@
 #include "GameControls.h"
-
+#include "GamePadControls.h"
+#include "SystemInput.h"
 
 GameControls* GameControls::instance = nullptr;
 GameControls* GameControls::getInstance()
@@ -58,4 +59,17 @@ int GameControls::getPlayer1Index()
 int GameControls::getPlayer2Index()
 {
 	return this->player2Index;
+}
+
+void GameControls::createInstance(int argc, char** argv)
+{
+	/*if (argc == 1)
+	{
+		GameControls::instance = new GameControls(new KeyboardControlsPlayer1(), new KeyboardControlsPlayer1());
+	}
+	else
+	{*/
+		GameControls::instance = new GameControls(new GamePadControls(), new GamePadControls());
+		GameControls::instance->systemInput = new SystemInput(argc, argv);
+	//}
 }

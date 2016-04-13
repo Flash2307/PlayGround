@@ -11,6 +11,7 @@
 #include <GamepadMsg.h>
 
 #include <thread>
+#include "GameControls.h"
 
 /*#ifndef NDEBUG
 
@@ -81,9 +82,9 @@ void SystemInput::updateInput(SystemInput* systemInput_)
 			size_t index = getGamepadIndex(command);
 			assert(index < 4);
 
-			Controls* controls;
+			Controls* controls = systemInput_->controls->player1Controls;
 
-			if (index == 0)
+			/*if (index == 0)
 			{
 				controls = systemInput_->controls->player1Controls;
 			}
@@ -95,7 +96,7 @@ void SystemInput::updateInput(SystemInput* systemInput_)
 			else
 			{
 				continue;
-			}
+			}*/
 
 			controls->setAKey(isGamepadABtn(command));
 			controls->setBKey(isGamepadBBtn(command));
@@ -103,6 +104,16 @@ void SystemInput::updateInput(SystemInput* systemInput_)
 			controls->setDownKey(isGamepadDownArrow(command));
 			controls->setLeftKey(isGamepadLeftArrow(command));
 			controls->setRightKey(isGamepadRigthArrow(command));
+
+			controls = systemInput_->controls->player2Controls;
+
+			controls->setAKey(isGamepadABtn(command));
+			controls->setBKey(isGamepadBBtn(command));
+			controls->setUpKey(isGamepadUpArrow(command));
+			controls->setDownKey(isGamepadDownArrow(command));
+			controls->setLeftKey(isGamepadLeftArrow(command));
+			controls->setRightKey(isGamepadRigthArrow(command));
+
 			bufferFilledDataCount = 0;
 		}
 	}

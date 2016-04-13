@@ -5,8 +5,9 @@
 game_state coreState; 
 bool quitGame = false;
 
-int main()
+int main(int argc, char ** argv)
 {
+	GameControls::createInstance(argc, argv);
 	sf::RenderWindow window(sf::VideoMode(800, 800), "DameUs");
 
 	coreState.SetWindow(&window);

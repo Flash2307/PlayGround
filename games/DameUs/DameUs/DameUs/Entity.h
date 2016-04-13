@@ -18,7 +18,7 @@ public:
 
 	void Load(std::string filename)
 	{
-		this->texture->loadFromFile("Sprites/" + filename);
+		this->texture->loadFromFile("img/" + filename);
 		this->setTexture(*this->texture);
 	}
 

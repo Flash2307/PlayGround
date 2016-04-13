@@ -19,7 +19,7 @@ void main_game::Initialize(sf::RenderWindow* window)
 	this->board->setStartOfTurnHighlight();
 
 	this->font = new sf::Font();
-	this->font->loadFromFile("font.ttf");
+	this->font->loadFromFile("font/font.ttf");
 
 	this->turnText = new sf::Text("", *this->font, 64U);
 	this->turnText->setOrigin(this->turnText->getGlobalBounds().width / 2, this->turnText->getGlobalBounds().height / 2);

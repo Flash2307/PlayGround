@@ -4,8 +4,8 @@
 #include <string>
 #include <array>
 #include <thread>
-#include "GameControls.h"
 
+class GameControls;
 enum {  PLAYER_COUNT = 2 };
 
 class SystemInput

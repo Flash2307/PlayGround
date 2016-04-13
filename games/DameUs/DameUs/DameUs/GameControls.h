@@ -3,11 +3,13 @@
 #include "KeyboardControlsPlayer1.h"
 #include <string>
 
+class SystemInput;
 class GameControls
 {
 
 public:
 	static GameControls* getInstance();
+	static void createInstance(int argc, char** argv);
 	~GameControls();
 	Controls* player1Controls;
 	Controls* player2Controls;
@@ -25,7 +27,7 @@ private:
 	std::string player2Name;
 	int player1Index;
 	int player2Index;
-
+	SystemInput* systemInput;
 
 };
 
