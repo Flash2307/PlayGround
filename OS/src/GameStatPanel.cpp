@@ -6,28 +6,39 @@
 
 GameStatPanel::GameStatPanel(QWidget *parent) : QWidget(parent)
 {
-    this->returnToGameSelection = new QPushButton( "Retourner à la sélection des jeux", this);
-    QObject::connect( returnToGameSelection, SIGNAL(clicked()), this, SIGNAL( goBackToGameSelection() ) );
+    scoreAndButtonLayout = new QVBoxLayout();
+    setLayout( scoreAndButtonLayout );
 
-    this->pScoreLbl = new QLabel( this);
-
-    QVBoxLayout* scoreAndButtonLayout = new QVBoxLayout();
-    scoreAndButtonLayout->addWidget( this->pScoreLbl );
-    scoreAndButtonLayout->addWidget( returnToGameSelection );
-
-    this->setLayout( scoreAndButtonLayout );
+    labelGameName = new QLabel(this);
+    labelGameName->setFont( QFont( "Arial", 48, QFont::Bold ) );
+    labelGameName->setText("GameName");
+    scoreAndButtonLayout->addWidget(labelGameName);
 }
 
 void GameStatPanel::process( GamePadMsgType gamepadMsg_ )
 {
     if( isGamepadBBtn( gamepadMsg_ ) )
     {
-        this->returnToGameSelection->animateClick();
+        //this->returnToGameSelection->animateClick();
     }
 }
 
-void GameStatPanel::showStatForGame( const QString& gameName_, const std::vector< Score >& highScores_ )
+void GameStatPanel::showStatForGame(const QString& gameName_)
 {
-    this->pScoreLbl->setText( "Aucune statistique pour " + gameName_ );
+    labelGameName->setText("HighScore for game " + gameName_);
+
+    for(HighScoreLine* line : scoreLines)
+        delete line;
+
+    scoreLines.clear();
+
+    std::vector<Score> scores = db.getHightScores(gameName_, 0);
+
+    for(Score& score : scores)
+    {
+        HighScoreLine* aa = new HighScoreLine(this, score.userPict, score.userName, QString::number(score.score));
+        scoreLines.emplace_back(aa);
+        scoreAndButtonLayout->addWidget(aa);
+    }
 }
 

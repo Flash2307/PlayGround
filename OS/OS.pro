@@ -34,7 +34,8 @@ SOURCES += main.cpp \
     src/GameProcess.cpp \
     src/SelectableWidget.cpp \
     tests/GamepadMsgSerialTest.cpp \
-    src/GameStatPanel.cpp
+    src/GameStatPanel.cpp \
+    src/HighScoreLine.cpp
 
 HEADERS  += HomeWindow.h \
     src/HomeWindow.h \
@@ -55,4 +56,5 @@ HEADERS  += HomeWindow.h \
     src/Profile.h \
     src/Game.h \
     src/GameStatPanel.h \
-    src/Score.h
+    src/Score.h \
+    src/HighScoreLine.h

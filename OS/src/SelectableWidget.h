@@ -40,12 +40,12 @@ private:
     GameCommand command;
     Game game;
 
-    QVBoxLayout* layoutGlobal;
-    QLabel* labelGameName;
-    QLabel* labelGameImage;
-    QLabel* labelGameDescription;
-    QLabel* labelStartGame;
-    QLabel* labelStatistics;
+    QVBoxLayout* layoutGlobal = nullptr;
+    QLabel* labelGameName = nullptr;
+    QLabel* labelGameImage = nullptr;
+    QLabel* labelGameDescription = nullptr;
+    QLabel* labelStartGame = nullptr;
+    QLabel* labelStatistics = nullptr;
 };
 
 #endif // SELECTABLEWIDGET_H

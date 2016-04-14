@@ -208,8 +208,8 @@ void HomeWindow::showProfilSelectionView()
 
 void HomeWindow::showGameStatView( QString gameName_ )
 {
-    std::vector< Score > highScores =  db.getHightScores( gameName_, 10 );
-    this->pGameStatPanel->showStatForGame( gameName_, highScores );
+    //std::vector< Score > highScores =  db.getHightScores( gameName_, 10 );
+    this->pGameStatPanel->showStatForGame( gameName_ );
     this->views->setCurrentIndex( this->gameStatViewIndex );
 }
 

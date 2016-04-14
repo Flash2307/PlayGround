@@ -6,13 +6,13 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#define DATABASE_IP "192.168.1.103"
+#define DATABASE_IP "192.168.0.101"
 #define DATABASE_NAME "Playground"
 #define DATABASE_USER "playground2"
 #define DATABASE_PASS "playground"
 
-const QString queryGetHighScores = "SELECT Gamers.name, HighScores.score FROM HighScores INNER JOIN Games on Games.id = HighScores.game_id WHERE Games.name = '%1';";
-const QString queryGetGamerHighScore = "SELECT Games.id, HighScores.score FROM HighScores INNER JOIN Games ON Games.id = HighScores.game_id WHERE Games.name = '%1' AND HighScores.gamer_id = %2;";
+const QString queryGetHighScores = "SELECT Gamers.tag, Gamers.picture, HighScores.score FROM HighScores INNER JOIN Games on Games.id = HighScores.game_id INNER JOIN Gamers ON Gamers.id = HighScores.gamer_id WHERE Games.name = '%1';";
+const QString queryGetGamerHighScore = "SELECT Gamers.tag, Gamers.picture, HighScores.score FROM HighScores INNER JOIN Games ON Games.id = HighScores.game_id INNER JOIN Gamers ON Gamers.id = HighScores.gamer_id WHERE Games.name = '%1' AND HighScores.gamer_id = %2;";
 const QString queryUpdateHighScore = "UPDATE HighScores SET HighScores.score = %1 WHERE HighScores.game_id = %2 AND HighScores.gamer_id = %3;";
 const QString queryInsertHighScore = "INSERT INTO HighScores VALUES(%1, (SELECT Games.id FROM Games WHERE Games.name = '%2'), %3)";
 
@@ -150,9 +150,13 @@ std::vector< Score > DatabaseFacade::getHightScores( const QString& gameName_, i
     while (query.next())
     {
         QString name = query.value(0).toString();
-        int score = query.value(1).toInt();
 
-        scores.emplace_back(name, score);
+        QPixmap picture;
+        picture.loadFromData(query.value(1).toByteArray());
+
+        int score = query.value(2).toInt();
+
+        scores.emplace_back(name, picture, score);
     }
 
     query.clear();
