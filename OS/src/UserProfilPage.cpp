@@ -27,7 +27,7 @@ UserProfilPage::UserProfilPage( std::vector<Profile> profiles ) :
     profiles(profiles)
 {
     this->setStyleSheet( readFiles( QStringList() << "css/GameProfil.css" ) );
-    applyTexture( this, "./img/ProfilPage.jpg" );
+ //   applyTexture( this, "img/ProfilPage.jpg" );
 
     //----- Panels -----
     layoutGlobal = new QVBoxLayout(this);
