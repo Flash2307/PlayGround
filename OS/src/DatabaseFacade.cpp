@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#define DATABASE_IP "192.168.0.101"
+#define DATABASE_IP "192.168.1.103"
 #define DATABASE_NAME "Playground"
 #define DATABASE_USER "playground2"
 #define DATABASE_PASS "playground"
