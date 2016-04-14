@@ -66,7 +66,10 @@ HomeWindow::HomeWindow(QWidget *parent) :
 
 QWidget* HomeWindow::prepareProfilPages()
 {
-    QWidget* pCentralWidget = new QWidget();
+    QLabel* pCentralWidget = new QLabel();
+
+    pCentralWidget->setMaximumSize(1850,960);
+    pCentralWidget->setPixmap(QPixmap("img/ProfilPage.png"));
 
     QVBoxLayout* pBox = new QVBoxLayout( pCentralWidget );
     pBox->addWidget( profilPages[ 0 ] );
