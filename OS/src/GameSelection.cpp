@@ -12,11 +12,11 @@
 #include "SelectableWidget.h"
 
 constexpr char gameBaseDir[] = "./games";
-constexpr char gamePictureFileName[] = "picture.jpg";
+constexpr char gamePictureFileName[] = "picture.png";
 constexpr char gameDescriptionFileName[] = "description.txt";
 constexpr char gameAppFileName[] = GAME_APP_EXE_NAME;
 constexpr char selectedGameTagName[] = "elementWithFocus";
-constexpr char defaultGameImg[] = "./img/NoImage.jpg";
+constexpr char defaultGameImg[] = "./img/NoImage.png";
 constexpr char noDescriptionAvaibleText[] = "Aucune description du jeu disponible.";
 
 static QString fetchGameImage( const QString& gameName_ )
