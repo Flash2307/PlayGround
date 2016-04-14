@@ -28,6 +28,23 @@ void GameStatPanel::process( GamePadMsgType gamepadMsg_ )
 
 void GameStatPanel::showStatForGame( const QString& gameName_, const std::vector< Score >& highScores_ )
 {
-    this->pScoreLbl->setText( "Aucune statistique pour " + gameName_ );
+    if( highScores_.empty() )
+    {
+        this->pScoreLbl->setText( "Aucune statistique pour " + gameName_ );
+    }
+    else
+    {
+        QString statText( "Statistiques pour " + gameName_ );
+
+        for( Score score : highScores_ )
+        {
+            statText += score.userName;
+            statText += ": ";
+            statText += QString("%1").arg( score.score );
+            statText += "\n";
+        }
+
+        this->pScoreLbl->setText( statText );
+    }
 }
 

@@ -19,7 +19,7 @@ public:
 
     std::vector< Profile > getUsers();
     void addUserStat( int userId, const QString& gameName_, int score_ );
-    std::vector< Score > getHightScores( const QString& gameName_, int limit_ );
+    std::vector< Score > getHightScores( const QString& gameName_, int limit_ = 10 );
 private:
     void openConnexion();
     void closeConnection();

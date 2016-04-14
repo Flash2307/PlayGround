@@ -6,12 +6,12 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#define DATABASE_IP "192.168.0.101"
+#define DATABASE_IP "localhost"
 #define DATABASE_NAME "Playground"
 #define DATABASE_USER "playground2"
 #define DATABASE_PASS "playground"
 
-const QString queryGetHighScores = "SELECT Gamers.name, HighScores.score FROM HighScores INNER JOIN Games on Games.id = HighScores.game_id WHERE Games.name = '%1';";
+const QString queryGetHighScores = "SELECT Gamers.tag, HighScores.score FROM HighScores INNER JOIN Games on Games.id = HighScores.game_id WHERE Games.name = '%1' LIMIT %2;";
 const QString queryGetGamerHighScore = "SELECT Games.id, HighScores.score FROM HighScores INNER JOIN Games ON Games.id = HighScores.game_id WHERE Games.name = '%1' AND HighScores.gamer_id = %2;";
 const QString queryUpdateHighScore = "UPDATE HighScores SET HighScores.score = %1 WHERE HighScores.game_id = %2 AND HighScores.gamer_id = %3;";
 const QString queryInsertHighScore = "INSERT INTO HighScores VALUES(%1, (SELECT Games.id FROM Games WHERE Games.name = '%2'), %3)";
@@ -42,7 +42,7 @@ void DatabaseFacade::openConnexion()
         qDebug() << "Connexion to database failed";
         QSqlError err = db.lastError();
         if(err.isValid())
-            qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+            qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
     }
 
 }
@@ -71,7 +71,7 @@ std::vector< Profile > DatabaseFacade::getUsers()
 
     QSqlError err = query.lastError();
     if(err.isValid())
-        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
     
     while (query.next())
     {
@@ -100,12 +100,36 @@ void DatabaseFacade::addUserStat( int userId, const QString& gameName_, int scor
     QSqlQuery query;
     QSqlQuery query2;
 
+    QString selectMatchingGame =
+            "SELECT id "
+            "FROM `Games` "
+            "WHERE name = 'SnakeUs' "
+            "LIMIT 0 , 30 ";
+
+    query.exec( selectMatchingGame );
+
+    int gameId = -1;
+
+    if( query.next() )
+    {
+        gameId = query.value( "id" ).toInt();
+    }
+    else
+    {
+        QString insertGame = " INSERT INTO `Games` (name) VALUES( %1 )";
+        query.exec( insertGame.arg( gameName_ ) );
+
+        query.exec( "LAST_INSERT_ID()" );
+        query.next();
+        gameId = query.value( 1 ).toInt();
+    }
+
     qDebug() << "Executing query : \n\t" << queryGetGamerHighScore.arg(gameName_).arg(userId);
     query.exec(queryGetGamerHighScore.arg(gameName_).arg(userId));
 
     QSqlError err = query.lastError();
     if(err.isValid())
-        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
 
     if(query.next())
     {
@@ -116,7 +140,7 @@ void DatabaseFacade::addUserStat( int userId, const QString& gameName_, int scor
 
             err = query2.lastError();
             if(err.isValid())
-                qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+                qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
         }
     }
     else
@@ -126,7 +150,7 @@ void DatabaseFacade::addUserStat( int userId, const QString& gameName_, int scor
 
         err = query2.lastError();
         if(err.isValid())
-            qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+            qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
     }
 }
 
@@ -141,11 +165,11 @@ std::vector< Score > DatabaseFacade::getHightScores( const QString& gameName_, i
     }
 
     QSqlQuery query;
-    query.exec(queryGetHighScores.arg(gameName_));
+    query.exec(queryGetHighScores.arg(gameName_).arg(limit_));
 
     QSqlError err = query.lastError();
     if(err.isValid())
-        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.nativeErrorCode();
+        qDebug() << err.databaseText() << "\n" << err.driverText() << "\n" << err.databaseText();
 
     while (query.next())
     {
